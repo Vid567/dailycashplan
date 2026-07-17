@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#059669">
+<title>DebtClear</title>
+<style>
+:root {
+  --bg: #f8faf9; --surface: #ffffff; --surface2: #f1f5f3;
+  --green: #059669; --green-light: #d1fae5; --green-dark: #047857;
+  --red: #dc2626; --red-light: #fee2e2;
+  --amber: #d97706; --amber-light: #fef3c7;
+  --blue: #2563eb; --blue-light: #dbeafe;
+  --text: #111827; --text2: #6b7280; --text3: #9ca3af;
+  --border: #e5e7eb; --radius: 16px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100dvh; overflow-x: hidden; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; font-size: inherit; }
+
+.app { max-width: 480px; margin: 0 auto; padding: 0 0 100px; }
+.screen { padding: 20px; display: none; }
+.screen.active { display: block; }
+.back { color: var(--text3); font-size: 14px; padding: 8px 0; display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
+h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
+.subtitle { color: var(--text2); font-size: 15px; margin-top: 4px; margin-bottom: 20px; line-height: 1.4; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+.card-accent { border: 2px solid var(--green); background: var(--green-light); }
+.card-warn { border: 1px solid #fbbf24; background: var(--amber-light); }
+.card-red { border: 1px solid #f87171; background: var(--red-light); }
+
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px; transition: all .15s; }
+.stat[onclick]:active { transform: scale(0.97); background: var(--surface2); }
+.stat-label { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.3px; }
+.stat-value { font-size: 22px; font-weight: 700; margin-top: 2px; }
+.stat-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 13px; color: var(--text2); margin-bottom: 6px; font-weight: 500; }
+.input-wrap { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 12px; padding: 0 12px; background: var(--surface); transition: border-color .15s; }
+.input-wrap:focus-within { border-color: var(--green); }
+.input-wrap .prefix { color: var(--text3); font-size: 17px; margin-right: 4px; }
+.input-wrap .suffix { color: var(--text3); font-size: 13px; margin-left: 4px; }
+.input-wrap input { flex: 1; border: none; outline: none; font-size: 17px; padding: 12px 0; background: transparent; font-family: var(--font); width: 100%; }
+.input-wrap input::placeholder { color: #d1d5db; }
+
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 16px; transition: all .15s; }
+.btn-primary { background: var(--green); color: white; }
+.btn-primary:active { background: var(--green-dark); transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.4; pointer-events: none; }
+.btn-secondary { background: var(--surface2); color: var(--text); }
+.btn-secondary:active { background: #e2e8f0; }
+.btn-sm { padding: 10px 14px; font-size: 14px; width: auto; border-radius: 10px; }
+.btn-danger { color: var(--red); }
+.btn-reset { color: var(--amber); font-weight: 500; }
+
+.list-item { display: flex; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+.list-item:last-child { border-bottom: none; }
+.list-item-content { flex: 1; min-width: 0; }
+.list-item-title { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.list-item-sub { font-size: 13px; color: var(--text2); }
+.list-item-value { font-weight: 700; font-size: 16px; text-align: right; white-space: nowrap; }
+.list-item-actions button { padding: 8px; border-radius: 8px; color: var(--text3); font-size: 18px; }
+.list-item-actions button:active { background: var(--surface2); }
+
+.add-btn { width: 100%; padding: 16px; border: 2px dashed var(--border); border-radius: var(--radius); color: var(--text2); font-weight: 500; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; transition: all .15s; }
+.add-btn:active { border-color: var(--green); color: var(--green); background: var(--green-light); }
+
+/* ── Voice ── */
+.voice-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; border-radius: 12px; font-weight: 500; font-size: 14px; margin-bottom: 6px; }
+.voice-btn.mic { background: var(--blue-light); color: var(--blue); }
+.voice-btn.mic.active { background: var(--red-light); color: var(--red); animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+.voice-hint { font-size: 12px; color: var(--text3); text-align: center; margin-bottom: 12px; line-height: 1.4; background: var(--surface2); border-radius: 8px; padding: 8px 12px; }
+.voice-hint em { color: var(--text2); font-style: normal; font-weight: 500; }
+.transcript { background: var(--blue-light); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; font-size: 14px; color: var(--blue); }
+.transcript .heard { font-size: 12px; color: #93c5fd; display: block; margin-bottom: 4px; }
+
+/* ── Presets ── */
+.presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.preset { padding: 10px 16px; border-radius: 12px; font-size: 14px; background: var(--surface); color: var(--text); font-weight: 500; white-space: nowrap; border: 1.5px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,.06); transition: all .15s; }
+.preset:active, .preset.selected { background: var(--green-light); color: var(--green-dark); border-color: var(--green); transform: scale(0.96); }
+
+/* ── Modal ── */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 200; display: none; align-items: flex-end; }
+.modal.open { display: flex; }
+.modal-content { background: var(--surface); width: 100%; max-width: 480px; margin: 0 auto; border-radius: 20px 20px 0 0; padding: 20px 20px max(20px, env(safe-area-inset-bottom)); max-height: 90dvh; overflow-y: auto; }
+.modal-handle { width: 40px; height: 4px; background: #d1d5db; border-radius: 2px; margin: 0 auto 16px; }
+.modal-actions { display: flex; gap: 8px; margin-top: 12px; }
+.modal-actions .btn { flex: 1; }
+
+/* ── Tabs ── */
+.tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); display: flex; padding: 8px 0 max(8px, env(safe-area-inset-bottom)); z-index: 100; }
+.tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 0; font-size: 11px; color: var(--text3); font-weight: 500; }
+.tab.active { color: var(--green); }
+.tab svg { width: 24px; height: 24px; }
+
+/* ── Strategy toggle ── */
+.strat-toggle { display: flex; background: var(--surface2); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
+.strat-btn { flex: 1; padding: 12px 8px; border-radius: 10px; font-weight: 600; font-size: 14px; text-align: center; color: var(--text2); transition: all .15s; }
+.strat-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
+/* ── Milestone cards ── */
+.milestone { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface2); border-radius: 12px; margin-bottom: 8px; }
+.milestone-badge { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; flex-shrink: 0; }
+.milestone-content { flex: 1; }
+.milestone-title { font-weight: 600; font-size: 14px; }
+.milestone-sub { font-size: 13px; color: var(--text2); margin-top: 2px; }
+.milestone-empty { font-size: 13px; color: var(--text3); font-style: italic; }
+
+/* ── Timeline item ── */
+.timeline-item { display: flex; gap: 12px; padding: 10px 0; }
+.timeline-num { width: 30px; height: 30px; border-radius: 50%; background: var(--green-light); color: var(--green-dark); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+
+/* ── Category headers ── */
+.cat-header { font-weight: 600; font-size: 14px; color: var(--text2); margin: 16px 0 8px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.4px; }
+.cat-total { margin-left: auto; font-weight: 700; color: var(--text); text-transform: none; letter-spacing: 0; }
+
+/* ── Slider ── */
+.slider-wrap input[type=range] { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px; background: #e2e8f0; outline: none; }
+.slider-wrap input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: var(--green); border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+
+/* ── Comparison ── */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.compare .card { text-align: center; cursor: pointer; transition: all .15s; }
+.compare .card:active { transform: scale(0.97); }
+.compare .card.winner { border: 2px solid var(--green); background: var(--green-light); }
+.compare .method { font-size: 13px; color: var(--text2); margin-bottom: 4px; }
+.compare .time { font-size: 24px; font-weight: 700; }
+.compare .interest { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.compare .free-date { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+.progress { width: 100%; height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; margin: 8px 0; }
+.progress-fill { height: 100%; border-radius: 5px; transition: width .4s ease; }
+
+.empty { text-align: center; padding: 32px 16px; color: var(--text3); }
+.empty-icon { font-size: 40px; margin-bottom: 8px; }
+.empty-text { font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- WELCOME -->
+  <div class="screen" id="s-welcome">
+    <div style="min-height:85dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px">
+      <div style="width:64px;height:64px;background:var(--green);border-radius:18px;display:flex;align-items:center;justify-content:center;margin-bottom:24px">
+        <svg width="32" height="32" fill="white" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      </div>
+      <h1 style="font-size:32px">DebtClear</h1>
+      <p style="color:var(--text2);font-size:17px;margin:8px 0 4px">See where you stand. Get a plan.</p>
+      <p style="color:var(--text3);font-size:14px;margin-bottom:32px;max-width:300px">Add your income, expenses, and debts. Get a realistic payoff plan in under 2 minutes.</p>
+      <button class="btn btn-primary" style="max-width:300px" onclick="startSetup()">Get started</button>
+      <p style="font-size:12px;color:var(--text3);margin-top:16px">Your data stays on this device only.</p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="screen" id="s-dashboard">
+    <h1 style="margin-bottom:4px">Your snapshot</h1>
+    <p class="subtitle" id="dash-greeting"></p>
+    <div class="stats">
+      <div class="stat" onclick="goScreen('debts')" style="cursor:pointer"><div class="stat-label">Total debt</div><div class="stat-value" id="dash-total-debt" style="color:var(--red)">$0</div><div class="stat-sub" style="color:var(--blue)">tap to edit →</div></div>
+      <div class="stat" id="dash-available-stat"><div class="stat-label">Available for debt</div><div class="stat-value" id="dash-available">$0</div><div class="stat-sub" id="dash-available-sub">/month</div></div>
+      <div class="stat" onclick="goScreen('income')" style="cursor:pointer"><div class="stat-label">Total income</div><div class="stat-value" id="dash-income">$0</div><div class="stat-sub" style="color:var(--blue)">tap to edit →</div></div>
+      <div class="stat" onclick="goScreen('expenses')" style="cursor:pointer"><div class="stat-label">Total expenses</div><div class="stat-value" id="dash-expenses">$0</div><div class="stat-sub" style="color:var(--blue)">tap to edit →</div></div>
+    </div>
+    <div class="card" id="dash-expense-card" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="font-size:16px">Where your money goes</h2>
+        <button class="btn-sm btn-secondary" onclick="goScreen('expenses')" style="font-size:13px">Edit</button>
+      </div>
+      <div id="dash-expense-bars"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:13px">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#6366f1;margin-right:4px;vertical-align:-1px"></span>Fixed</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:#f59e0b;margin-right:4px;vertical-align:-1px"></span>Variable</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:4px;vertical-align:-1px"></span>Debt budget</span>
+      </div>
+    </div>
+    <div class="card" id="dash-whatif" style="display:none">
+      <h2 style="font-size:16px;margin-bottom:4px">What if you cut variable spending?</h2>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:8px">See how cutting back speeds up your payoff</p>
+      <div class="slider-wrap"><input type="range" min="0" max="50" value="0" id="whatif-slider" oninput="updateWhatIf()"></div>
+      <div style="display:flex;justify-content:space-between;font-size:14px">
+        <span style="color:var(--text3)">No cut</span>
+        <span style="font-weight:700;color:var(--green)" id="whatif-label">0% cut</span>
+        <span style="color:var(--text3)">−50%</span>
+      </div>
+      <div id="whatif-result" style="margin-top:12px;display:none"></div>
+    </div>
+    <div class="card card-accent" id="dash-debtfree" style="display:none">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:44px;height:44px;background:var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:18px;color:var(--green-dark)" id="dash-debtfree-date"></div>
+          <div style="font-size:13px;color:var(--green-dark)" id="dash-debtfree-sub"></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="goScreen('plan')" id="dash-plan-btn" style="margin-top:8px;display:none">View full payoff plan →</button>
+  </div>
+
+  <!-- INCOME -->
+  <div class="screen" id="s-income">
+    <button class="back" onclick="goScreen('dashboard')">← Dashboard</button>
+    <h1>Income</h1>
+    <p class="subtitle">All money coming in each month</p>
+    <div id="income-list"></div>
+    <button class="add-btn" onclick="openModal('income')">+ Add income source</button>
+  </div>
+
+  <!-- EXPENSES -->
+  <div class="screen" id="s-expenses">
+    <button class="back" onclick="goScreen('dashboard')">← Dashboard</button>
+    <h1>Expenses</h1>
+    <p class="subtitle">Know what's fixed and what you can cut</p>
+    <div class="cat-header"><span>🔒 Fixed expenses</span><span class="cat-total" id="fixed-total">$0</span></div>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Things you can't easily change</p>
+    <div id="fixed-list"></div>
+    <button class="add-btn" onclick="openModal('fixed')">+ Add fixed expense</button>
+    <div class="cat-header" style="margin-top:24px"><span>✂️ Variable expenses</span><span class="cat-total" id="var-total">$0</span></div>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Things you could reduce to pay off debt faster</p>
+    <div id="var-list"></div>
+    <button class="add-btn" onclick="openModal('variable')">+ Add variable expense</button>
+  </div>
+
+  <!-- DEBTS -->
+  <div class="screen" id="s-debts">
+    <button class="back" onclick="goScreen('dashboard')">← Dashboard</button>
+    <h1>Your debts</h1>
+    <p class="subtitle" id="debts-subtitle">Everything you want to pay off</p>
+    <div id="debt-list"></div>
+    <button class="add-btn" onclick="openModal('debt')">+ Add a debt</button>
+    <div id="debt-summary"></div>
+  </div>
+
+  <!-- PLAN -->
+  <div class="screen" id="s-plan">
+    <button class="back" onclick="goScreen('dashboard')">← Dashboard</button>
+    <h1>Your payoff plan</h1>
+    <p class="subtitle" id="plan-subtitle"></p>
+    <div id="plan-content"></div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-content"><div class="modal-handle"></div><div id="modal-body"></div></div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab" id="tab-dashboard" onclick="goScreen('dashboard')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Home
+  </button>
+  <button class="tab" id="tab-income" onclick="goScreen('income')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Income
+  </button>
+  <button class="tab" id="tab-expenses" onclick="goScreen('expenses')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 4H3v16h18V4zM3 10h18"/><line x1="9" y1="4" x2="9" y2="20"/></svg>Expenses
+  </button>
+  <button class="tab" id="tab-debts" onclick="goScreen('debts')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Debts
+  </button>
+  <button class="tab" id="tab-plan" onclick="goScreen('plan')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Plan
+  </button>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let state = { incomes:[], fixedExpenses:[], variableExpenses:[], debts:[], whatIfCut:0, chosenStrategy:"best", setupDone:false };
+const PRESETS = {
+  income: ["Primary job","Side gig","Partner income","Freelance","Benefits","Child support","Other"],
+  fixed: ["Rent / Mortgage","Utilities","Car payment","Health insurance","Insurance (other)","Phone plan","Internet","Childcare","Student loan min.","Other fixed"],
+  variable: ["Groceries","Dining out","Entertainment","Subscriptions","Clothing","Gas / Transport","Personal care","Hobbies","Gifts","Other"],
+  debt: ["Credit card","Student loan","Car loan","Medical bill","Personal loan","Family / Friends","Store credit","Mortgage","Other"]
+};
+const VOICE_HINTS = {
+  income: 'Say something like: <em>"Side gig three hundred fifty dollars"</em>',
+  fixed: 'Say something like: <em>"Rent twelve hundred dollars"</em>',
+  variable: 'Say something like: <em>"Dining out two hundred dollars"</em>',
+  debt: 'Say a full sentence like: <em>"I owe Chase four thousand five hundred dollars at twenty-two percent APR, minimum payment forty-five dollars"</em>'
+};
+
+const voiceSupported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+
+function save() { try { localStorage.setItem("debtclear", JSON.stringify(state)); } catch(e){} }
+function load() { try { const d = localStorage.getItem("debtclear"); if (d) state = { ...state, ...JSON.parse(d) }; } catch(e){} }
+const $ = id => document.getElementById(id);
+const fmt = n => "$" + Math.round(n).toLocaleString("en-US");
+const fmtD = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
+function monthsToText(m) {
+  if (m === Infinity || m > 500) return "50+ years";
+  const y = Math.floor(m/12), mo = m%12;
+  if (y > 0 && mo > 0) return `${y}y ${mo}m`;
+  if (y > 0) return `${y} year${y>1?"s":""}`;
+  return `${mo} month${mo!==1?"s":""}`;
+}
+function debtFreeDate(m) {
+  if (m === Infinity || m > 500) return "a very long time";
+  const d = new Date(); d.setMonth(d.getMonth() + m);
+  return d.toLocaleDateString("en-US", { month:"long", year:"numeric" });
+}
+function sumArr(a) { return a.reduce((s,x) => s + (x.amount||0), 0); }
+function genId() { return Date.now() + Math.random().toString(36).slice(2,6); }
+
+// ═══════════════════════════════════════
+// PAYOFF ENGINE
+// ═══════════════════════════════════════
+function calcPayoff(debts, monthlyAvail, method) {
+  if (!debts.length || monthlyAvail <= 0) return null;
+  let rem = debts.map(d => ({ ...d, bal:d.balance, intPaid:0, paidMonth:null }));
+  if (method === "snowball") rem.sort((a,b) => a.bal - b.bal);
+  else rem.sort((a,b) => b.apr - a.apr);
+  const totalMin = rem.reduce((s,d) => s + d.minPay, 0);
+  if (monthlyAvail < totalMin) return { months:Infinity, totalInterest:Infinity, timeline:[], order:[], tooLow:true };
+  let month = 0, totalInt = 0, timeline = [];
+  while (rem.some(d => d.bal > 0.01) && month < 600) {
+    month++;
+    let pool = monthlyAvail;
+    for (let d of rem) { if (d.bal <= 0.01) continue; const i = d.bal*(d.apr/100/12); d.bal += i; d.intPaid += i; totalInt += i; }
+    for (let d of rem) { if (d.bal <= 0.01) continue; const pay = Math.min(d.minPay, d.bal); d.bal -= pay; pool -= pay; if (d.bal <= 0.01) { d.bal=0; d.paidMonth = d.paidMonth||month; } }
+    for (let d of rem) { if (pool <= 0.01 || d.bal <= 0.01) continue; const ex = Math.min(pool, d.bal); d.bal -= ex; pool -= ex; if (d.bal <= 0.01) { d.bal=0; d.paidMonth = d.paidMonth||month; } }
+    timeline.push({ month, remaining: Math.round(rem.reduce((s,d) => s + Math.max(0, d.bal), 0)) });
+  }
+  return { months:month, totalInterest:Math.round(totalInt), timeline, order:rem.map(d => ({ name:d.creditor, month:d.paidMonth, interest:Math.round(d.intPaid), origBalance:d.balance })) };
+}
+
+// ═══════════════════════════════════════
+// VOICE
+// ═══════════════════════════════════════
+let recognition = null;
+
+function startVoice(target) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { alert("Voice is not supported in this browser.\n\nPlease open this page in Chrome — it works on Samsung phones with Chrome."); return; }
+  recognition = new SR();
+  recognition.continuous = false; recognition.interimResults = true; recognition.lang = "en-US";
+  recognition.onresult = e => {
+    const t = Array.from(e.results).map(r => r[0].transcript).join("");
+    const el = $("voice-transcript"); if (el) el.textContent = t;
+    if (e.results[0].isFinal) { applyVoice(t, target); stopVoice(); }
+  };
+  recognition.onerror = () => stopVoice();
+  recognition.onend = () => stopVoice();
+  recognition.start();
+  const btn = $("voice-btn"); if (btn) { btn.classList.add("active"); btn.innerHTML = "🔴 Listening..."; }
+  const tr = $("voice-transcript-wrap"); if (tr) tr.style.display = "block";
+}
+
+function stopVoice() {
+  if (recognition) { recognition.stop(); recognition = null; }
+  const btn = $("voice-btn"); if (btn) { btn.classList.remove("active"); btn.innerHTML = "🎙 Speak it"; }
+}
+
+function applyVoice(text, target) {
+  const t = text.toLowerCase();
+  const nums = t.match(/[\d,]+\.?\d*/g)?.map(n => parseFloat(n.replace(/,/g,""))) || [];
+  if (target === "debt") {
+    const creditors = ["chase","citi","capital one","discover","amex","american express","bank of america","wells fargo","barclays","synchrony","navient","sallie mae","sofi","visa","mastercard","family","car loan","medical","personal loan"];
+    let creditor = "";
+    for (const c of creditors) { if (t.includes(c)) { creditor = c.split(" ").map(w => w[0].toUpperCase()+w.slice(1)).join(" "); break; } }
+    if (creditor) setField("m-creditor", creditor);
+    let balance=0, apr=0, minPay=0;
+    for (const n of nums) {
+      if (n > 100 && !balance) balance = n;
+      else if (n >= 1 && n <= 40 && !apr) apr = n;
+      else if (n > 0 && n <= 1000 && !minPay) minPay = n;
+    }
+    if (balance) setField("m-balance", balance);
+    if (apr) setField("m-apr", apr);
+    if (minPay) setField("m-minpay", minPay);
+  } else {
+    // For income/expense: first big number is the amount
+    if (nums.length >= 2 && nums[1] < 100 && nums[0] >= 100) {
+      // Pattern: "800 and 82" → probably meant 882
+      setField("m-amount", nums[0] + nums[1]);
+    } else if (nums.length > 0) {
+      setField("m-amount", nums[0]);
+    }
+    const nameEl = $("m-name");
+    if (nameEl && !nameEl.value) {
+      const cleaned = text.replace(/[\d,$.%]+/g,"").replace(/dollars?|per month|a month|monthly|and/gi,"").trim();
+      if (cleaned.length > 1) setField("m-name", cleaned.charAt(0).toUpperCase() + cleaned.slice(1));
+    }
+  }
+}
+
+function setField(id, val) { const el = $(id); if (el) { el.value = val; el.dispatchEvent(new Event("input")); } }
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+let currentScreen = "welcome";
+function goScreen(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  const s = $("s-"+name); if (s) s.classList.add("active");
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  const tab = $("tab-"+name); if (tab) tab.classList.add("active");
+  currentScreen = name;
+  if (name==="dashboard") renderDashboard();
+  else if (name==="income") renderIncome();
+  else if (name==="expenses") renderExpenses();
+  else if (name==="debts") renderDebts();
+  else if (name==="plan") renderPlan();
+  window.scrollTo(0,0);
+}
+function startSetup() {
+  state.setupDone = true; save();
+  document.querySelector(".tab-bar").style.display = "flex";
+  goScreen("income");
+}
+
+// ═══════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════
+let editingItem = null, editingType = null;
+
+function resetModal() {
+  const fields = ["m-name","m-amount","m-creditor","m-balance","m-apr","m-minpay"];
+  fields.forEach(id => { const el = $(id); if (el) el.value = ""; });
+  const tr = $("voice-transcript-wrap"); if (tr) tr.style.display = "none";
+  const tx = $("voice-transcript"); if (tx) tx.textContent = "";
+  document.querySelectorAll(".preset").forEach(p => p.classList.remove("selected"));
+  stopVoice();
+}
+
+function openModal(type, item) {
+  editingType = type; editingItem = item || null;
+  const m = $("modal-body");
+  const isEdit = !!editingItem;
+
+  if (type === "income" || type === "fixed" || type === "variable") {
+    const label = type==="income" ? "income source" : type==="fixed" ? "fixed expense" : "variable expense";
+    const presets = PRESETS[type] || [];
+    m.innerHTML = `
+      <h2 style="margin-bottom:4px">${isEdit ? "Edit" : "Add"} ${label}</h2>
+      ${voiceSupported
+        ? `<button id="voice-btn" class="voice-btn mic" onclick="startVoice('${type}')">🎙 Speak it</button>
+           <div class="voice-hint">${VOICE_HINTS[type]}</div>`
+        : `<div class="voice-hint" style="background:var(--amber-light);color:var(--amber)">🎙 Voice input requires <strong>Chrome</strong> browser. Open this page in Chrome to use voice.</div>`
+      }
+      <div id="voice-transcript-wrap" style="display:none" class="transcript"><span class="heard">We heard:</span><span id="voice-transcript"></span></div>
+      ${!isEdit ? `<div class="presets">${presets.map(p => `<button class="preset" data-name="${p.replace(/"/g,'&quot;')}">${p}</button>`).join("")}</div>` : ""}
+      <div class="field"><label>Name</label><div class="input-wrap"><input id="m-name" placeholder="e.g. ${presets[0]||''}" value="${isEdit?editingItem.name:''}"></div></div>
+      <div class="field"><label>Amount per month</label><div class="input-wrap"><span class="prefix">$</span><input id="m-amount" type="number" inputmode="decimal" placeholder="0" value="${isEdit?editingItem.amount:''}"></div></div>
+      <button class="btn btn-primary" onclick="saveSimple('${type}')">${isEdit ? "Save" : "Add"}</button>
+      <div class="modal-actions">
+        <button class="btn btn-secondary btn-reset" onclick="resetModal()">↺ Reset fields</button>
+        ${isEdit ? `<button class="btn btn-secondary btn-danger" onclick="deleteItem('${type}','${editingItem.id}')">Delete</button>` : ""}
+      </div>
+    `;
+  } else if (type === "debt") {
+    const debtPresets = PRESETS.debt || [];
+    m.innerHTML = `
+      <h2 style="margin-bottom:4px">${isEdit ? "Edit" : "Add"} debt</h2>
+      ${voiceSupported
+        ? `<button id="voice-btn" class="voice-btn mic" onclick="startVoice('debt')">🎙 Speak it</button>
+           <div class="voice-hint">${VOICE_HINTS.debt}</div>`
+        : `<div class="voice-hint" style="background:var(--amber-light);color:var(--amber)">🎙 Voice input requires <strong>Chrome</strong> browser. Open this page in Chrome to use voice.</div>`
+      }
+      <div id="voice-transcript-wrap" style="display:none" class="transcript"><span class="heard">We heard:</span><span id="voice-transcript"></span></div>
+      ${!isEdit ? `<div class="presets">${debtPresets.map(p => `<button class="preset" data-creditor="${p.replace(/"/g,'&quot;')}">${p}</button>`).join("")}</div>` : ""}
+      <div class="field"><label>Who do you owe?</label><div class="input-wrap"><input id="m-creditor" placeholder="e.g. Chase Visa" value="${isEdit?editingItem.creditor:''}"></div></div>
+      <div class="field"><label>Balance owed</label><div class="input-wrap"><span class="prefix">$</span><input id="m-balance" type="number" inputmode="decimal" placeholder="4,500" value="${isEdit?editingItem.balance:''}"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><label>APR</label><div class="input-wrap"><input id="m-apr" type="number" inputmode="decimal" placeholder="22" value="${isEdit?editingItem.apr:''}"><span class="suffix">%</span></div></div>
+        <div class="field"><label>Min. payment</label><div class="input-wrap"><span class="prefix">$</span><input id="m-minpay" type="number" inputmode="decimal" placeholder="45" value="${isEdit?editingItem.minPay:''}"></div></div>
+      </div>
+      <button class="btn btn-primary" onclick="saveDebt()">${isEdit ? "Save" : "Add this debt"}</button>
+      <div class="modal-actions">
+        <button class="btn btn-secondary btn-reset" onclick="resetModal()">↺ Reset fields</button>
+        ${isEdit ? `<button class="btn btn-secondary btn-danger" onclick="deleteItem('debts','${editingItem.id}')">Delete</button>` : ""}
+      </div>
+    `;
+  }
+  $("modal").classList.add("open");
+}
+
+// Event delegation for all preset buttons (avoids apostrophe/quote escaping bugs)
+document.addEventListener("click", function(e) {
+  const btn = e.target.closest(".preset");
+  if (!btn) return;
+  document.querySelectorAll(".preset").forEach(p => p.classList.remove("selected"));
+  btn.classList.add("selected");
+  // Debt presets fill creditor field, others fill name field
+  if (btn.dataset.creditor) {
+    setField("m-creditor", btn.dataset.creditor);
+  } else if (btn.dataset.name) {
+    setField("m-name", btn.dataset.name);
+  }
+});
+
+function closeModal() { $("modal").classList.remove("open"); stopVoice(); editingItem=null; editingType=null; }
+
+function saveSimple(type) {
+  const name = $("m-name")?.value?.trim();
+  const amount = parseFloat($("m-amount")?.value) || 0;
+  if (!name || amount <= 0) { alert("Please fill in name and amount."); return; }
+  const key = type==="income" ? "incomes" : type==="fixed" ? "fixedExpenses" : "variableExpenses";
+  if (editingItem) state[key] = state[key].map(x => x.id===editingItem.id ? {...x, name, amount} : x);
+  else state[key].push({ id:genId(), name, amount });
+  save(); closeModal(); goScreen(currentScreen);
+}
+
+function saveDebt() {
+  const creditor = $("m-creditor")?.value?.trim() || "Unnamed debt";
+  const balance = parseFloat($("m-balance")?.value) || 0;
+  const apr = parseFloat($("m-apr")?.value) || 0;
+  const minPay = parseFloat($("m-minpay")?.value) || 25;
+  if (balance <= 0) { alert("Please enter the balance owed."); return; }
+  if (editingItem) state.debts = state.debts.map(x => x.id===editingItem.id ? {...x, creditor, balance, apr, minPay} : x);
+  else state.debts.push({ id:genId(), creditor, balance, apr, minPay });
+  save(); closeModal(); renderDebts();
+}
+
+function deleteItem(type, id) {
+  if (!confirm("Delete this?")) return;
+  const key = type==="debts"?"debts" : type==="income"?"incomes" : type==="fixed"?"fixedExpenses":"variableExpenses";
+  state[key] = state[key].filter(x => x.id !== id);
+  save(); closeModal(); goScreen(currentScreen);
+}
+
+// ═══════════════════════════════════════
+// RENDER: DASHBOARD
+// ═══════════════════════════════════════
+function renderDashboard() {
+  const ti = sumArr(state.incomes), tf = sumArr(state.fixedExpenses), tv = sumArr(state.variableExpenses);
+  const te = tf+tv, td = state.debts.reduce((s,d) => s+d.balance, 0), avail = ti-te;
+
+  $("dash-income").textContent = fmt(ti);
+  $("dash-expenses").textContent = fmt(te);
+  $("dash-total-debt").textContent = fmt(td);
+
+  // Smart available display
+  const hasData = ti > 0 || te > 0;
+  if (!hasData) {
+    $("dash-available").textContent = "—";
+    $("dash-available").style.color = "var(--text3)";
+    $("dash-available-sub").textContent = "add income first";
+  } else if (avail > 0) {
+    $("dash-available").textContent = fmt(avail);
+    $("dash-available").style.color = "var(--green)";
+    $("dash-available-sub").textContent = "/month for debt";
+  } else {
+    $("dash-available").textContent = fmt(avail);
+    $("dash-available").style.color = "var(--red)";
+    $("dash-available-sub").textContent = "shortfall!";
+  }
+
+  const items = [state.incomes.length, state.fixedExpenses.length+state.variableExpenses.length, state.debts.length];
+  if (items.every(x => x > 0)) {
+    $("dash-greeting").textContent = `${state.debts.length} debt${state.debts.length>1?"s":""} · ${fmt(ti)} in · ${fmt(te)} out`;
+  } else {
+    const missing = [];
+    if (!items[0]) missing.push("income"); if (!items[1]) missing.push("expenses"); if (!items[2]) missing.push("debts");
+    $("dash-greeting").textContent = `Add your ${missing.join(" and ")} to see the full picture`;
+  }
+
+  // Expense bar
+  if (ti > 0) {
+    const pF=(tf/ti*100).toFixed(0), pV=(tv/ti*100).toFixed(0), pD=Math.max(0,(avail/ti*100)).toFixed(0);
+    $("dash-expense-bars").innerHTML = `
+      <div style="display:flex;height:32px;border-radius:8px;overflow:hidden;background:#e2e8f0">
+        <div style="width:${pF}%;background:#6366f1;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:600;min-width:${pF>5?'0':'30px'}">${pF}%</div>
+        <div style="width:${pV}%;background:#f59e0b;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:600;min-width:${pV>5?'0':'30px'}">${pV}%</div>
+        <div style="width:${pD}%;background:var(--green);display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:600;min-width:${pD>5?'0':'30px'}">${pD}%</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:13px;color:var(--text2)">
+        <span>Fixed: ${fmt(tf)}</span><span>Variable: ${fmt(tv)}</span><span>Debt: ${fmt(Math.max(0,avail))}</span>
+      </div>`;
+    $("dash-expense-card").style.display = "block";
+  } else { $("dash-expense-card").style.display = "none"; }
+
+  // What-if
+  if (tv > 0 && state.debts.length > 0 && avail > 0) { $("dash-whatif").style.display = "block"; updateWhatIf(); }
+  else { $("dash-whatif").style.display = "none"; }
+
+  // Debt-free card
+  if (state.debts.length > 0 && avail > 0) {
+    const a = calcPayoff(state.debts, avail, "avalanche"), s = calcPayoff(state.debts, avail, "snowball");
+    if (a && !a.tooLow) {
+      const w = a.totalInterest <= s.totalInterest ? a : s;
+      $("dash-debtfree").style.display = "block";
+      $("dash-debtfree-date").textContent = "Debt-free by " + debtFreeDate(w.months);
+      $("dash-debtfree-sub").textContent = `${monthsToText(w.months)} · ${fmt(w.totalInterest)} in interest`;
+      $("dash-plan-btn").style.display = "flex";
+    } else { $("dash-debtfree").style.display = "none"; $("dash-plan-btn").style.display = "none"; }
+  } else { $("dash-debtfree").style.display = "none"; $("dash-plan-btn").style.display = state.debts.length>0?"flex":"none"; }
+}
+
+function updateWhatIf() {
+  const pct = parseInt($("whatif-slider").value);
+  state.whatIfCut = pct;
+  $("whatif-label").textContent = pct === 0 ? "No cut" : `−${pct}% cut`;
+  const ti=sumArr(state.incomes), tf=sumArr(state.fixedExpenses), tv=sumArr(state.variableExpenses);
+  const cutVar = tv*(1-pct/100), newAvail = ti-tf-cutVar, origAvail = ti-tf-tv;
+  if (pct > 0 && state.debts.length > 0 && newAvail > 0) {
+    const orig = calcPayoff(state.debts, origAvail, "avalanche"), nw = calcPayoff(state.debts, newAvail, "avalanche");
+    if (orig && nw && !orig.tooLow && !nw.tooLow) {
+      const sm = orig.months-nw.months, si = orig.totalInterest-nw.totalInterest;
+      $("whatif-result").style.display = "block";
+      $("whatif-result").innerHTML = `<div class="card card-accent" style="margin:0"><div style="font-size:14px;color:var(--green-dark)">
+        Cutting ${fmt(Math.round(tv*pct/100))}/mo in variable spending → <strong>debt-free ${sm>0 ? sm+" month"+(sm!==1?"s":"")+" sooner" : "at the same time"}</strong>
+        ${si>0 ? ` and saves <strong>${fmt(si)}</strong> in interest` : ""}</div></div>`;
+      return;
+    }
+  }
+  $("whatif-result").style.display = "none";
+}
+
+// ═══════════════════════════════════════
+// RENDER: INCOME
+// ═══════════════════════════════════════
+function renderIncome() {
+  const el = $("income-list");
+  if (!state.incomes.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">💰</div><div class="empty-text">No income added yet</div></div>'; return; }
+  el.innerHTML = '<div class="card">'+state.incomes.map(i => `
+    <div class="list-item">
+      <div class="list-item-content"><div class="list-item-title">${i.name}</div></div>
+      <div class="list-item-value" style="color:var(--green)">${fmt(i.amount)}</div>
+      <div class="list-item-actions"><button onclick='openModal("income",${JSON.stringify(i).replace(/'/g,"&#39;")})'>✎</button></div>
+    </div>`).join("")+`
+    <div class="list-item" style="border-bottom:none">
+      <div class="list-item-content"><div class="list-item-title" style="color:var(--text2)">Total monthly income</div></div>
+      <div class="list-item-value" style="font-size:20px;color:var(--green)">${fmt(sumArr(state.incomes))}</div>
+    </div></div>`;
+}
+
+// ═══════════════════════════════════════
+// RENDER: EXPENSES
+// ═══════════════════════════════════════
+function renderExpenses() {
+  $("fixed-total").textContent = fmt(sumArr(state.fixedExpenses));
+  $("var-total").textContent = fmt(sumArr(state.variableExpenses));
+  const renderList = (arr, type) => {
+    if (!arr.length) return '<div class="empty" style="padding:16px"><div class="empty-text" style="font-size:13px;color:var(--text3)">None added yet</div></div>';
+    return '<div class="card">'+arr.map(i => `
+      <div class="list-item">
+        <div class="list-item-content"><div class="list-item-title">${i.name}</div></div>
+        <div class="list-item-value">${fmt(i.amount)}</div>
+        <div class="list-item-actions"><button onclick='openModal("${type}",${JSON.stringify(i).replace(/'/g,"&#39;")})'>✎</button></div>
+      </div>`).join("")+"</div>";
+  };
+  $("fixed-list").innerHTML = renderList(state.fixedExpenses, "fixed");
+  $("var-list").innerHTML = renderList(state.variableExpenses, "variable");
+}
+
+// ═══════════════════════════════════════
+// RENDER: DEBTS
+// ═══════════════════════════════════════
+function renderDebts() {
+  const el = $("debt-list");
+  const td = state.debts.reduce((s,d)=>s+d.balance,0), tm = state.debts.reduce((s,d)=>s+d.minPay,0);
+  const avgApr = state.debts.length ? state.debts.reduce((s,d)=>s+d.apr,0)/state.debts.length : 0;
+  $("debts-subtitle").textContent = state.debts.length ? `${state.debts.length} debt${state.debts.length>1?"s":""} totaling ${fmt(td)}` : "Everything you want to pay off";
+  if (!state.debts.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No debts added yet</div></div>'; $("debt-summary").innerHTML=""; return; }
+  el.innerHTML = state.debts.map(d => `
+    <div class="card" style="cursor:pointer" onclick='openModal("debt",${JSON.stringify(d).replace(/'/g,"&#39;")})'>
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <div><div style="font-weight:600;font-size:16px">${d.creditor}</div>
+          <div style="font-size:22px;font-weight:700;margin-top:2px">${fmtD(d.balance)}</div>
+          <div style="font-size:13px;color:var(--text2);margin-top:2px">${d.apr}% APR · ${fmt(d.minPay)} min/mo</div>
+        </div><span style="color:var(--text3);font-size:20px">✎</span>
+      </div>
+    </div>`).join("");
+  $("debt-summary").innerHTML = `<div class="card" style="background:var(--surface2)">
+    <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span style="color:var(--text2)">Total owed</span><span style="font-weight:700">${fmt(td)}</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span style="color:var(--text2)">Total minimums</span><span style="font-weight:600">${fmt(tm)}/mo</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:14px"><span style="color:var(--text2)">Avg. interest rate</span><span style="font-weight:600">${avgApr.toFixed(1)}%</span></div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+// RENDER: PLAN
+// ═══════════════════════════════════════
+function setStrategy(s) {
+  state.chosenStrategy = s; save();
+  renderPlan();
+}
+
+function updatePaySlider() {
+  const payAmt = parseInt($("pay-slider").value);
+  const ti=sumArr(state.incomes), tf=sumArr(state.fixedExpenses), tv=sumArr(state.variableExpenses);
+  const origAvail = ti-tf-tv;
+  const activeMethod = (state.chosenStrategy === "best")
+    ? (calcPayoff(state.debts, origAvail, "avalanche")?.totalInterest <= calcPayoff(state.debts, origAvail, "snowball")?.totalInterest ? "avalanche" : "snowball")
+    : state.chosenStrategy;
+
+  $("pay-slider-amount").textContent = fmt(payAmt) + "/mo";
+
+  const origResult = calcPayoff(state.debts, origAvail, activeMethod);
+  const newResult = calcPayoff(state.debts, payAmt, activeMethod);
+  const el = $("pay-slider-result");
+
+  if (!newResult || newResult.tooLow) {
+    el.innerHTML = `<div class="card card-red" style="margin:0"><div style="font-size:14px;color:var(--red)">Not enough to cover minimum payments.</div></div>`;
+    return;
+  }
+  if (!origResult) return;
+
+  const diffMo = origResult.months - newResult.months;
+  const diffInt = origResult.totalInterest - newResult.totalInterest;
+  const diffPay = payAmt - origAvail;
+
+  if (Math.abs(diffMo) < 1 && Math.abs(diffInt) < 10) {
+    el.innerHTML = `<div style="text-align:center;padding:8px;font-size:14px;color:var(--blue)">← Your current plan →</div>`;
+  } else if (diffMo > 0) {
+    el.innerHTML = `<div class="card card-accent" style="margin:0"><div style="font-size:14px;color:var(--green-dark)">
+      Paying <strong>${fmt(Math.abs(diffPay))}/mo ${diffPay>0?"more":"less"}</strong> → debt-free <strong>${Math.abs(diffMo)} month${Math.abs(diffMo)!==1?"s":""} sooner</strong> (${debtFreeDate(newResult.months)})
+      ${Math.abs(diffInt)>10 ? `<br>Saves <strong>${fmt(Math.abs(diffInt))}</strong> in interest` : ""}
+    </div></div>`;
+  } else {
+    el.innerHTML = `<div class="card card-warn" style="margin:0"><div style="font-size:14px;color:#92400e">
+      Paying <strong>${fmt(Math.abs(diffPay))}/mo less</strong> → debt-free <strong>${Math.abs(diffMo)} month${Math.abs(diffMo)!==1?"s":""} later</strong> (${debtFreeDate(newResult.months)})
+      ${Math.abs(diffInt)>10 ? `<br>Costs <strong>${fmt(Math.abs(diffInt))}</strong> more in interest` : ""}
+    </div></div>`;
+  }
+}
+
+function renderPlan() {
+  const ti=sumArr(state.incomes), tf=sumArr(state.fixedExpenses), tv=sumArr(state.variableExpenses);
+  const avail = ti-tf-tv, el = $("plan-content");
+
+  if (!state.debts.length) { el.innerHTML = '<div class="card"><p style="color:var(--text2)">Add your debts first.</p><button class="btn btn-primary" style="margin-top:12px" onclick="goScreen(\'debts\')">Add debts</button></div>'; $("plan-subtitle").textContent=""; return; }
+  if (avail <= 0) { el.innerHTML = '<div class="card card-red"><p style="color:var(--red)"><strong>Expenses exceed income.</strong> Reduce expenses or increase income first.</p><button class="btn btn-secondary" style="margin-top:12px" onclick="goScreen(\'expenses\')">Review expenses</button></div>'; $("plan-subtitle").textContent=""; return; }
+
+  const snow = calcPayoff(state.debts, avail, "snowball");
+  const aval = calcPayoff(state.debts, avail, "avalanche");
+
+  if (!snow || !aval || snow.tooLow || aval.tooLow) {
+    const tm = state.debts.reduce((s,d)=>s+d.minPay,0);
+    el.innerHTML = `<div class="card card-red"><p style="color:var(--red)"><strong>Available (${fmt(avail)}/mo) doesn't cover minimums (${fmt(tm)}/mo).</strong></p><p style="color:var(--red);margin-top:8px">Need ${fmt(tm-avail)} more per month.</p><button class="btn btn-secondary" style="margin-top:12px" onclick="goScreen('expenses')">Cut expenses</button></div>`;
+    $("plan-subtitle").textContent=""; return;
+  }
+
+  const bestMethod = aval.totalInterest <= snow.totalInterest ? "avalanche" : "snowball";
+  const savedInt = Math.abs(snow.totalInterest - aval.totalInterest);
+  const savedMo = Math.abs(snow.months - aval.months);
+
+  // Determine which strategy to show in detail
+  let activeMethod = state.chosenStrategy;
+  if (activeMethod === "best") activeMethod = bestMethod;
+  const active = activeMethod === "avalanche" ? aval : snow;
+
+  $("plan-subtitle").textContent = `${fmt(avail)}/mo available for debt payments`;
+
+  // Recommendation text
+  let recText = "";
+  if (savedInt < 50) recText = `Both methods are nearly identical — only <strong>${fmt(savedInt)}</strong> difference. This is normal with low balances or similar APRs. The gap grows with larger debts at different interest rates.`;
+  else if (bestMethod === "avalanche") recText = `<strong>Avalanche</strong> saves <strong>${fmt(savedInt)}</strong> in interest${savedMo>0 ? ` and finishes <strong>${savedMo} month${savedMo!==1?"s":""} sooner</strong>` : ""}. Mathematically optimal.`;
+  else recText = `<strong>Snowball</strong> builds momentum with quick wins. Costs <strong>${fmt(savedInt)}</strong> more than avalanche, but people stick with it.`;
+
+  // Milestone data: only show unique milestones (skip if all debts already done at earlier milestone)
+  const rawMilestones = [3,6,12,18].map(m => {
+    const paid = active.order.filter(d => d.month && d.month <= m);
+    const totalRemPt = active.timeline.find(t => t.month === m);
+    const totalRem = totalRemPt ? totalRemPt.remaining : (m >= active.months ? 0 : null);
+    return { months: m, paidOff: paid, totalRemaining: totalRem };
+  });
+  // Filter: skip milestones after everything is paid, keep only the first "Done" + progress ones
+  let doneShown = false;
+  const milestones = rawMilestones.filter(m => {
+    if (m.months > active.months + 6) return false;
+    if (doneShown) return false;
+    if (m.totalRemaining === 0) { doneShown = true; return true; }
+    return true;
+  });
+
+  // Payment slider: extra amount range
+  const totalMin = state.debts.reduce((s,d)=>s+d.minPay,0);
+  const maxExtra = Math.min(avail * 2, avail + 2000); // up to double or +2000
+  const sliderPayMin = totalMin;
+  const sliderPayMax = Math.round(maxExtra);
+  const sliderPayDefault = Math.round(avail);
+
+  // Timeline SVG
+  const maxMonth = Math.max(snow.months, aval.months);
+  const mkPts = (data) => {
+    const step = Math.max(1, Math.floor(data.length / 30));
+    const pts = data.filter((_,i) => i%step===0 || i===data.length-1);
+    const maxVal = data[0]?.remaining || 1;
+    return pts.map(p => `${(p.month/maxMonth*440).toFixed(1)},${(140-p.remaining/maxVal*130).toFixed(1)}`).join(" ");
+  };
+
+  el.innerHTML = `
+    <!-- Recommendation -->
+    <div class="card card-accent">
+      <div style="display:flex;gap:12px;align-items:start">
+        <div style="width:40px;height:40px;background:var(--green);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <div><div style="font-weight:700;font-size:17px;color:var(--green-dark);margin-bottom:4px">Best strategy: ${bestMethod}</div>
+          <div style="font-size:14px;color:var(--green-dark);line-height:1.5">${recText}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strategy chooser -->
+    <div style="font-size:14px;color:var(--text2);margin-bottom:8px;font-weight:500">Choose your strategy:</div>
+    <div class="strat-toggle">
+      <button class="strat-btn ${activeMethod==="snowball"?"active":""}" onclick="setStrategy('snowball')">❄️ Snowball</button>
+      <button class="strat-btn ${activeMethod==="avalanche"?"active":""}" onclick="setStrategy('avalanche')">🏔️ Avalanche</button>
+    </div>
+
+    <!-- Side by side comparison -->
+    <div class="compare">
+      <div class="card ${activeMethod==="snowball"?"winner":""}" onclick="setStrategy('snowball')">
+        <div class="method">❄️ Snowball</div><div style="font-size:12px;color:var(--text3)">Smallest first</div>
+        <div class="time">${monthsToText(snow.months)}</div>
+        <div class="interest">${fmt(snow.totalInterest)} interest</div>
+        <div class="free-date">${debtFreeDate(snow.months)}</div>
+      </div>
+      <div class="card ${activeMethod==="avalanche"?"winner":""}" onclick="setStrategy('avalanche')">
+        <div class="method">🏔️ Avalanche</div><div style="font-size:12px;color:var(--text3)">Highest APR first</div>
+        <div class="time">${monthsToText(aval.months)}</div>
+        <div class="interest">${fmt(aval.totalInterest)} interest</div>
+        <div class="free-date">${debtFreeDate(aval.months)}</div>
+      </div>
+    </div>
+
+    <!-- PAYMENT SLIDER -->
+    <div class="card" style="border:2px solid var(--blue);background:var(--blue-light)">
+      <h2 style="font-size:16px;margin-bottom:4px;color:var(--blue)">💰 What if you paid more (or less)?</h2>
+      <p style="font-size:13px;color:#6b8abf;margin-bottom:10px">Drag to see how your monthly payment changes the timeline</p>
+      <div class="slider-wrap">
+        <input type="range" min="${sliderPayMin}" max="${sliderPayMax}" value="${sliderPayDefault}" id="pay-slider" oninput="updatePaySlider()">
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:#6b8abf">
+        <span>Min: ${fmt(sliderPayMin)}</span>
+        <span style="font-weight:700;font-size:16px;color:var(--blue)" id="pay-slider-amount">${fmt(sliderPayDefault)}/mo</span>
+        <span>${fmt(sliderPayMax)}</span>
+      </div>
+      <div id="pay-slider-result" style="margin-top:12px">
+        <div style="text-align:center;padding:8px;font-size:14px;color:var(--blue)">← Your current plan →</div>
+      </div>
+    </div>
+
+    <!-- Milestones -->
+    <div class="card">
+      <h2 style="font-size:16px;margin-bottom:12px">📅 Milestones (${activeMethod})</h2>
+      ${milestones.map(m => {
+        const colors = {3:"#2563eb", 6:"#7c3aed", 12:"#059669", 18:"#d97706"};
+        const paidNames = m.paidOff.map(d => d.name).join(", ");
+        const totalDebt = state.debts.reduce((s,d)=>s+d.balance,0);
+        const pctPaid = m.totalRemaining !== null ? Math.round((1-m.totalRemaining/totalDebt)*100) : null;
+        return `<div class="milestone">
+          <div class="milestone-badge" style="background:${colors[m.months]||'#6b7280'}">${m.months}mo</div>
+          <div class="milestone-content">
+            ${m.paidOff.length > 0
+              ? `<div class="milestone-title">✅ ${m.paidOff.length} debt${m.paidOff.length>1?"s":""} paid off</div>
+                 <div class="milestone-sub">${paidNames}</div>`
+              : `<div class="milestone-title">Making progress</div>
+                 <div class="milestone-sub">Still chipping away</div>`
+            }
+            ${pctPaid !== null ? `<div style="margin-top:6px"><div class="progress"><div class="progress-fill" style="width:${pctPaid}%;background:${colors[m.months]||'#6b7280'}"></div></div><div style="font-size:12px;color:var(--text3)">${pctPaid}% paid off · ${m.totalRemaining > 0 ? fmt(m.totalRemaining)+" remaining" : "All clear! 🎉"}</div></div>` : ""}
+          </div>
+        </div>`;
+      }).join("")}
+    </div>
+
+    <!-- Timeline chart -->
+    <div class="card">
+      <h2 style="font-size:15px;margin-bottom:12px">Payoff timeline</h2>
+      <svg viewBox="0 0 460 160" style="width:100%;height:auto">
+        <line x1="10" y1="140" x2="450" y2="140" stroke="#e2e8f0" stroke-width="1"/>
+        <line x1="10" y1="10" x2="10" y2="140" stroke="#e2e8f0" stroke-width="1"/>
+        <text x="10" y="155" font-size="10" fill="#9ca3af">0</text>
+        <text x="440" y="155" font-size="10" fill="#9ca3af" text-anchor="end">${maxMonth}mo</text>
+        <text x="14" y="18" font-size="10" fill="#9ca3af">${fmt(state.debts.reduce((s,d)=>s+d.balance,0))}</text>
+        <polyline points="${mkPts(snow.timeline)}" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" transform="translate(10,0)"/>
+        <polyline points="${mkPts(aval.timeline)}" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="6,3" transform="translate(10,0)"/>
+      </svg>
+      <div style="display:flex;gap:16px;justify-content:center;font-size:12px;margin-top:8px">
+        <span><span style="display:inline-block;width:16px;height:3px;background:#60a5fa;vertical-align:middle;margin-right:4px;border-radius:2px"></span>Snowball</span>
+        <span><span style="display:inline-block;width:16px;height:3px;background:#34d399;vertical-align:middle;margin-right:4px;border-radius:2px"></span>Avalanche</span>
+      </div>
+    </div>
+
+    <!-- Payoff order -->
+    <div class="card">
+      <h2 style="font-size:15px;margin-bottom:12px">Payoff order (${activeMethod})</h2>
+      ${active.order.map((d,i) => `
+        <div class="timeline-item">
+          <div class="timeline-num">${i+1}</div>
+          <div style="flex:1"><div style="font-weight:600;font-size:14px">${d.name}</div><div style="font-size:13px;color:var(--text2)">${fmt(d.interest)} in interest · was ${fmt(d.origBalance)}</div></div>
+          <div style="text-align:right"><div style="font-weight:600;font-size:14px">${d.month?"Month "+d.month:"—"}</div><div style="font-size:12px;color:var(--text3)">${d.month?debtFreeDate(d.month):""}</div></div>
+        </div>`).join("")}
+    </div>
+
+    <!-- Tips -->
+    <div class="card" style="background:var(--blue-light);border-color:#93c5fd">
+      <h2 style="font-size:15px;margin-bottom:8px;color:var(--blue)">Speed it up</h2>
+      <div style="font-size:14px;color:#1e40af;line-height:1.7">
+        ${state.debts.some(d => d.apr>20) ? "→ You have debts above 20% APR — a balance transfer card could save hundreds<br>" : ""}
+        ${tv > 500 ? `→ Cutting 15% of variable spending (${fmt(Math.round(tv*0.15))}) accelerates your payoff<br>` : ""}
+        → Any windfall (tax refund, bonus) applied to debt has an outsized effect<br>
+        → Even ${fmt(50)} extra per month makes a real difference
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+load();
+if (state.setupDone) { document.querySelector(".tab-bar").style.display = "flex"; goScreen("dashboard"); }
+else { document.querySelector(".tab-bar").style.display = "none"; goScreen("welcome"); }
+</script>
+</body>
+</html>

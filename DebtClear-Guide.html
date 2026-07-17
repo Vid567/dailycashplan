@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DebtClear — Quick Start Guide</title>
+<style>
+:root { --green: #059669; --green-light: #d1fae5; --green-dark: #047857; --blue: #2563eb; --blue-light: #dbeafe; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro", "Segoe UI", system-ui, sans-serif; background: #f8faf9; color: #111827; line-height: 1.6; }
+.page { max-width: 600px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.hero { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #059669, #047857); border-radius: 20px; margin-bottom: 32px; color: white; }
+.hero h1 { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+.hero p { font-size: 17px; opacity: 0.9; margin-top: 8px; }
+.hero .tagline { font-size: 14px; opacity: 0.7; margin-top: 12px; }
+
+/* Steps */
+.step { margin-bottom: 32px; }
+.step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.step-num { width: 36px; height: 36px; background: var(--green); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; flex-shrink: 0; }
+.step-title { font-size: 20px; font-weight: 700; }
+.step-desc { font-size: 15px; color: #6b7280; margin-bottom: 16px; padding-left: 48px; }
+
+/* Listen button */
+.listen-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 20px; background: var(--blue-light); color: var(--blue); font-size: 13px; font-weight: 600; border: none; cursor: pointer; margin-bottom: 12px; margin-left: 48px; font-family: inherit; }
+.listen-btn:active { transform: scale(0.96); }
+.listen-btn.speaking { background: #fee2e2; color: #dc2626; }
+
+/* Phone mockup */
+.phone { background: white; border: 2px solid #e5e7eb; border-radius: 24px; padding: 16px; margin: 0 auto 16px; max-width: 320px; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+.phone-bar { height: 6px; width: 60px; background: #d1d5db; border-radius: 3px; margin: 0 auto 12px; }
+.phone-screen { font-size: 13px; }
+.phone-screen h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.phone-screen .label { font-size: 10px; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.3px; }
+.phone-screen .value { font-size: 18px; font-weight: 700; }
+
+/* Mock UI elements */
+.mock-stat { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
+.mock-stat > div { background: #f8faf9; border: 1px solid #e5e7eb; border-radius: 10px; padding: 8px; }
+.mock-btn { background: var(--green); color: white; padding: 10px; border-radius: 10px; text-align: center; font-weight: 600; font-size: 14px; margin-top: 8px; }
+.mock-btn.secondary { background: #f1f5f3; color: #111827; }
+.mock-input { border: 1.5px solid #e5e7eb; border-radius: 8px; padding: 8px 10px; font-size: 13px; color: #9ca3af; margin: 4px 0; display: flex; align-items: center; gap: 6px; }
+.mock-voice { background: var(--blue-light); color: var(--blue); border-radius: 8px; padding: 8px; text-align: center; font-weight: 500; font-size: 12px; margin: 6px 0; }
+.mock-preset { display: inline-block; padding: 6px 12px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 11px; margin: 2px; font-weight: 500; }
+.mock-preset.selected { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+.mock-card { background: var(--green-light); border: 1.5px solid var(--green); border-radius: 10px; padding: 10px; margin: 8px 0; }
+.mock-slider { width: 100%; height: 4px; background: #e2e8f0; border-radius: 2px; margin: 8px 0; position: relative; }
+.mock-slider-dot { width: 16px; height: 16px; background: var(--green); border-radius: 50%; position: absolute; top: -6px; border: 2px solid white; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+.mock-tab { display: flex; border-top: 1px solid #e5e7eb; margin-top: 12px; padding-top: 8px; }
+.mock-tab > div { flex: 1; text-align: center; font-size: 9px; color: #9ca3af; font-weight: 500; }
+.mock-tab > div.active { color: var(--green); }
+
+/* Tip boxes */
+.tip { background: var(--blue-light); border-radius: 12px; padding: 14px 16px; margin: 16px 0; font-size: 14px; color: #1e40af; }
+.tip strong { color: var(--blue); }
+
+/* Comparison table */
+.compare-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+.compare-table th { text-align: left; padding: 10px 12px; background: #f1f5f3; font-weight: 600; }
+.compare-table td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
+.compare-table .check { color: var(--green); font-weight: 700; }
+.compare-table .cross { color: #d1d5db; }
+
+/* Marketing section */
+.market-section { background: white; border: 1px solid #e5e7eb; border-radius: 16px; padding: 20px; margin: 24px 0; }
+.market-section h2 { font-size: 20px; margin-bottom: 12px; }
+.benefit { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f3; }
+.benefit:last-child { border-bottom: none; }
+.benefit-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.benefit-text h4 { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+.benefit-text p { font-size: 13px; color: #6b7280; }
+
+/* Footer */
+.footer { text-align: center; padding: 32px 20px; color: #9ca3af; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hero">
+  <h1>DebtClear</h1>
+  <p>See where you stand. Get a plan.</p>
+  <div class="tagline">Quick Start Guide · 5 minute read</div>
+</div>
+
+<!-- ═══ STEP 1 ═══ -->
+<div class="step">
+  <div class="step-header"><div class="step-num">1</div><div class="step-title">Open & get started</div></div>
+  <p class="step-desc">Open DebtClear in <strong>Chrome</strong> on your phone. Tap <strong>"Get started"</strong> — that's it. No account, no sign-up, no email.</p>
+  <button class="listen-btn" onclick="speak(this, 'Open DebtClear in Chrome on your phone. Tap Get started. There is no account needed, no sign-up, no email. Your data stays on your device.')">🔊 Listen to this step</button>
+  <div class="phone">
+    <div class="phone-bar"></div>
+    <div class="phone-screen" style="text-align:center;padding:20px 0">
+      <div style="width:40px;height:40px;background:var(--green);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:white;font-size:20px">✓</div>
+      <h3 style="font-size:22px">DebtClear</h3>
+      <p style="color:#6b7280;font-size:12px;margin:6px 0 16px">See where you stand. Get a plan.</p>
+      <div class="mock-btn">Get started</div>
+      <p style="font-size:10px;color:#9ca3af;margin-top:10px">Your data stays on this device only.</p>
+    </div>
+  </div>
+  <div class="tip">💡 <strong>Tip:</strong> On Android, tap ⋮ → "Add to Home screen" to make it feel like a real app.</div>
+</div>
+
+<!-- ═══ STEP 2 ═══ -->
+<div class="step">
+  <div class="step-header"><div class="step-num">2</div><div class="step-title">Add your income</div></div>
+  <p class="step-desc">Tap <strong>"+ Add income source"</strong>. You can add multiple sources — your main job, a side gig, your partner's income. Use the preset buttons or type your own.</p>
+  <button class="listen-btn" onclick="speak(this, 'Add your income sources. Tap the plus Add income source button. You can add multiple sources like your main job, a side gig, or your partners income. Tap a preset button like Primary job to fill in the name. Then type the monthly amount. You can also tap Speak it to say it out loud, for example: Primary job thirty-five hundred dollars. Tap Add when done, then add more sources if you have them.')">🔊 Listen to this step</button>
+  <div class="phone">
+    <div class="phone-bar"></div>
+    <div class="phone-screen">
+      <h3>Add income source</h3>
+      <div class="mock-voice">🎙 Speak it</div>
+      <div style="font-size:10px;color:#9ca3af;text-align:center;margin-bottom:6px">Say: <em>"Primary job thirty-five hundred dollars"</em></div>
+      <div style="margin:6px 0 8px">
+        <span class="mock-preset selected">Primary job</span>
+        <span class="mock-preset">Side gig</span>
+        <span class="mock-preset">Partner income</span>
+        <span class="mock-preset">Freelance</span>
+      </div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:3px">Name</div>
+      <div class="mock-input">Primary job</div>
+      <div style="font-size:11px;color:#6b7280;margin:6px 0 3px">Amount per month</div>
+      <div class="mock-input"><span style="color:#9ca3af">$</span> <span style="color:#111">3,500</span></div>
+      <div class="mock-btn">Add</div>
+      <div class="mock-btn secondary" style="margin-top:6px;font-size:12px">↺ Reset fields</div>
+    </div>
+  </div>
+  <div class="tip">🎙 <strong>Voice tip:</strong> Speak naturally: <em>"Side gig six hundred dollars."</em> The app picks out the name and amount. Always check the fields before tapping Add.</div>
+</div>
+
+<!-- ═══ STEP 3 ═══ -->
+<div class="step">
+  <div class="step-header"><div class="step-num">3</div><div class="step-title">Add your expenses</div></div>
+  <p class="step-desc">Tap <strong>Expenses</strong> in the bottom bar. Add your <strong>fixed expenses</strong> first (rent, insurance — things that don't change). Then <strong>variable expenses</strong> (dining out, entertainment — things you could cut). This split is the key insight.</p>
+  <button class="listen-btn" onclick="speak(this, 'Now add your expenses. Tap Expenses in the bottom navigation bar. First add your fixed expenses. These are things you cant easily change, like rent, utilities, car payment, health insurance, phone plan. Then add your variable expenses. These are things you could reduce to pay off debt faster, like dining out, entertainment, subscriptions, and clothing. This split between fixed and variable is the key insight. It shows you exactly where you have room to cut back.')">🔊 Listen to this step</button>
+  <div class="phone">
+    <div class="phone-bar"></div>
+    <div class="phone-screen">
+      <h3>Expenses</h3>
+      <p style="font-size:11px;color:#6b7280;margin-bottom:8px">Know what's fixed and what you can cut</p>
+      <div style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.3px;margin-bottom:4px">🔒 Fixed expenses <span style="float:right;color:#111;text-transform:none">$2,100</span></div>
+      <div style="background:#f8faf9;border:1px solid #e5e7eb;border-radius:8px;padding:8px;font-size:12px;margin-bottom:4px">
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e5e7eb"><span>Rent / Mortgage</span><strong>$1,200</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e5e7eb"><span>Health insurance</span><strong>$350</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Utilities</span><strong>$180</strong></div>
+      </div>
+      <div style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.3px;margin:10px 0 4px">✂️ Variable expenses <span style="float:right;color:#111;text-transform:none">$650</span></div>
+      <div style="background:#f8faf9;border:1px solid #e5e7eb;border-radius:8px;padding:8px;font-size:12px">
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #e5e7eb"><span>Groceries</span><strong>$350</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0"><span>Dining out</span><strong>$200</strong></div>
+      </div>
+      <div class="mock-tab">
+        <div>Home</div><div>Income</div><div class="active">Expenses</div><div>Debts</div><div>Plan</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STEP 4 ═══ -->
+<div class="step">
+  <div class="step-header"><div class="step-num">4</div><div class="step-title">Add your debts</div></div>
+  <p class="step-desc">Tap <strong>Debts</strong> → <strong>"+ Add a debt"</strong>. For each debt, enter who you owe, the balance, APR (interest rate), and minimum monthly payment. Use voice for speed: <em>"I owe Chase four thousand five hundred at twenty-two percent, minimum forty-five."</em></p>
+  <button class="listen-btn" onclick="speak(this, 'Now add your debts. Tap Debts in the bottom bar, then tap plus Add a debt. For each debt you need four things: who you owe, like Chase or a family member. The balance, which is how much you owe total. The A P R, which is the interest rate, usually found on your statement. And the minimum monthly payment. You can tap a preset button like Credit card or Student loan to fill the name. Or use voice. Try saying: I owe Chase four thousand five hundred dollars at twenty two percent A P R, minimum payment forty five dollars. Add each debt one at a time. The app shows your total at the bottom.')">🔊 Listen to this step</button>
+  <div class="phone">
+    <div class="phone-bar"></div>
+    <div class="phone-screen">
+      <h3>Add debt</h3>
+      <div class="mock-voice">🎙 Speak it</div>
+      <div style="font-size:10px;color:#9ca3af;text-align:center;margin-bottom:6px">Say: <em>"I owe Chase $4,500 at 22% APR, minimum $45"</em></div>
+      <div style="margin:6px 0 8px">
+        <span class="mock-preset selected">Credit card</span>
+        <span class="mock-preset">Student loan</span>
+        <span class="mock-preset">Car loan</span>
+        <span class="mock-preset">Medical bill</span>
+        <span class="mock-preset">Family / Friends</span>
+      </div>
+      <div style="font-size:11px;color:#6b7280;margin-bottom:3px">Who do you owe?</div>
+      <div class="mock-input">Chase Visa</div>
+      <div style="font-size:11px;color:#6b7280;margin:6px 0 3px">Balance owed</div>
+      <div class="mock-input"><span style="color:#9ca3af">$</span> <span style="color:#111">4,500</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div><div style="font-size:11px;color:#6b7280;margin-bottom:3px">APR</div><div class="mock-input"><span style="color:#111">22</span> <span style="color:#9ca3af">%</span></div></div>
+        <div><div style="font-size:11px;color:#6b7280;margin-bottom:3px">Min. payment</div><div class="mock-input"><span style="color:#9ca3af">$</span> <span style="color:#111">45</span></div></div>
+      </div>
+      <div class="mock-btn">Add this debt</div>
+    </div>
+  </div>
+  <div class="tip">🔍 <strong>Where to find APR:</strong> Check your latest statement, look for "Annual Percentage Rate" or "Interest Rate." If you can't find it, 22% is a safe estimate for credit cards.</div>
+</div>
+
+<!-- ═══ STEP 5 ═══ -->
+<div class="step">
+  <div class="step-header"><div class="step-num">5</div><div class="step-title">See your snapshot</div></div>
+  <p class="step-desc">Tap <strong>Home</strong>. Your dashboard shows everything at a glance: total debt, total income, expenses split into fixed vs variable, and how much is available for debt payments. Each card is tappable — tap to jump to that section.</p>
+  <button class="listen-btn" onclick="speak(this, 'Tap Home to see your snapshot. This is your financial dashboard. It shows your total debt in red, your total income, your total expenses, and the amount available for debt payments in green. Below that you will see a bar showing where your money goes, split into fixed expenses, variable expenses, and your debt budget. There is also a What If slider. Drag it to see what happens if you cut your variable spending by 10, 20, or even 50 percent. This shows you exactly how much faster you could be debt free. At the bottom is your debt-free date, the most important number in the app.')">🔊 Listen to this step</button>
+  <div class="phone">
+    <div class="phone-bar"></div>
+    <div class="phone-screen">
+      <h3>Your snapshot</h3>
+      <p style="font-size:11px;color:#6b7280;margin-bottom:8px">3 debts · $3,500 in · $2,750 out</p>
+      <div class="mock-stat">
+        <div><div class="label">Total debt</div><div class="value" style="color:#dc2626;font-size:16px">$12,500</div></div>
+        <div><div class="label">Available</div><div class="value" style="color:var(--green);font-size:16px">$750</div><div style="font-size:10px;color:#6b7280">/mo for debt</div></div>
+      </div>
+      <div style="margin:8px 0">
+        <div style="font-size:11px;font-weight:600;margin-bottom:4px">Where your money goes</div>
+        <div style="display:flex;height:20px;border-radius:6px;overflow:hidden;font-size:9px;color:white;font-weight:600">
+          <div style="width:60%;background:#6366f1;display:flex;align-items:center;justify-content:center">60%</div>
+          <div style="width:19%;background:#f59e0b;display:flex;align-items:center;justify-content:center">19%</div>
+          <div style="width:21%;background:var(--green);display:flex;align-items:center;justify-content:center">21%</div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:600;margin:10px 0 4px">What if you cut variable spending?</div>
+      <div class="mock-slider"><div class="mock-slider-dot" style="left:40%"></div></div>
+      <div class="mock-card" style="font-size:11px;color:var(--green-dark)">Cutting $130/mo → <strong>debt-free 4 months sooner</strong>, saves <strong>$340</strong> in interest</div>
+      <div class="mock-card" style="font-size:12px;font-weight:700;color:var(--green-dark)">✓ Debt-free by March 2028</div>
+      <div class="mock-tab">
+        <div class="active">Home</div><div>Income</div><div>Expenses</div><div>Debts</div><div>Plan</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STEP 6 ═══ -->
+<div class="step">
+  <div class="step-header"><div class="step-num">6</div><div class="step-title">Get your payoff plan</div></div>
+  <p class="step-desc">Tap <strong>Plan</strong> (or "View full payoff plan" on the dashboard). The app compares two proven strategies and recommends the best one for your situation. You can switch between them and use the payment slider to explore different scenarios.</p>
+  <button class="listen-btn" onclick="speak(this, 'Tap Plan to see your payoff plan. The app compares two strategies. Snowball pays off your smallest debt first to build momentum with quick wins. Avalanche pays off your highest interest rate first to save the most money. The app recommends the best one for your situation but you can choose either. Use the toggle at the top to switch. Below that is the payment slider, the most powerful tool in the app. Drag it right to see what happens if you pay more each month. Drag it left to see what happens if you pay less. It instantly shows you how many months sooner or later you will be debt free, and how much more or less interest you will pay. The milestones section shows which debts get paid off at 3 months, 6 months, 12 months, and 18 months, with progress bars for each.')">🔊 Listen to this step</button>
+  <div class="phone">
+    <div class="phone-bar"></div>
+    <div class="phone-screen">
+      <h3>Your payoff plan</h3>
+      <div class="mock-card" style="font-size:11px;color:var(--green-dark)"><strong>Best strategy: avalanche</strong><br>Saves $1,247 in interest and finishes 3 months sooner.</div>
+      <div style="display:flex;background:#f1f5f3;border-radius:8px;padding:3px;margin:8px 0">
+        <div style="flex:1;padding:6px;text-align:center;font-size:11px;color:#6b7280;font-weight:600">❄️ Snowball</div>
+        <div style="flex:1;padding:6px;text-align:center;font-size:11px;background:white;border-radius:6px;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.1)">🏔️ Avalanche</div>
+      </div>
+      <div style="background:var(--blue-light);border:1.5px solid var(--blue);border-radius:8px;padding:8px;margin:8px 0">
+        <div style="font-size:11px;font-weight:600;color:var(--blue)">💰 What if you paid more?</div>
+        <div class="mock-slider"><div class="mock-slider-dot" style="left:65%"></div></div>
+        <div style="font-size:12px;font-weight:700;text-align:center;color:var(--blue)">$950/mo</div>
+        <div style="font-size:10px;color:var(--green-dark);background:var(--green-light);border-radius:6px;padding:6px;margin-top:4px;text-align:center">+$200/mo → <strong>5 months sooner</strong>, saves $680</div>
+      </div>
+      <div style="font-size:11px;font-weight:600;margin:8px 0 4px">📅 Milestones</div>
+      <div style="display:flex;gap:6px;align-items:center;background:#f1f5f3;border-radius:8px;padding:8px;font-size:11px">
+        <div style="background:var(--blue);color:white;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;flex-shrink:0">6mo</div>
+        <div><strong>✅ 1 debt paid off</strong><div style="font-size:10px;color:#6b7280">Medical bill — 35% done</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MARKETING ═══ -->
+<div style="margin-top:48px">
+  <h2 style="font-size:24px;font-weight:800;text-align:center;margin-bottom:8px">Why DebtClear?</h2>
+  <p style="text-align:center;color:#6b7280;margin-bottom:24px">What makes it different from every other debt app</p>
+
+  <div class="market-section">
+    <div class="benefit">
+      <div class="benefit-icon" style="background:var(--blue-light)">🎙</div>
+      <div class="benefit-text"><h4>Voice-first entry</h4><p>Just say your debts. No typing, no spreadsheets, no tedious data entry. Add a debt in 10 seconds, not 2 minutes.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon" style="background:var(--green-light)">✂️</div>
+      <div class="benefit-text"><h4>See what you can cut</h4><p>Fixed vs variable expense split shows you exactly where there's room. Other apps dump everything in one bucket.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon" style="background:#fef3c7">💰</div>
+      <div class="benefit-text"><h4>Interactive "what if" sliders</h4><p>Drag to see how cutting $100 or adding $50 changes your debt-free date. Other apps just show one static plan.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon" style="background:#fee2e2">🔒</div>
+      <div class="benefit-text"><h4>100% private</h4><p>Your financial data never leaves your phone. No account, no cloud, no bank login, no selling your data to lenders.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon" style="background:#ede9fe">📅</div>
+      <div class="benefit-text"><h4>3/6/12 month milestones</h4><p>See exactly which debts get paid off and when. Progress bars make the journey feel achievable, not overwhelming.</p></div>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon" style="background:var(--blue-light)">💵</div>
+      <div class="benefit-text"><h4>Pay once, own forever</h4><p>$4.99, no subscription. People in debt shouldn't pay monthly for a calculator. Every competitor charges $3-15/month.</p></div>
+    </div>
+  </div>
+
+  <h3 style="font-size:18px;font-weight:700;margin:24px 0 12px">How DebtClear compares</h3>
+  <div style="overflow-x:auto">
+    <table class="compare-table">
+      <tr><th>Feature</th><th>DebtClear</th><th>Debt Payoff Planner</th><th>Undebt.it</th><th>YNAB</th></tr>
+      <tr><td>Voice input</td><td class="check">✓</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>Fixed vs variable split</td><td class="check">✓</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>"What if" sliders</td><td class="check">✓</td><td class="cross">✗</td><td>Limited</td><td class="cross">✗</td></tr>
+      <tr><td>Snowball + Avalanche</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td><td class="check">✓</td></tr>
+      <tr><td>Milestone timeline</td><td class="check">✓</td><td class="cross">✗</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>100% private / offline</td><td class="check">✓</td><td class="check">✓</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>No account needed</td><td class="check">✓</td><td class="check">✓</td><td class="cross">✗</td><td class="cross">✗</td></tr>
+      <tr><td>Price</td><td><strong>$4.99 once</strong></td><td>$3-12/mo</td><td>Free + $12/yr</td><td>$14.99/mo</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  <p>DebtClear · See where you stand. Get a plan.</p>
+  <p style="margin-top:4px">Questions? Feedback? We'd love to hear from you.</p>
+</div>
+
+</div>
+
+<script>
+let currentUtterance = null;
+let speakingBtn = null;
+
+function speak(btn, text) {
+  if (!window.speechSynthesis) { alert("Text-to-speech not supported. Try Chrome."); return; }
+
+  // If already speaking, stop
+  if (speakingBtn === btn) {
+    window.speechSynthesis.cancel();
+    btn.classList.remove("speaking");
+    btn.innerHTML = "🔊 Listen to this step";
+    speakingBtn = null;
+    return;
+  }
+
+  // Stop any current speech
+  if (speakingBtn) {
+    window.speechSynthesis.cancel();
+    speakingBtn.classList.remove("speaking");
+    speakingBtn.innerHTML = "🔊 Listen to this step";
+  }
+
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.9;
+  u.pitch = 1;
+  u.lang = "en-US";
+
+  btn.classList.add("speaking");
+  btn.innerHTML = "⏹ Tap to stop";
+  speakingBtn = btn;
+
+  u.onend = () => {
+    btn.classList.remove("speaking");
+    btn.innerHTML = "🔊 Listen to this step";
+    speakingBtn = null;
+  };
+
+  window.speechSynthesis.speak(u);
+}
+</script>
+</body>
+</html>
