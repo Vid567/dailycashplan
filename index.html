@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#059669">
-<title>DebtClear</title>
+<title>DailyCashPlan</title>
 <style>
 :root {
   --bg: #f8faf9; --surface: #ffffff; --surface2: #f1f5f3;
@@ -102,10 +102,7 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
 .tab.active { color: var(--green); }
 .tab svg { width: 24px; height: 24px; }
 
-/* ── Strategy toggle ── */
-.strat-toggle { display: flex; background: var(--surface2); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
-.strat-btn { flex: 1; padding: 12px 8px; border-radius: 10px; font-weight: 600; font-size: 14px; text-align: center; color: var(--text2); transition: all .15s; }
-.strat-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.1); }
+
 
 /* ── Milestone cards ── */
 .milestone { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--surface2); border-radius: 12px; margin-bottom: 8px; }
@@ -124,8 +121,46 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
 .cat-total { margin-left: auto; font-weight: 700; color: var(--text); text-transform: none; letter-spacing: 0; }
 
 /* ── Slider ── */
-.slider-wrap input[type=range] { -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px; background: #e2e8f0; outline: none; }
-.slider-wrap input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: var(--green); border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+.slider-wrap { padding: 12px 0; }
+.slider-wrap input[type=range] {
+  -webkit-appearance: none; -moz-appearance: none; appearance: none;
+  width: 100%; height: 36px; /* Full touch/click target area */
+  background: transparent; outline: none; cursor: pointer;
+  margin: 0; padding: 0; border: 0;
+}
+.slider-wrap input[type=range]::-webkit-slider-runnable-track {
+  width: 100%; height: 8px; border-radius: 4px; background: #e2e8f0; cursor: pointer;
+}
+.slider-wrap input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--green); border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  cursor: pointer; margin-top: -13px; /* Center thumb on track */
+}
+.slider-wrap input[type=range]::-moz-range-track {
+  width: 100%; height: 8px; border-radius: 4px; background: #e2e8f0; cursor: pointer; border: none;
+}
+.slider-wrap input[type=range]::-moz-range-thumb {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--green); border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2); cursor: pointer;
+  box-sizing: border-box; appearance: none;
+}
+.slider-wrap input[type=range]::-moz-range-progress {
+  background: var(--green); height: 8px; border-radius: 4px;
+}
+.slider-wrap input[type=range]::-moz-focus-outer { border: 0; }
+.slider-wrap input[type=range]::-ms-track {
+  width: 100%; height: 8px; background: transparent; border-color: transparent; color: transparent; cursor: pointer;
+}
+.slider-wrap input[type=range]::-ms-fill-lower { background: var(--green); border-radius: 4px; }
+.slider-wrap input[type=range]::-ms-fill-upper { background: #e2e8f0; border-radius: 4px; }
+.slider-wrap input[type=range]::-ms-thumb {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--green); border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2); cursor: pointer;
+}
 
 /* ── Comparison ── */
 .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
@@ -143,6 +178,16 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
 .empty { text-align: center; padding: 32px 16px; color: var(--text3); }
 .empty-icon { font-size: 40px; margin-bottom: 8px; }
 .empty-text { font-size: 15px; }
+
+/* ── Payment log ── */
+.pay-btn { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 10px; border-radius: 10px; font-weight: 600; font-size: 14px; background: var(--green-light); color: var(--green-dark); margin-top: 8px; transition: all .15s; }
+.pay-btn:active { background: var(--green); color: white; transform: scale(0.97); }
+.payment-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.payment-item:last-child { border-bottom: none; }
+.payment-method { font-size: 11px; padding: 3px 8px; border-radius: 6px; background: var(--surface2); color: var(--text2); font-weight: 500; }
+.paid-off-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 8px; background: var(--green); color: white; font-size: 12px; font-weight: 600; }
+.progress-bar-wrap { margin-top: 8px; }
+.progress-bar-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text3); margin-bottom: 4px; }
 </style>
 </head>
 <body>
@@ -154,11 +199,12 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
       <div style="width:64px;height:64px;background:var(--green);border-radius:18px;display:flex;align-items:center;justify-content:center;margin-bottom:24px">
         <svg width="32" height="32" fill="white" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
       </div>
-      <h1 style="font-size:32px">DebtClear</h1>
+      <h1 style="font-size:32px">DailyCashPlan</h1>
       <p style="color:var(--text2);font-size:17px;margin:8px 0 4px">See where you stand. Get a plan.</p>
       <p style="color:var(--text3);font-size:14px;margin-bottom:32px;max-width:300px">Add your income, expenses, and debts. Get a realistic payoff plan in under 2 minutes.</p>
       <button class="btn btn-primary" style="max-width:300px" onclick="startSetup()">Get started</button>
-      <p style="font-size:12px;color:var(--text3);margin-top:16px">Your data stays on this device only.</p>
+      <div id="welcome-voice-setup" style="margin-top:20px;max-width:320px;width:100%"></div>
+      <p style="font-size:12px;color:var(--text3);margin-top:12px">Your data stays on this device only.</p>
     </div>
   </div>
 
@@ -168,10 +214,11 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
     <p class="subtitle" id="dash-greeting"></p>
     <div class="stats">
       <div class="stat" onclick="goScreen('debts')" style="cursor:pointer"><div class="stat-label">Total debt</div><div class="stat-value" id="dash-total-debt" style="color:var(--red)">$0</div><div class="stat-sub" style="color:var(--blue)">tap to edit →</div></div>
-      <div class="stat" id="dash-available-stat"><div class="stat-label">Available for debt</div><div class="stat-value" id="dash-available">$0</div><div class="stat-sub" id="dash-available-sub">/month</div></div>
+      <div class="stat" id="dash-available-stat"><div class="stat-label">Available this month</div><div class="stat-value" id="dash-available">$0</div><div class="stat-sub" id="dash-available-sub"></div></div>
       <div class="stat" onclick="goScreen('income')" style="cursor:pointer"><div class="stat-label">Total income</div><div class="stat-value" id="dash-income">$0</div><div class="stat-sub" style="color:var(--blue)">tap to edit →</div></div>
       <div class="stat" onclick="goScreen('expenses')" style="cursor:pointer"><div class="stat-label">Total expenses</div><div class="stat-value" id="dash-expenses">$0</div><div class="stat-sub" style="color:var(--blue)">tap to edit →</div></div>
     </div>
+    <button class="btn btn-primary" onclick="goScreen('plan')" id="dash-plan-btn" style="margin-bottom:12px;display:none">View full payoff plan →</button>
     <div class="card" id="dash-expense-card" style="display:none">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
         <h2 style="font-size:16px">Where your money goes</h2>
@@ -187,7 +234,7 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
     <div class="card" id="dash-whatif" style="display:none">
       <h2 style="font-size:16px;margin-bottom:4px">What if you cut variable spending?</h2>
       <p style="font-size:13px;color:var(--text2);margin-bottom:8px">See how cutting back speeds up your payoff</p>
-      <div class="slider-wrap"><input type="range" min="0" max="50" value="0" id="whatif-slider" oninput="updateWhatIf()"></div>
+      <div class="slider-wrap"><input type="range" min="0" max="50" value="0" id="whatif-slider" oninput="updateWhatIf()" onchange="updateWhatIf()"></div>
       <div style="display:flex;justify-content:space-between;font-size:14px">
         <span style="color:var(--text3)">No cut</span>
         <span style="font-weight:700;color:var(--green)" id="whatif-label">0% cut</span>
@@ -206,7 +253,7 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
         </div>
       </div>
     </div>
-    <button class="btn btn-primary" onclick="goScreen('plan')" id="dash-plan-btn" style="margin-top:8px;display:none">View full payoff plan →</button>
+    <div class="card" id="dash-recent-payments" style="display:none"></div>
   </div>
 
   <!-- INCOME -->
@@ -214,8 +261,9 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
     <button class="back" onclick="goScreen('dashboard')">← Dashboard</button>
     <h1>Income</h1>
     <p class="subtitle">All money coming in each month</p>
+    <div id="income-voice-banner"></div>
     <div id="income-list"></div>
-    <button class="add-btn" onclick="openModal('income')">+ Add income source</button>
+    <button class="add-btn" onclick="openModal('income')"><span id="add-income-label">+ Add income source</span></button>
   </div>
 
   <!-- EXPENSES -->
@@ -225,12 +273,12 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
     <p class="subtitle">Know what's fixed and what you can cut</p>
     <div class="cat-header"><span>🔒 Fixed expenses</span><span class="cat-total" id="fixed-total">$0</span></div>
     <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Things you can't easily change</p>
-    <div id="fixed-list"></div>
     <button class="add-btn" onclick="openModal('fixed')">+ Add fixed expense</button>
+    <div id="fixed-list"></div>
     <div class="cat-header" style="margin-top:24px"><span>✂️ Variable expenses</span><span class="cat-total" id="var-total">$0</span></div>
     <p style="font-size:13px;color:var(--text3);margin-bottom:8px">Things you could reduce to pay off debt faster</p>
-    <div id="var-list"></div>
     <button class="add-btn" onclick="openModal('variable')">+ Add variable expense</button>
+    <div id="var-list"></div>
   </div>
 
   <!-- DEBTS -->
@@ -238,8 +286,9 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
     <button class="back" onclick="goScreen('dashboard')">← Dashboard</button>
     <h1>Your debts</h1>
     <p class="subtitle" id="debts-subtitle">Everything you want to pay off</p>
+    <div id="debt-voice-banner"></div>
+    <button class="add-btn" onclick="openModal('debt')"><span id="add-debt-label">+ Add a debt</span></button>
     <div id="debt-list"></div>
-    <button class="add-btn" onclick="openModal('debt')">+ Add a debt</button>
     <div id="debt-summary"></div>
   </div>
 
@@ -255,7 +304,7 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
 
 <!-- MODAL -->
 <div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal-content"><div class="modal-handle"></div><div id="modal-body"></div></div>
+  <div class="modal-content"><div style="display:flex;align-items:center;justify-content:center;position:relative"><div class="modal-handle"></div><button onclick="closeModal()" style="position:absolute;right:0;top:-4px;width:36px;height:36px;border-radius:50%;background:var(--surface2);color:var(--text2);font-size:20px;display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;font-family:var(--font)">✕</button></div><div id="modal-body"></div></div>
 </div>
 
 <!-- TAB BAR -->
@@ -281,7 +330,7 @@ h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
 // ═══════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════
-let state = { incomes:[], fixedExpenses:[], variableExpenses:[], debts:[], whatIfCut:0, chosenStrategy:"best", setupDone:false };
+let state = { incomes:[], fixedExpenses:[], variableExpenses:[], debts:[], payments:[], whatIfCut:0, chosenStrategy:"best", setupDone:false };
 const PRESETS = {
   income: ["Primary job","Side gig","Partner income","Freelance","Benefits","Child support","Other"],
   fixed: ["Rent / Mortgage","Utilities","Car payment","Health insurance","Insurance (other)","Phone plan","Internet","Childcare","Student loan min.","Other fixed"],
@@ -292,13 +341,14 @@ const VOICE_HINTS = {
   income: 'Say something like: <em>"Side gig three hundred fifty dollars"</em>',
   fixed: 'Say something like: <em>"Rent twelve hundred dollars"</em>',
   variable: 'Say something like: <em>"Dining out two hundred dollars"</em>',
-  debt: 'Say a full sentence like: <em>"I owe Chase four thousand five hundred dollars at twenty-two percent APR, minimum payment forty-five dollars"</em>'
+  debt: 'Say a full sentence like: <em>"I owe Chase four thousand five hundred dollars at twenty-two percent APR, minimum payment forty-five dollars"</em>',
+  payment: 'Say something like: <em>"Paid three hundred cash"</em> or <em>"One fifty bank transfer"</em>'
 };
 
 const voiceSupported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 
-function save() { try { localStorage.setItem("debtclear", JSON.stringify(state)); } catch(e){} }
-function load() { try { const d = localStorage.getItem("debtclear"); if (d) state = { ...state, ...JSON.parse(d) }; } catch(e){} }
+function save() { try { localStorage.setItem("dailycashplan", JSON.stringify(state)); } catch(e){} }
+function load() { try { const d = localStorage.getItem("dailycashplan"); if (d) state = { ...state, ...JSON.parse(d) }; } catch(e){} }
 const $ = id => document.getElementById(id);
 const fmt = n => "$" + Math.round(n).toLocaleString("en-US");
 const fmtD = n => "$" + n.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
@@ -343,58 +393,344 @@ function calcPayoff(debts, monthlyAvail, method) {
 // VOICE
 // ═══════════════════════════════════════
 let recognition = null;
+let voiceTimeout = null;
+let voiceSegments = [];
+let voiceTarget = null;
+let voiceRestarts = 0;
 
 function startVoice(target) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { alert("Voice is not supported in this browser.\n\nPlease open this page in Chrome — it works on Samsung phones with Chrome."); return; }
+  if (!SR) { showVoiceError("Voice is not supported in this browser. Use Chrome, or type your details below."); return; }
+
+  voiceSegments = [];
+  voiceTarget = target;
+  voiceRestarts = 0;
+  clearTimeout(voiceTimeout);
+
   recognition = new SR();
-  recognition.continuous = false; recognition.interimResults = true; recognition.lang = "en-US";
+  recognition.continuous = false;    // Single utterance — no duplication bug
+  recognition.interimResults = true;
+  recognition.lang = "en-US";
+
   recognition.onresult = e => {
-    const t = Array.from(e.results).map(r => r[0].transcript).join("");
-    const el = $("voice-transcript"); if (el) el.textContent = t;
-    if (e.results[0].isFinal) { applyVoice(t, target); stopVoice(); }
+    clearTimeout(voiceTimeout);
+    let interim = "";
+    for (let i = 0; i < e.results.length; i++) {
+      if (e.results[i].isFinal) {
+        voiceSegments.push(e.results[i][0].transcript.trim());
+      } else {
+        interim = e.results[i][0].transcript;
+      }
+    }
+    const display = voiceSegments.join(" ") + (interim ? " " + interim : "");
+    const el = $("voice-transcript"); if (el) el.textContent = display;
   };
-  recognition.onerror = () => stopVoice();
-  recognition.onend = () => stopVoice();
-  recognition.start();
-  const btn = $("voice-btn"); if (btn) { btn.classList.add("active"); btn.innerHTML = "🔴 Listening..."; }
-  const tr = $("voice-transcript-wrap"); if (tr) tr.style.display = "block";
+
+  recognition.onerror = (e) => {
+    clearTimeout(voiceTimeout);
+    const errType = e.error || "unknown";
+    console.warn("SpeechRecognition error:", errType);
+    if (errType === "no-speech" && voiceSegments.length > 0) { voiceFinalize(); return; }
+    if (errType === "aborted") return;
+    recognition = null;
+    const btn = $("voice-btn"); if (btn) { btn.classList.remove("active"); btn.innerHTML = "\u{1F3A4} Try again"; }
+    const doneBtn = $("voice-done-btn"); if (doneBtn) doneBtn.style.display = "none";
+    const msgs = {
+      "not-allowed": "\u{1F6AB} Microphone access was blocked. Go to Chrome Settings \u2192 Site Settings \u2192 Microphone \u2192 allow this site. Then try again, or type below.",
+      "network": "\u{1F4E1} Voice needs HTTPS. You're on \"" + location.protocol + "\". Type below for now.",
+      "service-not-allowed": "\u{1F512} Voice blocked \u2014 page needs HTTPS. Type below for now.",
+      "no-speech": "\u{1F92B} No speech detected. Tap and start speaking right away.",
+      "audio-capture": "\u{1F3A4} No microphone found. Close other apps using the mic and try again.",
+    };
+    showVoiceError(msgs[errType] || "\u26A0\uFE0F Voice error: \"" + errType + "\". Type your details below.");
+  };
+
+  recognition.onend = () => {
+    if (voiceSegments.length > 0 && voiceRestarts < 5) {
+      voiceRestarts++;
+      voiceTimeout = setTimeout(() => voiceFinalize(), 3500);
+      try {
+        recognition = new SR();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = "en-US";
+        recognition.onresult = arguments.callee.caller ? null : null;
+        // Re-attach handlers by re-using startVoice internals
+        recognition.onresult = e => {
+          clearTimeout(voiceTimeout);
+          let interim = "";
+          for (let i = 0; i < e.results.length; i++) {
+            if (e.results[i].isFinal) {
+              voiceSegments.push(e.results[i][0].transcript.trim());
+            } else {
+              interim = e.results[i][0].transcript;
+            }
+          }
+          const display = voiceSegments.join(" ") + (interim ? " " + interim : "");
+          const el = $("voice-transcript"); if (el) el.textContent = display;
+        };
+        recognition.onerror = () => voiceFinalize();
+        recognition.onend = () => voiceFinalize();
+        recognition.start();
+        const btn = $("voice-btn"); if (btn) btn.innerHTML = "\u{1F534} Keep going... (or tap Done)";
+      } catch(e) {
+        voiceFinalize();
+      }
+    } else if (voiceSegments.length > 0) {
+      voiceFinalize();
+    } else {
+      recognition = null;
+      const btn = $("voice-btn"); if (btn) { btn.classList.remove("active"); btn.innerHTML = "\u{1F3A4} Try again"; }
+      const doneBtn = $("voice-done-btn"); if (doneBtn) doneBtn.style.display = "none";
+      const hint = document.querySelector(".voice-hint");
+      if (hint && !hint.dataset.hasError) {
+        showVoiceError("Didn't catch anything. Tap Try again and speak clearly, or type below.");
+      }
+    }
+  };
+
+  try {
+    recognition.start();
+    const hint = document.querySelector(".voice-hint"); if (hint) { delete hint.dataset.hasError; }
+    const btn = $("voice-btn"); if (btn) { btn.classList.add("active"); btn.innerHTML = "\u{1F534} Listening... (speak now)"; }
+    const doneBtn = $("voice-done-btn"); if (doneBtn) doneBtn.style.display = "block";
+    const tr = $("voice-transcript-wrap"); if (tr) tr.style.display = "block";
+    setTimeout(() => { if (recognition) finishVoice(); }, 35000);
+  } catch(e) {
+    recognition = null;
+    const btn = $("voice-btn"); if (btn) { btn.classList.remove("active"); btn.innerHTML = "\u{1F3A4} Try again"; }
+    showVoiceError("Voice couldn't start: \"" + e.message + "\". Type your details below.");
+  }
+}
+
+function voiceFinalize() {
+  clearTimeout(voiceTimeout);
+  if (recognition) { try { recognition.abort(); } catch(e){} recognition = null; }
+  const fullText = voiceSegments.join(" ").trim();
+  if (fullText && voiceTarget) applyVoice(fullText, voiceTarget);
+  const btn = $("voice-btn"); if (btn) { btn.classList.remove("active"); btn.innerHTML = "\u{1F3A4} Speak it"; }
+  const doneBtn = $("voice-done-btn"); if (doneBtn) doneBtn.style.display = "none";
+}
+
+function finishVoice() {
+  clearTimeout(voiceTimeout);
+  voiceRestarts = 99;
+  if (recognition) { try { recognition.stop(); } catch(e){} }
+}
+
+function showVoiceError(msg) {
+  const hint = document.querySelector(".voice-hint");
+  if (hint) {
+    hint.style.background = "#fef3c7";
+    hint.style.color = "#92400e";
+    hint.style.fontSize = "13px";
+    hint.style.lineHeight = "1.5";
+    hint.dataset.hasError = "1";
+    hint.innerHTML = msg || "Voice is not available. Fill in the fields below manually.";
+  }
 }
 
 function stopVoice() {
-  if (recognition) { recognition.stop(); recognition = null; }
-  const btn = $("voice-btn"); if (btn) { btn.classList.remove("active"); btn.innerHTML = "🎙 Speak it"; }
+  clearTimeout(voiceTimeout);
+  if (recognition) { try { recognition.abort(); } catch(e){} recognition = null; }
+  const btn = $("voice-btn"); if (btn) { btn.classList.remove("active"); btn.innerHTML = "\u{1F3A4} Speak it"; }
+  const doneBtn = $("voice-done-btn"); if (doneBtn) doneBtn.style.display = "none";
 }
+
 
 function applyVoice(text, target) {
   const t = text.toLowerCase();
-  const nums = t.match(/[\d,]+\.?\d*/g)?.map(n => parseFloat(n.replace(/,/g,""))) || [];
+
+  // Convert spoken numbers to digits: "four thousand five hundred" → 4500
+  // Also handles colloquial money: "two fifty" → 250, "one fifty" → 150
+  function wordsToNum(str) {
+    const ones = {zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19};
+    const tens = {twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+    const mults = {hundred:100,thousand:1000,million:1000000};
+    const words = str.replace(/[^a-z0-9. ]/g,"").split(/\s+/);
+    let total = 0, current = 0, found = false;
+    for (let idx = 0; idx < words.length; idx++) {
+      const w = words[idx];
+      if (ones[w] !== undefined) {
+        // Colloquial money: "two fifty" = 250, "three twenty" = 320
+        // Pattern: single-digit ones (1-9) followed immediately by a tens word, with no "hundred" in between
+        const nextW = words[idx+1];
+        if (ones[w] >= 1 && ones[w] <= 9 && nextW && tens[nextW] !== undefined) {
+          current += ones[w] * 100 + tens[nextW];
+          idx++; // skip the tens word
+          found = true;
+        } else {
+          current += ones[w]; found = true;
+        }
+      }
+      else if (tens[w] !== undefined) { current += tens[w]; found = true; }
+      else if (w === "hundred") { current = (current || 1) * 100; found = true; }
+      else if (w === "thousand") { current = (current || 1) * 1000; total += current; current = 0; found = true; }
+      else if (w === "million") { current = (current || 1) * 1000000; total += current; current = 0; found = true; }
+      else if (/^\d+\.?\d*$/.test(w)) { current += parseFloat(w); found = true; }
+    }
+    total += current;
+    return found ? total : null;
+  }
+
+  // Extract all numbers (both digit and word form)
+  // First, get digit-based numbers
+  const digitNums = t.match(/[\d,]+\.?\d*/g)?.map(n => parseFloat(n.replace(/,/g,""))) || [];
+
+  if (target === "payment") {
+    // Payment parsing: "paid 300 cash" / "150 bank transfer" / "two hundred check"
+    let amount = 0;
+    // Try digit numbers
+    if (digitNums.length > 0) amount = Math.max(...digitNums);
+    // Try word numbers
+    if (!amount) { const wn = wordsToNum(t); if (wn && wn > 0) amount = wn; }
+    if (amount) setField("m-pay-amount", amount);
+
+    // Method detection
+    const methodMap = {
+      "cash": "Cash",
+      "bank transfer": "Bank transfer", "bank": "Bank transfer", "transfer": "Bank transfer", "wire": "Bank transfer",
+      "auto pay": "Auto-pay", "autopay": "Auto-pay", "auto-pay": "Auto-pay", "automatic": "Auto-pay",
+      "check": "Check", "cheque": "Check",
+      "card": "Card", "debit": "Card", "credit card": "Card",
+      "venmo": "Venmo / Zelle", "zelle": "Venmo / Zelle", "paypal": "Venmo / Zelle",
+    };
+    for (const [keyword, methodVal] of Object.entries(methodMap)) {
+      if (t.includes(keyword)) {
+        const sel = $("m-pay-method");
+        if (sel) { sel.value = methodVal; sel.dispatchEvent(new Event("change")); }
+        break;
+      }
+    }
+    return;
+  }
+
   if (target === "debt") {
-    const creditors = ["chase","citi","capital one","discover","amex","american express","bank of america","wells fargo","barclays","synchrony","navient","sallie mae","sofi","visa","mastercard","family","car loan","medical","personal loan"];
+    // Creditor detection
+    const creditors = ["chase","citi","capital one","discover","amex","american express","bank of america","wells fargo","barclays","synchrony","navient","sallie mae","sofi","visa","mastercard","family","hospital","car loan","medical","personal loan","student loan","mortgage"];
     let creditor = "";
     for (const c of creditors) { if (t.includes(c)) { creditor = c.split(" ").map(w => w[0].toUpperCase()+w.slice(1)).join(" "); break; } }
     if (creditor) setField("m-creditor", creditor);
-    let balance=0, apr=0, minPay=0;
-    for (const n of nums) {
-      if (n > 100 && !balance) balance = n;
-      else if (n >= 1 && n <= 40 && !apr) apr = n;
-      else if (n > 0 && n <= 1000 && !minPay) minPay = n;
+
+    // Keyword-based number extraction
+    let balance = 0, apr = 0, minPay = 0;
+
+    // Look for APR near "percent" or "apr" or "interest rate"
+    const aprMatch = t.match(/([\d.]+)\s*(?:percent|%|apr)\b/i)
+      || t.match(/(?:interest\s*rate|apr)\s*(?:of\s*|is\s*|at\s*)?([\d.]+)/i);
+    if (aprMatch) apr = parseFloat(aprMatch[1] || aprMatch[2]);
+    if (!apr) {
+      // Try word numbers near "percent"
+      const aprWordMatch = t.match(/(\w+(?:\s+\w+){0,3})\s*percent/i);
+      if (aprWordMatch) { const wn = wordsToNum(aprWordMatch[1]); if (wn && wn <= 40) apr = wn; }
     }
+
+    // Look for min payment near "minimum" or "min"
+    const minMatch = t.match(/min(?:imum)?\s*(?:payment)?\s*(?:of\s*|is\s*)?\$?\s*([\d,]+\.?\d*)/i);
+    if (minMatch) minPay = parseFloat(minMatch[1].replace(/,/g,""));
+    if (!minPay) {
+      const minWordMatch = t.match(/min(?:imum)?\s*(?:payment)?\s*(?:of\s*|is\s*)?(.{3,30}?)(?:dollar|per|a month|\.|$)/i);
+      if (minWordMatch) { const wn = wordsToNum(minWordMatch[1]); if (wn && wn > 0 && wn <= 2000) minPay = wn; }
+    }
+
+    // Look for balance near "owe" or "balance" (allow words like names between keyword and number)
+    const balMatch = t.match(/(?:owe|balance|owed)\s+(?:\w+\s+){0,3}?\$?\s*([\d,]+\.?\d*)/i);
+    if (balMatch && parseFloat(balMatch[1].replace(/,/g,"")) > 0) balance = parseFloat(balMatch[1].replace(/,/g,""));
+    if (!balance) {
+      const balWordMatch = t.match(/(?:owe|balance)\s*(?:of\s*|is\s*)?(.{3,40}?)(?:dollar|at|percent|\.|$)/i);
+      if (balWordMatch) { const wn = wordsToNum(balWordMatch[1]); if (wn && wn > 0) balance = wn; }
+    }
+
+    // Fallback: use digit numbers by size if keyword extraction missed them
+    if (!balance || !apr || !minPay) {
+      const used = new Set();
+      if (balance) used.add(balance);
+      if (apr) used.add(apr);
+      if (minPay) used.add(minPay);
+      const remaining = digitNums.filter(n => !used.has(n));
+
+      for (const n of remaining) {
+        if (n > 100 && !balance) { balance = n; }
+        else if (n >= 1 && n <= 40 && !apr) { apr = n; }
+        else if (n > 0 && n <= 2000 && !minPay) { minPay = n; }
+      }
+    }
+
+    // Also try wordsToNum on the full string for the biggest number as balance fallback
+    if (!balance) { const wn = wordsToNum(t); if (wn && wn > 100) balance = wn; }
+
     if (balance) setField("m-balance", balance);
     if (apr) setField("m-apr", apr);
     if (minPay) setField("m-minpay", minPay);
   } else {
-    // For income/expense: first big number is the amount
-    if (nums.length >= 2 && nums[1] < 100 && nums[0] >= 100) {
-      // Pattern: "800 and 82" → probably meant 882
-      setField("m-amount", nums[0] + nums[1]);
-    } else if (nums.length > 0) {
-      setField("m-amount", nums[0]);
+    // Income/expense: look for amount
+    let amount = 0;
+
+    // Try digit numbers first
+    if (digitNums.length >= 2 && digitNums[1] < 100 && digitNums[0] >= 100) {
+      amount = digitNums[0] + digitNums[1]; // "800 and 82" → 882
+    } else if (digitNums.length > 0) {
+      amount = Math.max(...digitNums); // Pick the largest number
     }
-    const nameEl = $("m-name");
-    if (nameEl && !nameEl.value) {
-      const cleaned = text.replace(/[\d,$.%]+/g,"").replace(/dollars?|per month|a month|monthly|and/gi,"").trim();
-      if (cleaned.length > 1) setField("m-name", cleaned.charAt(0).toUpperCase() + cleaned.slice(1));
+
+    // Try word numbers if no digits found
+    if (!amount) {
+      const wn = wordsToNum(t);
+      if (wn && wn > 0) amount = wn;
+    }
+
+    if (amount) setField("m-amount", amount);
+
+    // Keyword matching for preset auto-selection
+    const expenseKeywords = {
+      // Fixed expenses
+      "rent": "Rent / Mortgage", "mortgage": "Rent / Mortgage", "housing": "Rent / Mortgage",
+      "utilities": "Utilities", "utility": "Utilities", "electric": "Utilities", "electricity": "Utilities", "water": "Utilities", "gas bill": "Utilities", "power": "Utilities", "sewer": "Utilities",
+      "car payment": "Car payment", "car loan": "Car payment", "auto loan": "Car payment", "auto payment": "Car payment",
+      "health insurance": "Health insurance",
+      "insurance": "Insurance (other)",
+      "phone": "Phone plan", "cell phone": "Phone plan", "mobile": "Phone plan", "phone plan": "Phone plan", "phone bill": "Phone plan",
+      "internet": "Internet", "wifi": "Internet", "wi-fi": "Internet", "broadband": "Internet",
+      "childcare": "Childcare", "child care": "Childcare", "daycare": "Childcare", "day care": "Childcare", "babysitter": "Childcare", "nanny": "Childcare",
+      "student loan": "Student loan min.",
+      // Variable expenses
+      "groceries": "Groceries", "grocery": "Groceries", "food": "Groceries", "supermarket": "Groceries",
+      "dining": "Dining out", "dining out": "Dining out", "eating out": "Dining out", "restaurants": "Dining out", "restaurant": "Dining out", "takeout": "Dining out", "take out": "Dining out",
+      "entertainment": "Entertainment", "movies": "Entertainment", "concerts": "Entertainment", "fun": "Entertainment", "going out": "Entertainment",
+      "subscriptions": "Subscriptions", "subscription": "Subscriptions", "netflix": "Subscriptions", "spotify": "Subscriptions", "streaming": "Subscriptions",
+      "clothing": "Clothing", "clothes": "Clothing",
+      "gas": "Gas / Transport", "transport": "Gas / Transport", "transportation": "Gas / Transport", "bus": "Gas / Transport", "uber": "Gas / Transport", "lyft": "Gas / Transport", "commute": "Gas / Transport", "fuel": "Gas / Transport", "gasoline": "Gas / Transport",
+      "personal care": "Personal care", "haircut": "Personal care", "salon": "Personal care", "barber": "Personal care",
+      "hobbies": "Hobbies", "hobby": "Hobbies", "gym": "Hobbies", "fitness": "Hobbies",
+      "gifts": "Gifts", "gift": "Gifts", "presents": "Gifts",
+      // Income
+      "primary job": "Primary job", "salary": "Primary job", "main job": "Primary job", "paycheck": "Primary job", "wages": "Primary job",
+      "side gig": "Side gig", "side hustle": "Side gig", "freelance": "Freelance", "freelancing": "Freelance",
+      "partner income": "Partner income", "partner": "Partner income", "spouse": "Partner income",
+      "benefits": "Benefits", "disability": "Benefits", "unemployment": "Benefits", "social security": "Benefits",
+      "child support": "Child support", "alimony": "Child support",
+    };
+
+    let matchedPreset = "";
+    // Try longer phrases first (sort by length descending)
+    const sortedKeywords = Object.keys(expenseKeywords).sort((a,b) => b.length - a.length);
+    for (const kw of sortedKeywords) {
+      if (t.includes(kw)) { matchedPreset = expenseKeywords[kw]; break; }
+    }
+
+    if (matchedPreset) {
+      setField("m-name", matchedPreset);
+      // Auto-select the matching preset button
+      document.querySelectorAll(".preset").forEach(p => {
+        p.classList.remove("selected");
+        if (p.dataset.name === matchedPreset) p.classList.add("selected");
+      });
+    } else {
+      const nameEl = $("m-name");
+      if (nameEl && !nameEl.value) {
+        const cleaned = text.replace(/[\d,$.%]+/g,"").replace(/dollars?|per month|a month|monthly|and|about|around|approximately/gi,"").trim();
+        if (cleaned.length > 1) setField("m-name", cleaned.charAt(0).toUpperCase() + cleaned.slice(1));
+      }
     }
   }
 }
@@ -450,10 +786,11 @@ function openModal(type, item) {
       <h2 style="margin-bottom:4px">${isEdit ? "Edit" : "Add"} ${label}</h2>
       ${voiceSupported
         ? `<button id="voice-btn" class="voice-btn mic" onclick="startVoice('${type}')">🎙 Speak it</button>
-           <div class="voice-hint">${VOICE_HINTS[type]}</div>`
-        : `<div class="voice-hint" style="background:var(--amber-light);color:var(--amber)">🎙 Voice input requires <strong>Chrome</strong> browser. Open this page in Chrome to use voice.</div>`
+           <div class="voice-hint">${VOICE_HINTS[type]}<br><span style="color:var(--text3)">Voice not working? Just fill in the fields below.</span></div>`
+        : `<div class="voice-hint" style="background:var(--surface2);color:var(--text2)">⌨️ Type your details below</div>`
       }
       <div id="voice-transcript-wrap" style="display:none" class="transcript"><span class="heard">We heard:</span><span id="voice-transcript"></span></div>
+      <button id="voice-done-btn" onclick="finishVoice()" style="display:none;width:100%;padding:10px;border-radius:10px;background:var(--green);color:white;font-weight:600;font-size:14px;margin-bottom:8px;border:none;font-family:var(--font)">✓ Done speaking</button>
       ${!isEdit ? `<div class="presets">${presets.map(p => `<button class="preset" data-name="${p.replace(/"/g,'&quot;')}">${p}</button>`).join("")}</div>` : ""}
       <div class="field"><label>Name</label><div class="input-wrap"><input id="m-name" placeholder="e.g. ${presets[0]||''}" value="${isEdit?editingItem.name:''}"></div></div>
       <div class="field"><label>Amount per month</label><div class="input-wrap"><span class="prefix">$</span><input id="m-amount" type="number" inputmode="decimal" placeholder="0" value="${isEdit?editingItem.amount:''}"></div></div>
@@ -469,10 +806,11 @@ function openModal(type, item) {
       <h2 style="margin-bottom:4px">${isEdit ? "Edit" : "Add"} debt</h2>
       ${voiceSupported
         ? `<button id="voice-btn" class="voice-btn mic" onclick="startVoice('debt')">🎙 Speak it</button>
-           <div class="voice-hint">${VOICE_HINTS.debt}</div>`
-        : `<div class="voice-hint" style="background:var(--amber-light);color:var(--amber)">🎙 Voice input requires <strong>Chrome</strong> browser. Open this page in Chrome to use voice.</div>`
+           <div class="voice-hint">${VOICE_HINTS.debt}<br><span style="color:var(--text3)">Voice not working? Just fill in the fields below.</span></div>`
+        : `<div class="voice-hint" style="background:var(--surface2);color:var(--text2)">⌨️ Type your debt details below</div>`
       }
       <div id="voice-transcript-wrap" style="display:none" class="transcript"><span class="heard">We heard:</span><span id="voice-transcript"></span></div>
+      <button id="voice-done-btn" onclick="finishVoice()" style="display:none;width:100%;padding:10px;border-radius:10px;background:var(--green);color:white;font-weight:600;font-size:14px;margin-bottom:8px;border:none;font-family:var(--font)">✓ Done speaking</button>
       ${!isEdit ? `<div class="presets">${debtPresets.map(p => `<button class="preset" data-creditor="${p.replace(/"/g,'&quot;')}">${p}</button>`).join("")}</div>` : ""}
       <div class="field"><label>Who do you owe?</label><div class="input-wrap"><input id="m-creditor" placeholder="e.g. Chase Visa" value="${isEdit?editingItem.creditor:''}"></div></div>
       <div class="field"><label>Balance owed</label><div class="input-wrap"><span class="prefix">$</span><input id="m-balance" type="number" inputmode="decimal" placeholder="4,500" value="${isEdit?editingItem.balance:''}"></div></div>
@@ -522,8 +860,11 @@ function saveDebt() {
   const apr = parseFloat($("m-apr")?.value) || 0;
   const minPay = parseFloat($("m-minpay")?.value) || 25;
   if (balance <= 0) { alert("Please enter the balance owed."); return; }
-  if (editingItem) state.debts = state.debts.map(x => x.id===editingItem.id ? {...x, creditor, balance, apr, minPay} : x);
-  else state.debts.push({ id:genId(), creditor, balance, apr, minPay });
+  if (editingItem) {
+    state.debts = state.debts.map(x => x.id===editingItem.id ? {...x, creditor, balance, apr, minPay} : x);
+  } else {
+    state.debts.push({ id:genId(), creditor, balance, apr, minPay, originalBalance: balance });
+  }
   save(); closeModal(); renderDebts();
 }
 
@@ -531,7 +872,89 @@ function deleteItem(type, id) {
   if (!confirm("Delete this?")) return;
   const key = type==="debts"?"debts" : type==="income"?"incomes" : type==="fixed"?"fixedExpenses":"variableExpenses";
   state[key] = state[key].filter(x => x.id !== id);
+  if (type === "debts") state.payments = (state.payments||[]).filter(p => p.debtId !== id);
   save(); closeModal(); goScreen(currentScreen);
+}
+
+// ═══════════════════════════════════════
+// PAYMENT LOGGING
+// ═══════════════════════════════════════
+const PAY_METHODS = ["Cash","Bank transfer","Auto-pay","Check","Card","Venmo / Zelle","Other"];
+
+function openPaymentModal(debtId) {
+  const debt = state.debts.find(d => d.id === debtId);
+  if (!debt) return;
+  const m = $("modal-body");
+  const today = new Date().toISOString().split("T")[0];
+  m.innerHTML = `
+    <h2 style="margin-bottom:4px">Log payment</h2>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:16px">Paying <strong>${debt.creditor}</strong> · balance: ${fmtD(debt.balance)}</p>
+    ${voiceSupported
+      ? `<button id="voice-btn" class="voice-btn mic" onclick="startVoice('payment')">🎙 Speak it</button>
+         <div class="voice-hint">${VOICE_HINTS.payment}<br><span style="color:var(--text3)">Voice not working? Just fill in the fields below.</span></div>`
+      : ``
+    }
+    <div id="voice-transcript-wrap" style="display:none" class="transcript"><span class="heard">We heard:</span><span id="voice-transcript"></span></div>
+    <button id="voice-done-btn" onclick="finishVoice()" style="display:none;width:100%;padding:10px;border-radius:10px;background:var(--green);color:white;font-weight:600;font-size:14px;margin-bottom:8px;border:none;font-family:var(--font)">✓ Done speaking</button>
+    <div class="field"><label>Amount paid</label><div class="input-wrap"><span class="prefix">$</span><input id="m-pay-amount" type="number" inputmode="decimal" placeholder="0" autofocus></div></div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+      <button class="preset" onclick="setField('m-pay-amount',${debt.minPay})" style="font-size:13px">Min (${fmt(debt.minPay)})</button>
+      ${debt.balance > debt.minPay * 2 ? `<button class="preset" onclick="setField('m-pay-amount',${Math.round(debt.minPay*2)})" style="font-size:13px">Double (${fmt(Math.round(debt.minPay*2))})</button>` : ''}
+      <button class="preset" onclick="setField('m-pay-amount',${debt.balance})" style="font-size:13px">Full (${fmtD(debt.balance)})</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field"><label>Date</label><div class="input-wrap"><input id="m-pay-date" type="date" value="${today}"></div></div>
+      <div class="field"><label>Method</label>
+        <select id="m-pay-method" style="width:100%;padding:12px;border:1.5px solid var(--border);border-radius:12px;font-size:15px;font-family:var(--font);background:var(--surface);color:var(--text)">
+          ${PAY_METHODS.map(m => `<option value="${m}">${m}</option>`).join("")}
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Note (optional)</label><div class="input-wrap"><input id="m-pay-note" placeholder="e.g. Payday payment, extra from bonus"></div></div>
+    <button class="btn btn-primary" onclick="savePayment('${debtId}')" style="background:var(--green)">💸 Log this payment</button>
+    <button class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>
+  `;
+  $("modal").classList.add("open");
+}
+
+function savePayment(debtId) {
+  const amount = parseFloat($("m-pay-amount")?.value) || 0;
+  const date = $("m-pay-date")?.value || new Date().toISOString().split("T")[0];
+  const method = $("m-pay-method")?.value || "Other";
+  const note = $("m-pay-note")?.value?.trim() || "";
+
+  if (amount <= 0) { alert("Please enter the amount you paid."); return; }
+
+  const debt = state.debts.find(d => d.id === debtId);
+  if (!debt) return;
+
+  // Store originalBalance if not set (for debts created before this feature)
+  if (!debt.originalBalance) debt.originalBalance = debt.balance + (state.payments||[]).filter(p=>p.debtId===debtId).reduce((s,p)=>s+p.amount,0);
+
+  // Cap at current balance
+  const actualAmount = Math.min(amount, debt.balance);
+
+  // Record payment
+  if (!state.payments) state.payments = [];
+  state.payments.push({ id: genId(), debtId, amount: actualAmount, date, method, note });
+
+  // Reduce balance
+  debt.balance = Math.max(0, debt.balance - actualAmount);
+
+  save(); closeModal();
+
+  // Celebration if paid off!
+  if (debt.balance <= 0.01) {
+    setTimeout(() => {
+      const remaining = state.debts.filter(d => d.balance > 0.01).length;
+      const msg = remaining > 0
+        ? `🎉 ${debt.creditor} is PAID OFF!\n\n${remaining} debt${remaining>1?'s':''} left to go. Keep going!`
+        : `🎉🎉🎉 ${debt.creditor} is PAID OFF!\n\nThat was your LAST debt — you're debt-free! Incredible!`;
+      alert(msg);
+    }, 100);
+  }
+
+  renderDebts();
 }
 
 // ═══════════════════════════════════════
@@ -554,7 +977,7 @@ function renderDashboard() {
   } else if (avail > 0) {
     $("dash-available").textContent = fmt(avail);
     $("dash-available").style.color = "var(--green)";
-    $("dash-available-sub").textContent = "/month for debt";
+    $("dash-available-sub").textContent = "";
   } else {
     $("dash-available").textContent = fmt(avail);
     $("dash-available").style.color = "var(--red)";
@@ -600,6 +1023,29 @@ function renderDashboard() {
       $("dash-plan-btn").style.display = "flex";
     } else { $("dash-debtfree").style.display = "none"; $("dash-plan-btn").style.display = "none"; }
   } else { $("dash-debtfree").style.display = "none"; $("dash-plan-btn").style.display = state.debts.length>0?"flex":"none"; }
+
+  // Recent payments
+  const rp = $("dash-recent-payments");
+  const allPayments = (state.payments || []).slice(-5).reverse();
+  if (allPayments.length > 0) {
+    const totalEverPaid = (state.payments||[]).reduce((s,p)=>s+p.amount,0);
+    rp.style.display = "block";
+    rp.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <h2 style="font-size:16px">Recent payments</h2>
+        <span style="font-size:13px;color:var(--green);font-weight:600">${fmt(totalEverPaid)} total paid</span>
+      </div>
+      ${allPayments.map(p => {
+        const debt = state.debts.find(d => d.id === p.debtId);
+        return `<div class="payment-item">
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:14px">${debt ? debt.creditor : 'Deleted debt'}</div>
+            <div style="font-size:12px;color:var(--text3)">${new Date(p.date).toLocaleDateString('en-US',{month:'short',day:'numeric'})} · ${p.method}${p.note ? ' · '+p.note : ''}</div>
+          </div>
+          <div style="font-weight:700;color:var(--green)">−${fmt(p.amount)}</div>
+        </div>`;
+      }).join("")}`;
+  } else { rp.style.display = "none"; }
 }
 
 function updateWhatIf() {
@@ -626,6 +1072,17 @@ function updateWhatIf() {
 // RENDER: INCOME
 // ═══════════════════════════════════════
 function renderIncome() {
+  // Voice banner for income screen
+  const ibanner = $("income-voice-banner");
+  if (ibanner) {
+    if (micPermission === "granted") {
+      ibanner.innerHTML = '<div style="background:var(--blue-light);border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blue)"><span style="font-size:20px">🎙</span><span>Tap <strong>Add income</strong> then <strong>Speak it</strong> — say the name and amount.</span></div>';
+      $("add-income-label").textContent = "🎙 Add income source (voice or type)";
+    } else if (voiceSupported && micPermission === "prompt") {
+      ibanner.innerHTML = '<div style="background:var(--blue-light);border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blue)"><span style="font-size:20px">🎙</span><span>Voice available — tap <strong>Add income</strong> and hit <strong>Speak it</strong>.</span></div>';
+      $("add-income-label").textContent = "🎙 Add income source (voice or type)";
+    }
+  }
   const el = $("income-list");
   if (!state.incomes.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">💰</div><div class="empty-text">No income added yet</div></div>'; return; }
   el.innerHTML = '<div class="card">'+state.incomes.map(i => `
@@ -667,16 +1124,58 @@ function renderDebts() {
   const td = state.debts.reduce((s,d)=>s+d.balance,0), tm = state.debts.reduce((s,d)=>s+d.minPay,0);
   const avgApr = state.debts.length ? state.debts.reduce((s,d)=>s+d.apr,0)/state.debts.length : 0;
   $("debts-subtitle").textContent = state.debts.length ? `${state.debts.length} debt${state.debts.length>1?"s":""} totaling ${fmt(td)}` : "Everything you want to pay off";
+
+  // Voice banner
+  const banner = $("debt-voice-banner");
+  if (banner) {
+    if (micPermission === "granted") {
+      banner.innerHTML = '<div style="background:var(--blue-light);border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blue)"><span style="font-size:20px">🎙</span><span>Tap <strong>Add a debt</strong> then <strong>Speak it</strong> — say your creditor, balance, APR, and minimum payment in one sentence.</span></div>';
+      $("add-debt-label").textContent = "🎙 Add a debt (voice or type)";
+    } else if (voiceSupported && micPermission === "prompt") {
+      banner.innerHTML = '<div style="background:var(--blue-light);border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--blue)"><span style="font-size:20px">🎙</span><span>Voice available — tap <strong>Add a debt</strong> and hit <strong>Speak it</strong> to try it.</span></div>';
+      $("add-debt-label").textContent = "🎙 Add a debt (voice or type)";
+    }
+    // No banner for unavailable/insecure — already shown on welcome screen
+  }
   if (!state.debts.length) { el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No debts added yet</div></div>'; $("debt-summary").innerHTML=""; return; }
-  el.innerHTML = state.debts.map(d => `
-    <div class="card" style="cursor:pointer" onclick='openModal("debt",${JSON.stringify(d).replace(/'/g,"&#39;")})'>
+  el.innerHTML = state.debts.map(d => {
+    const debtPayments = (state.payments || []).filter(p => p.debtId === d.id);
+    const totalPaid = debtPayments.reduce((s,p) => s + p.amount, 0);
+    const origBalance = d.originalBalance || d.balance + totalPaid;
+    const pctPaid = origBalance > 0 ? Math.min(100, Math.round(totalPaid / origBalance * 100)) : 0;
+    const isPaidOff = d.balance <= 0.01;
+    const recentPayments = debtPayments.slice(-3).reverse();
+
+    return `<div class="card${isPaidOff ? ' card-accent' : ''}">
       <div style="display:flex;justify-content:space-between;align-items:start">
-        <div><div style="font-weight:600;font-size:16px">${d.creditor}</div>
-          <div style="font-size:22px;font-weight:700;margin-top:2px">${fmtD(d.balance)}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="font-weight:600;font-size:16px">${d.creditor}</div>
+            ${isPaidOff ? '<span class="paid-off-badge">✓ Paid off</span>' : ''}
+          </div>
+          <div style="font-size:22px;font-weight:700;margin-top:2px;${isPaidOff ? 'color:var(--green)' : ''}">${fmtD(d.balance)}</div>
           <div style="font-size:13px;color:var(--text2);margin-top:2px">${d.apr}% APR · ${fmt(d.minPay)} min/mo</div>
-        </div><span style="color:var(--text3);font-size:20px">✎</span>
+        </div>
+        <button style="color:var(--text3);font-size:20px;padding:8px" onclick='event.stopPropagation();openModal("debt",${JSON.stringify(d).replace(/'/g,"&#39;")})'>✎</button>
       </div>
-    </div>`).join("");
+      ${totalPaid > 0 ? `<div class="progress-bar-wrap">
+        <div class="progress-bar-labels"><span>${fmt(totalPaid)} paid</span><span>${pctPaid}%</span></div>
+        <div class="progress"><div class="progress-fill" style="width:${Math.max(pctPaid,2)}%;background:var(--green)"></div></div>
+      </div>` : ''}
+      ${recentPayments.length > 0 ? `<div style="margin-top:8px">${recentPayments.map(p => `
+        <div class="payment-item">
+          <div style="flex:1">
+            <span style="font-weight:600;color:var(--green)">−${fmt(p.amount)}</span>
+            ${p.note ? `<span style="color:var(--text2);margin-left:6px">${p.note}</span>` : ''}
+          </div>
+          <span class="payment-method">${p.method || 'Payment'}</span>
+          <span style="font-size:12px;color:var(--text3)">${new Date(p.date).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+        </div>`).join('')}
+        ${debtPayments.length > 3 ? `<div style="text-align:center;padding:6px;font-size:13px;color:var(--text3)">${debtPayments.length - 3} more payments…</div>` : ''}
+      </div>` : ''}
+      ${!isPaidOff ? `<button class="pay-btn" onclick="event.stopPropagation();openPaymentModal('${d.id}')">💸 Log a payment</button>` : ''}
+    </div>`;
+  }).join("");
   $("debt-summary").innerHTML = `<div class="card" style="background:var(--surface2)">
     <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span style="color:var(--text2)">Total owed</span><span style="font-weight:700">${fmt(td)}</span></div>
     <div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span style="color:var(--text2)">Total minimums</span><span style="font-weight:600">${fmt(tm)}/mo</span></div>
@@ -692,25 +1191,76 @@ function setStrategy(s) {
   renderPlan();
 }
 
+// Render milestones for a given payoff result and method name
+function renderMilestonesHTML(active, methodName) {
+  const totalDebt = state.debts.reduce((s,d)=>s+d.balance,0);
+  const rawMilestones = [3,6,12,18].map(m => {
+    const paid = active.order.filter(d => d.month && d.month <= m);
+    const totalRemPt = active.timeline.find(t => t.month === m);
+    const totalRem = totalRemPt ? totalRemPt.remaining : (m >= active.months ? 0 : null);
+    return { months: m, paidOff: paid, totalRemaining: totalRem };
+  });
+  let doneShown = false;
+  const milestones = rawMilestones.filter(m => {
+    if (m.months > active.months + 6) return false;
+    if (doneShown) return false;
+    if (m.totalRemaining === 0) { doneShown = true; return true; }
+    return true;
+  });
+  return `<h2 style="font-size:16px;margin-bottom:12px">📅 Milestones (${methodName})</h2>` +
+    milestones.map(m => {
+      const colors = {3:"#2563eb", 6:"#7c3aed", 12:"#059669", 18:"#d97706"};
+      const paidNames = m.paidOff.map(d => d.name).join(", ");
+      const pctPaid = m.totalRemaining !== null ? Math.round((1-m.totalRemaining/totalDebt)*100) : null;
+      const amountPaid = m.totalRemaining !== null ? totalDebt - m.totalRemaining : 0;
+      return `<div class="milestone">
+        <div class="milestone-badge" style="background:${colors[m.months]||'#6b7280'}">${m.months}mo</div>
+        <div class="milestone-content">
+          ${m.paidOff.length > 0
+            ? `<div class="milestone-title">✅ ${m.paidOff.length} debt${m.paidOff.length>1?"s":""} paid off</div>
+               <div class="milestone-sub">${paidNames}</div>`
+            : `<div class="milestone-title">${fmt(amountPaid)} paid off</div>
+               <div class="milestone-sub">${pctPaid >= 25 ? "Getting there — over a quarter done" : pctPaid >= 10 ? "Building momentum" : "Every payment counts"}</div>`
+          }
+          ${pctPaid !== null ? `<div style="margin-top:6px"><div class="progress"><div class="progress-fill" style="width:${Math.max(pctPaid, 2)}%;background:${colors[m.months]||'#6b7280'}"></div></div><div style="font-size:12px;color:var(--text3)">${pctPaid}% · ${m.totalRemaining > 0 ? fmt(m.totalRemaining)+" remaining" : "All clear! 🎉"}</div></div>` : ""}
+        </div>
+      </div>`;
+    }).join("");
+}
+
+function getActiveMethod() {
+  const ti=sumArr(state.incomes), tf=sumArr(state.fixedExpenses), tv=sumArr(state.variableExpenses);
+  const origAvail = ti-tf-tv;
+  if (state.chosenStrategy === "best") {
+    const a = calcPayoff(state.debts, origAvail, "avalanche");
+    const s = calcPayoff(state.debts, origAvail, "snowball");
+    return (a?.totalInterest <= s?.totalInterest) ? "avalanche" : "snowball";
+  }
+  return state.chosenStrategy;
+}
+
 function updatePaySlider() {
   const payAmt = parseInt($("pay-slider").value);
   const ti=sumArr(state.incomes), tf=sumArr(state.fixedExpenses), tv=sumArr(state.variableExpenses);
   const origAvail = ti-tf-tv;
-  const activeMethod = (state.chosenStrategy === "best")
-    ? (calcPayoff(state.debts, origAvail, "avalanche")?.totalInterest <= calcPayoff(state.debts, origAvail, "snowball")?.totalInterest ? "avalanche" : "snowball")
-    : state.chosenStrategy;
+  const activeMethod = getActiveMethod();
 
   $("pay-slider-amount").textContent = fmt(payAmt) + "/mo";
 
   const origResult = calcPayoff(state.debts, origAvail, activeMethod);
   const newResult = calcPayoff(state.debts, payAmt, activeMethod);
   const el = $("pay-slider-result");
+  const milestoneEl = $("plan-milestones");
 
   if (!newResult || newResult.tooLow) {
     el.innerHTML = `<div class="card card-red" style="margin:0"><div style="font-size:14px;color:var(--red)">Not enough to cover minimum payments.</div></div>`;
+    if (milestoneEl) milestoneEl.innerHTML = '<div class="milestone-empty">Increase payment to see milestones</div>';
     return;
   }
   if (!origResult) return;
+
+  // Update milestones based on slider value
+  if (milestoneEl) milestoneEl.innerHTML = renderMilestonesHTML(newResult, activeMethod);
 
   const diffMo = origResult.months - newResult.months;
   const diffInt = origResult.totalInterest - newResult.totalInterest;
@@ -756,29 +1306,13 @@ function renderPlan() {
   if (activeMethod === "best") activeMethod = bestMethod;
   const active = activeMethod === "avalanche" ? aval : snow;
 
-  $("plan-subtitle").textContent = `${fmt(avail)}/mo available for debt payments`;
+  $("plan-subtitle").textContent = `${fmt(avail)}/mo available after expenses`;
 
   // Recommendation text
   let recText = "";
   if (savedInt < 50) recText = `Both methods are nearly identical — only <strong>${fmt(savedInt)}</strong> difference. This is normal with low balances or similar APRs. The gap grows with larger debts at different interest rates.`;
   else if (bestMethod === "avalanche") recText = `<strong>Avalanche</strong> saves <strong>${fmt(savedInt)}</strong> in interest${savedMo>0 ? ` and finishes <strong>${savedMo} month${savedMo!==1?"s":""} sooner</strong>` : ""}. Mathematically optimal.`;
   else recText = `<strong>Snowball</strong> builds momentum with quick wins. Costs <strong>${fmt(savedInt)}</strong> more than avalanche, but people stick with it.`;
-
-  // Milestone data: only show unique milestones (skip if all debts already done at earlier milestone)
-  const rawMilestones = [3,6,12,18].map(m => {
-    const paid = active.order.filter(d => d.month && d.month <= m);
-    const totalRemPt = active.timeline.find(t => t.month === m);
-    const totalRem = totalRemPt ? totalRemPt.remaining : (m >= active.months ? 0 : null);
-    return { months: m, paidOff: paid, totalRemaining: totalRem };
-  });
-  // Filter: skip milestones after everything is paid, keep only the first "Done" + progress ones
-  let doneShown = false;
-  const milestones = rawMilestones.filter(m => {
-    if (m.months > active.months + 6) return false;
-    if (doneShown) return false;
-    if (m.totalRemaining === 0) { doneShown = true; return true; }
-    return true;
-  });
 
   // Payment slider: extra amount range
   const totalMin = state.debts.reduce((s,d)=>s+d.minPay,0);
@@ -809,26 +1343,22 @@ function renderPlan() {
       </div>
     </div>
 
-    <!-- Strategy chooser -->
-    <div style="font-size:14px;color:var(--text2);margin-bottom:8px;font-weight:500">Choose your strategy:</div>
-    <div class="strat-toggle">
-      <button class="strat-btn ${activeMethod==="snowball"?"active":""}" onclick="setStrategy('snowball')">❄️ Snowball</button>
-      <button class="strat-btn ${activeMethod==="avalanche"?"active":""}" onclick="setStrategy('avalanche')">🏔️ Avalanche</button>
-    </div>
-
-    <!-- Side by side comparison -->
+    <!-- Strategy chooser — tap a card to select -->
+    <div style="font-size:14px;color:var(--text2);margin-bottom:8px;font-weight:500">Tap to choose your strategy:</div>
     <div class="compare">
-      <div class="card ${activeMethod==="snowball"?"winner":""}" onclick="setStrategy('snowball')">
-        <div class="method">❄️ Snowball</div><div style="font-size:12px;color:var(--text3)">Smallest first</div>
+      <div class="card ${activeMethod==="snowball"?"winner":""}" onclick="setStrategy('snowball')" style="cursor:pointer">
+        <div class="method" style="font-size:15px;font-weight:700">❄️ Snowball</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:6px">Smallest balance first</div>
         <div class="time">${monthsToText(snow.months)}</div>
-        <div class="interest">${fmt(snow.totalInterest)} interest</div>
-        <div class="free-date">${debtFreeDate(snow.months)}</div>
+        <div class="interest" style="font-size:14px;font-weight:600">${fmt(snow.totalInterest)} interest</div>
+        <div class="free-date" style="font-size:13px;color:var(--text2);margin-top:4px">${debtFreeDate(snow.months)}</div>
       </div>
-      <div class="card ${activeMethod==="avalanche"?"winner":""}" onclick="setStrategy('avalanche')">
-        <div class="method">🏔️ Avalanche</div><div style="font-size:12px;color:var(--text3)">Highest APR first</div>
+      <div class="card ${activeMethod==="avalanche"?"winner":""}" onclick="setStrategy('avalanche')" style="cursor:pointer">
+        <div class="method" style="font-size:15px;font-weight:700">🏔️ Avalanche</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:6px">Highest APR first</div>
         <div class="time">${monthsToText(aval.months)}</div>
-        <div class="interest">${fmt(aval.totalInterest)} interest</div>
-        <div class="free-date">${debtFreeDate(aval.months)}</div>
+        <div class="interest" style="font-size:14px;font-weight:600">${fmt(aval.totalInterest)} interest</div>
+        <div class="free-date" style="font-size:13px;color:var(--text2);margin-top:4px">${debtFreeDate(aval.months)}</div>
       </div>
     </div>
 
@@ -837,7 +1367,7 @@ function renderPlan() {
       <h2 style="font-size:16px;margin-bottom:4px;color:var(--blue)">💰 What if you paid more (or less)?</h2>
       <p style="font-size:13px;color:#6b8abf;margin-bottom:10px">Drag to see how your monthly payment changes the timeline</p>
       <div class="slider-wrap">
-        <input type="range" min="${sliderPayMin}" max="${sliderPayMax}" value="${sliderPayDefault}" id="pay-slider" oninput="updatePaySlider()">
+        <input type="range" min="${sliderPayMin}" max="${sliderPayMax}" value="${sliderPayDefault}" id="pay-slider" oninput="updatePaySlider()" onchange="updatePaySlider()">
       </div>
       <div style="display:flex;justify-content:space-between;font-size:13px;color:#6b8abf">
         <span>Min: ${fmt(sliderPayMin)}</span>
@@ -849,27 +1379,9 @@ function renderPlan() {
       </div>
     </div>
 
-    <!-- Milestones -->
-    <div class="card">
-      <h2 style="font-size:16px;margin-bottom:12px">📅 Milestones (${activeMethod})</h2>
-      ${milestones.map(m => {
-        const colors = {3:"#2563eb", 6:"#7c3aed", 12:"#059669", 18:"#d97706"};
-        const paidNames = m.paidOff.map(d => d.name).join(", ");
-        const totalDebt = state.debts.reduce((s,d)=>s+d.balance,0);
-        const pctPaid = m.totalRemaining !== null ? Math.round((1-m.totalRemaining/totalDebt)*100) : null;
-        return `<div class="milestone">
-          <div class="milestone-badge" style="background:${colors[m.months]||'#6b7280'}">${m.months}mo</div>
-          <div class="milestone-content">
-            ${m.paidOff.length > 0
-              ? `<div class="milestone-title">✅ ${m.paidOff.length} debt${m.paidOff.length>1?"s":""} paid off</div>
-                 <div class="milestone-sub">${paidNames}</div>`
-              : `<div class="milestone-title">Making progress</div>
-                 <div class="milestone-sub">Still chipping away</div>`
-            }
-            ${pctPaid !== null ? `<div style="margin-top:6px"><div class="progress"><div class="progress-fill" style="width:${pctPaid}%;background:${colors[m.months]||'#6b7280'}"></div></div><div style="font-size:12px;color:var(--text3)">${pctPaid}% paid off · ${m.totalRemaining > 0 ? fmt(m.totalRemaining)+" remaining" : "All clear! 🎉"}</div></div>` : ""}
-          </div>
-        </div>`;
-      }).join("")}
+    <!-- Milestones (updates dynamically with slider) -->
+    <div class="card" id="plan-milestones">
+      ${renderMilestonesHTML(active, activeMethod)}
     </div>
 
     <!-- Timeline chart -->
@@ -915,11 +1427,112 @@ function renderPlan() {
 }
 
 // ═══════════════════════════════════════
+// VOICE PERMISSIONS
+// ═══════════════════════════════════════
+let micPermission = "unknown"; // "granted", "denied", "unavailable", "insecure", "unknown"
+
+async function checkVoiceCapability() {
+  // 1. Check browser support
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { micPermission = "unavailable"; return; }
+  // 2. Check secure context (HTTPS or localhost required)
+  if (!window.isSecureContext) { micPermission = "insecure"; return; }
+  // 3. Check current mic permission without prompting
+  try {
+    if (navigator.permissions) {
+      const result = await navigator.permissions.query({ name: "microphone" });
+      micPermission = result.state; // "granted", "denied", or "prompt"
+      result.onchange = () => { micPermission = result.state; renderVoiceSetup(); };
+      return;
+    }
+  } catch(e) { /* permissions API not supported, fall through */ }
+  micPermission = "prompt";
+}
+
+async function requestMicPermission() {
+  const btn = $("mic-setup-btn");
+  if (btn) { btn.disabled = true; btn.textContent = "Requesting…"; }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    stream.getTracks().forEach(t => t.stop()); // release immediately
+    micPermission = "granted";
+  } catch(e) {
+    micPermission = e.name === "NotAllowedError" ? "denied" : "unavailable";
+  }
+  renderVoiceSetup();
+}
+
+function renderVoiceSetup() {
+  const el = $("welcome-voice-setup");
+  if (!el) return;
+
+  if (micPermission === "granted") {
+    el.innerHTML = `<div style="background:var(--green-light);border-radius:14px;padding:12px 16px;text-align:left;display:flex;align-items:center;gap:10px">
+      <span style="font-size:24px">🎙</span>
+      <div><div style="font-weight:600;font-size:14px;color:var(--green-dark)">Voice input ready</div>
+      <div style="font-size:12px;color:var(--green)">Speak your debts, income, and expenses</div></div>
+    </div>`;
+  } else if (micPermission === "prompt" || micPermission === "unknown") {
+    el.innerHTML = `<div style="background:var(--blue-light);border-radius:14px;padding:14px 16px;text-align:left">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:24px">🎙</span>
+        <div><div style="font-weight:600;font-size:14px;color:var(--blue)">Speed things up with voice</div>
+        <div style="font-size:12px;color:#6b8abf">Say your debts instead of typing them</div></div>
+      </div>
+      <button id="mic-setup-btn" class="btn btn-primary" style="background:var(--blue);font-size:14px;padding:10px" onclick="requestMicPermission()">Enable microphone</button>
+      <div style="font-size:11px;color:#93c5fd;text-align:center;margin-top:6px">You can also type everything manually</div>
+    </div>`;
+  } else if (micPermission === "denied") {
+    el.innerHTML = `<div style="background:var(--amber-light);border-radius:14px;padding:12px 16px;text-align:left;display:flex;align-items:center;gap:10px">
+      <span style="font-size:24px">🎙</span>
+      <div><div style="font-weight:600;font-size:14px;color:var(--amber)">Mic blocked</div>
+      <div style="font-size:12px;color:#b45309">To use voice, tap the 🔒 in the address bar → allow Microphone. You can still type everything.</div></div>
+    </div>`;
+  } else if (micPermission === "insecure") {
+    el.innerHTML = `<div style="background:var(--amber-light);border-radius:14px;padding:12px 16px;text-align:left">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:24px">🔒</span>
+        <div style="font-weight:600;font-size:14px;color:var(--amber)">Voice needs a secure connection</div>
+      </div>
+      <div style="font-size:12px;color:#92400e;line-height:1.5">Voice input requires HTTPS. You're viewing this as a local file, so the browser blocks the microphone.<br><br>
+      <strong>To enable voice:</strong> host this page on any web server — even a free one like GitHub Pages or Netlify — or open it via <code>localhost</code>.<br><br>
+      You can still use the app fully by typing.</div>
+    </div>`;
+  } else if (micPermission === "unavailable") {
+    el.innerHTML = `<div style="background:var(--surface2);border-radius:14px;padding:12px 16px;text-align:left;display:flex;align-items:center;gap:10px">
+      <span style="font-size:24px">⌨️</span>
+      <div><div style="font-weight:600;font-size:14px;color:var(--text2)">Voice not supported</div>
+      <div style="font-size:12px;color:var(--text3)">This browser doesn't support voice input. Use Chrome for voice, or type your data manually.</div></div>
+    </div>`;
+  }
+}
+
+// ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
 load();
+checkVoiceCapability().then(renderVoiceSetup);
 if (state.setupDone) { document.querySelector(".tab-bar").style.display = "flex"; goScreen("dashboard"); }
 else { document.querySelector(".tab-bar").style.display = "none"; goScreen("welcome"); }
+
+// Bulletproof slider handling — event delegation catches dynamically created sliders too
+document.addEventListener("input", function(e) {
+  if (e.target.id === "whatif-slider") updateWhatIf();
+  if (e.target.id === "pay-slider") updatePaySlider();
+});
+document.addEventListener("change", function(e) {
+  if (e.target.id === "whatif-slider") updateWhatIf();
+  if (e.target.id === "pay-slider") updatePaySlider();
+});
+// Pointer events fallback for older browsers
+document.addEventListener("pointerup", function(e) {
+  if (e.target.id === "whatif-slider") setTimeout(updateWhatIf, 50);
+  if (e.target.id === "pay-slider") setTimeout(updatePaySlider, 50);
+});
+document.addEventListener("mouseup", function(e) {
+  if (e.target.id === "whatif-slider") setTimeout(updateWhatIf, 50);
+  if (e.target.id === "pay-slider") setTimeout(updatePaySlider, 50);
+});
 </script>
 </body>
 </html>
