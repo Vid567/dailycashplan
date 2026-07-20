@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DailyCashPlan — Guide</title>
+<style>
+:root{--brand:#059669;--brand-light:#d1fae5;--green:#059669;--green-light:#d1fae5;
+  --blue:#2563eb;--blue-light:#dbeafe;--amber:#b45309;--amber-light:#fef3e2;--red:#dc2626;
+  --bg:#faf7f2;--surface:#fff;--border:#e7e0d4;--text:#1c1917;--text2:#78716c;
+  --radius:16px;--font:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6}
+
+.hero{background:var(--brand);color:#fff;padding:32px 20px 24px;text-align:center}
+.hero h1{font-size:26px;font-weight:800}
+.hero p{margin-top:6px;font-size:14px;opacity:.85}
+.chips{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600}
+
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;
+  position:sticky;top:0;z-index:10;display:flex;gap:6px;flex-wrap:wrap;overflow-x:auto}
+nav a{background:var(--brand-light);color:var(--brand);border-radius:20px;padding:5px 11px;
+  font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap}
+nav a:hover{background:var(--brand);color:#fff}
+
+.section{max-width:860px;margin:0 auto;padding:36px 16px}
+.section+.section{border-top:2px solid var(--border)}
+.eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--brand);margin-bottom:4px}
+h2{font-size:21px;font-weight:800;margin-bottom:6px}
+.intro{color:var(--text2);font-size:14px;margin-bottom:20px;max-width:540px}
+
+/* STEP GRID */
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+
+/* PHONE MOCKUP */
+.mockup{background:#1a1a1a;border-radius:24px 24px 0 0;padding:8px 8px 0;margin:0}
+.mockup-screen{background:#faf7f2;border-radius:18px 18px 0 0;overflow:hidden;min-height:260px;position:relative}
+
+/* screen UI elements */
+.sc-header{background:#fff;padding:12px 14px 8px;border-bottom:1px solid #e7e0d4}
+.sc-title{font-size:16px;font-weight:800;color:#1c1917}
+.sc-sub{font-size:11px;color:#78716c;margin-top:1px}
+.sc-mic{background:#dbeafe;border-radius:12px;margin:8px;padding:10px 12px;display:flex;align-items:center;gap:8px}
+.sc-mic.active{background:#2563eb}
+.sc-mic.active span{color:#fff;font-weight:700}
+.sc-mic-icon{font-size:16px}
+.sc-mic span{font-size:12px;color:#1e40af;font-weight:600}
+.sc-hint{font-size:10px;color:#78716c;margin:0 8px 6px;line-height:1.4}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:8px}
+.sc-stat{background:#fff;border:1px solid #e7e0d4;border-radius:10px;padding:8px 10px}
+.sc-stat-label{font-size:9px;color:#78716c;text-transform:uppercase;letter-spacing:.5px}
+.sc-stat-val{font-size:20px;font-weight:800;color:#1c1917}
+.sc-card{background:#d1fae5;border-radius:10px;margin:8px;padding:8px 10px}
+.sc-card-title{font-size:10px;font-weight:700;color:#059669;margin-bottom:4px;display:flex;justify-content:space-between}
+.sc-card-row{display:flex;justify-content:space-between;font-size:11px;color:#1c1917;padding:1px 0}
+.sc-card-row b{color:#059669}
+.sc-slider{background:#f0ebe3;border-radius:10px;margin:8px;padding:7px 10px;font-size:11px;color:#1e40af}
+.sc-add-btn{margin:8px;border:2px dashed #d6cfc5;border-radius:12px;padding:10px;text-align:center;font-size:13px;color:#78716c}
+.sc-input{background:#fff;margin:0 8px;border-bottom:1px solid #f0ebe3;padding:8px 6px;font-size:13px;color:#1c1917}
+.sc-btn{background:#059669;color:#fff;border:none;border-radius:10px;padding:8px;margin:8px;text-align:center;font-size:13px;font-weight:600;cursor:pointer}
+.sc-toggle{display:flex;gap:6px;margin:8px;background:#f0ebe3;border-radius:8px;padding:3px}
+.sc-toggle-option{flex:1;padding:6px;text-align:center;font-size:10px;font-weight:600;border-radius:6px;color:#78716c}
+.sc-toggle-option.active{background:#fff;color:#059669}
+.sc-milestone{background:#fff;margin:0 8px;border-bottom:1px solid #f0ebe3;padding:8px 6px;display:flex;align-items:center;gap:8px}
+.sc-milestone:last-child{border-bottom:none;margin-bottom:8px}
+.sc-milestone-badge{width:36px;height:36px;border-radius:8px;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.sc-milestone-text{flex:1;font-size:11px}
+.sc-milestone-label{font-size:9px;color:#78716c}
+.sc-tabs{background:#fff;border-top:1px solid #e7e0d4;display:flex;padding:6px 0 2px}
+.sc-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;color:#78716c;font-weight:600}
+.sc-tab.active{color:var(--brand)}
+.sc-tab-icon{font-size:18px}
+
+/* CARD BODY */
+.card-body{padding:14px}
+.step-num{width:24px;height:24px;border-radius:7px;background:var(--brand);color:#fff;
+  font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-bottom:6px}
+.card-body h3{font-size:14px;font-weight:700;margin-bottom:4px}
+.card-body p{font-size:12px;color:var(--text2);line-height:1.5}
+
+/* ANNOTATIONS */
+.ring{border:2px solid #dc2626;border-radius:8px;position:absolute;pointer-events:none}
+.callout{position:absolute;background:#dc2626;color:#fff;padding:6px 10px;border-radius:6px;font-size:10px;font-weight:600;white-space:nowrap;pointer-events:none}
+.callout.down::before{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:5px solid #dc2626}
+.callout.up::before{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #dc2626}
+.callout.left::before{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:5px solid #dc2626}
+.callout.right::before{content:'';position:absolute;left:-5px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:5px solid #dc2626}
+
+/* TIPS & BOXES */
+.tip{background:var(--blue-light);border-radius:12px;padding:12px 14px;margin:16px 0;font-size:12px;color:#1e40af;border-left:4px solid var(--blue)}
+.tip strong{color:var(--blue)}
+.tip.green{background:var(--green-light);border-left-color:var(--brand);color:#059669}
+.tip.green strong{color:var(--brand)}
+
+/* ACTION LIST */
+.annot-row{display:flex;gap:10px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.annot-row:last-child{border-bottom:none}
+.annot-num{width:22px;height:22px;border-radius:6px;background:var(--brand);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.annot-row strong{font-size:13px;display:block;margin-bottom:2px}
+.annot-row p{font-size:12px;color:var(--text2);margin:0}
+
+/* FOOTER */
+footer{text-align:center;padding:24px 20px;color:var(--text2);font-size:12px;border-top:2px solid var(--border);margin-top:36px}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <h1>DailyCashPlan</h1>
+  <p>See where you stand. Get a plan.</p>
+  <div class="chips">
+    <span class="chip">Voice-first entry</span>
+    <span class="chip">Offline first</span>
+    <span class="chip">No signup</span>
+  </div>
+</div>
+
+<!-- ═══ STICKY NAV ═══ -->
+<nav>
+  <a href="#start">Getting started</a>
+  <a href="#income">Add income</a>
+  <a href="#expenses">Add expenses</a>
+  <a href="#debts">Add debts</a>
+  <a href="#plan">View your plan</a>
+</nav>
+
+<!-- ═══ GETTING STARTED ═══ -->
+<section class="section" id="start">
+  <div class="eyebrow">Step 1</div>
+  <h2>💻 Open & launch</h2>
+  <p class="intro">Visit <strong>dailycashplan-app.html</strong> in Chrome on your phone. No account. No sign-up. Your data never leaves your device.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="mockup">
+        <div class="mockup-screen" style="position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px">
+          <div style="font-size:40px;margin-bottom:12px">✓</div>
+          <div class="sc-title" style="font-size:24px">DailyCashPlan</div>
+          <div style="font-size:12px;color:#78716c;margin:8px 0 24px">See where you stand. Get a plan.</div>
+          <div class="sc-btn" style="width:160px">Get started</div>
+          <div style="font-size:9px;color:#78716c;margin-top:16px">Your data stays on your device</div>
+          <div class="ring" style="top:40px;left:10px;right:10px;height:60px"></div>
+          <div class="callout down" style="top:102px;left:50%;transform:translateX(-50%)">Tap this button</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>The landing screen</h3>
+        <p>When you open the app, you'll see this welcome screen. Everything stays on your phone. Tap <strong>Get started</strong> to begin.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body" style="padding-top:16px">
+        <h3>Why no account?</h3>
+        <div style="margin-top:8px">
+          <div class="annot-row">
+            <div class="annot-num">1</div>
+            <div><strong>Faster entry</strong><p>Add your financial data in 5 minutes, not 20 minutes of sign-up forms.</p></div>
+          </div>
+          <div class="annot-row">
+            <div class="annot-num">2</div>
+            <div><strong>Your privacy</strong><p>No servers, no tracking, no selling your data to lenders or advertisers.</p></div>
+          </div>
+          <div class="annot-row">
+            <div class="annot-num">3</div>
+            <div><strong>Offline works</strong><p>After first load, the app works completely offline. No internet needed.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip green">💡 <strong>Mobile web:</strong> This works best in Chrome or Firefox on Android, Safari on iPhone. Open a regular browser and visit the link — it feels like a real app when you "Add to Home screen".</div>
+</section>
+
+<!-- ═══ ADD INCOME ═══ -->
+<section class="section" id="income">
+  <div class="eyebrow">Step 2</div>
+  <h2>💰 Add your income</h2>
+  <p class="intro">Enter your monthly income from all sources. Use voice or type it in — whichever is faster.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="mockup">
+        <div class="mockup-screen" style="position:relative">
+          <div class="sc-header"><div class="sc-title">Add income</div></div>
+          <div class="sc-mic active" style="margin-bottom:0"><span class="sc-mic-icon">🎙</span><span>Listening…</span></div>
+          <div class="sc-hint">Say: <em>"Primary job thirty-five hundred dollars"</em></div>
+          <div style="padding:8px 8px 2px;font-size:9px;color:#78716c;text-transform:uppercase;font-weight:700">Or pick a preset:</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin:6px 8px">
+            <div style="flex:1;padding:6px 8px;background:#f0ebe3;border-radius:8px;font-size:11px;font-weight:600;color:#78716c">Primary job</div>
+            <div style="flex:1;padding:6px 8px;background:#f0ebe3;border-radius:8px;font-size:11px;font-weight:600;color:#78716c">Side gig</div>
+          </div>
+          <div class="sc-input">Primary job</div>
+          <div class="sc-input" style="color:#9ca3af">$3,500/month</div>
+          <div class="sc-btn" style="margin-bottom:0">Add income</div>
+          <div class="ring" style="top:30px;right:10px;width:30px;height:30px;border-radius:50%"></div>
+          <div class="callout left" style="top:35px;right:50px">Tap mic to speak</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Voice or type</h3>
+        <p>Tap the <strong>🎙 microphone</strong> and say "Primary job thirty-five hundred dollars" or just type the name and amount. You can add multiple income sources.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="mockup">
+        <div class="mockup-screen" style="overflow:auto">
+          <div class="sc-header"><div class="sc-title">Your income</div><div class="sc-sub">Monthly</div></div>
+          <div style="padding:8px">
+            <div class="sc-card">
+              <div class="sc-card-title">💼 Primary job</div>
+              <div class="sc-card-row"><span>Hourly/salary</span><b>$3,500</b></div>
+            </div>
+            <div class="sc-card">
+              <div class="sc-card-title">🎨 Freelance</div>
+              <div class="sc-card-row"><span>Side gig</span><b>$600</b></div>
+            </div>
+            <div class="sc-card">
+              <div class="sc-card-title">👥 Partner income</div>
+              <div class="sc-card-row"><span>Partner's job</span><b>$2,200</b></div>
+            </div>
+          </div>
+          <div class="sc-stats">
+            <div class="sc-stat"><div class="sc-stat-label">Total monthly</div><div class="sc-stat-val">$6,300</div></div>
+            <div class="sc-stat"><div class="sc-stat-label">After taxes</div><div class="sc-stat-val">~$4,700</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>See your total</h3>
+        <p>The app shows all your income sources and estimates take-home pay. You can add, edit, or remove sources anytime by tapping them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ADD EXPENSES ═══ -->
+<section class="section" id="expenses">
+  <div class="eyebrow">Step 3</div>
+  <h2>🛒 Add your expenses</h2>
+  <p class="intro">Split your monthly spending into fixed costs (rent, insurance) and variable costs (groceries, gas). This shows where you can actually cut.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="mockup">
+        <div class="mockup-screen" style="position:relative">
+          <div class="sc-header"><div class="sc-title">Add expense</div><div class="sc-sub">What do you spend on?</div></div>
+          <div style="padding:8px 8px 2px;font-size:9px;color:#78716c;text-transform:uppercase;font-weight:700">Fixed or variable?</div>
+          <div class="sc-toggle">
+            <div class="sc-toggle-option active">Fixed</div>
+            <div class="sc-toggle-option">Variable</div>
+          </div>
+          <div class="sc-input">e.g. Rent, Mortgage</div>
+          <div class="sc-input" style="color:#9ca3af">$1,200</div>
+          <div class="sc-btn" style="margin-bottom:0">Add expense</div>
+          <div class="ring" style="top:60px;left:10px;right:10px;height:30px"></div>
+          <div class="callout down" style="top:92px;left:16px">Choose fixed or variable</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Fixed vs variable</h3>
+        <p><strong>Fixed:</strong> Stays the same every month (rent, insurance, loans).<br><strong>Variable:</strong> Changes month to month (food, gas, entertainment). You can often cut variable expenses.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="mockup">
+        <div class="mockup-screen" style="overflow:auto">
+          <div class="sc-header"><div class="sc-title">Your expenses</div><div class="sc-sub">Monthly spend</div></div>
+          <div style="padding:8px 0">
+            <div style="padding:0 8px 2px;font-size:9px;color:#78716c;text-transform:uppercase;font-weight:700">Fixed ($2,850/mo)</div>
+            <div class="sc-card" style="margin-bottom:2px">
+              <div class="sc-card-row"><span>Rent</span><b>$1,200</b></div>
+            </div>
+            <div class="sc-card" style="margin-bottom:2px">
+              <div class="sc-card-row"><span>Insurance</span><b>$450</b></div>
+            </div>
+            <div class="sc-card" style="margin-bottom:8px">
+              <div class="sc-card-row"><span>Utilities</span><b>$200</b></div>
+            </div>
+            <div style="padding:0 8px 2px;font-size:9px;color:#78716c;text-transform:uppercase;font-weight:700">Variable ($1,200/mo)</div>
+            <div class="sc-card" style="margin-bottom:2px">
+              <div class="sc-card-row"><span>Groceries</span><b>$600</b></div>
+            </div>
+            <div class="sc-card" style="margin-bottom:2px">
+              <div class="sc-card-row"><span>Gas</span><b>$300</b></div>
+            </div>
+            <div class="sc-card">
+              <div class="sc-card-row"><span>Entertainment</span><b>$300</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Your spending breakdown</h3>
+        <p>Fixed costs are the hard baseline. Variable costs are where real cuts happen. The app shows exactly which expenses are eating your budget.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">💡 <strong>Quick wins:</strong> Start by cutting the easiest variable expense (subscriptions, entertainment) and see how fast debt melts away.</div>
+</section>
+
+<!-- ═══ ADD DEBTS ═══ -->
+<section class="section" id="debts">
+  <div class="eyebrow">Step 4</div>
+  <h2>💳 Add your debts</h2>
+  <p class="intro">List every debt: credit cards, car loans, student loans, medical bills. The app will show you which strategy pays them off fastest.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="mockup">
+        <div class="mockup-screen" style="position:relative">
+          <div class="sc-header"><div class="sc-title">Add a debt</div><div class="sc-sub">Credit card, loan, bill</div></div>
+          <div class="sc-mic"><span class="sc-mic-icon">🎙</span><span>Tap to speak</span></div>
+          <div class="sc-hint">Say: <em>"Credit card twenty-three hundred at 18 percent"</em></div>
+          <div class="sc-input">e.g. Credit Card</div>
+          <div class="sc-input" style="color:#9ca3af">$2,300 balance</div>
+          <div class="sc-input" style="color:#9ca3af">18% interest rate</div>
+          <div class="sc-btn">Add debt</div>
+          <div class="ring" style="top:30px;right:10px;width:30px;height:30px;border-radius:50%"></div>
+          <div class="callout left" style="top:35px;right:50px">Voice is faster</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Capture all debts</h3>
+        <p>Use voice to list debts faster: "Credit card twenty-three hundred at 18 percent" or type it in. Include the balance, interest rate, and minimum payment.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="mockup">
+        <div class="mockup-screen" style="overflow:auto">
+          <div class="sc-header"><div class="sc-title">Your debts</div><div class="sc-sub">Total: $8,400</div></div>
+          <div style="padding:8px">
+            <div class="sc-card">
+              <div class="sc-card-title">💳 Credit Card (Bank of America)</div>
+              <div class="sc-card-row"><span>Balance</span><b>$2,300</b></div>
+              <div class="sc-card-row"><span>Interest</span><b>18%</b></div>
+              <div class="sc-card-row"><span>Min payment</span><b>$69</b></div>
+            </div>
+            <div class="sc-card">
+              <div class="sc-card-title">🚗 Car Loan</div>
+              <div class="sc-card-row"><span>Balance</span><b>$4,200</b></div>
+              <div class="sc-card-row"><span>Interest</span><b>6%</b></div>
+              <div class="sc-card-row"><span>Min payment</span><b>$156</b></div>
+            </div>
+            <div class="sc-card">
+              <div class="sc-card-title">🏥 Medical Bill</div>
+              <div class="sc-card-row"><span>Balance</span><b>$1,900</b></div>
+              <div class="sc-card-row"><span>Interest</span><b>0%</b></div>
+              <div class="sc-card-row"><span>Min payment</span><b>$95</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Your debt list</h3>
+        <p>Each debt shows the balance, interest rate, and minimum payment. The app uses this to calculate which payoff strategy works best for <em>you</em>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip green">🎯 <strong>Minimum vs. extra:</strong> The app assumes you can pay more than the minimums. If you can only pay minimums, the payoff will take much longer — this is why cutting expenses matters.</div>
+</section>
+
+<!-- ═══ YOUR PLAN ═══ -->
+<section class="section" id="plan">
+  <div class="eyebrow">Step 5</div>
+  <h2>🎯 See your payoff plan</h2>
+  <p class="intro">The app compares two strategies side by side: <strong>Snowball</strong> (small wins) vs <strong>Avalanche</strong> (save money). It recommends the best one for your situation.</p>
+
+  <div class="grid" style="grid-template-columns:1fr 1fr">
+    <div class="card">
+      <div class="mockup">
+        <div class="mockup-screen" style="position:relative;overflow:auto;min-height:380px">
+          <div class="sc-header"><div class="sc-title">Your plan</div></div>
+          <div class="sc-card" style="background:#fef3c7;border-color:#b45309">
+            <div style="font-size:11px;color:#b45309;font-weight:700">✓ Best for you: Avalanche</div>
+            <div style="font-size:10px;color:#b45309;margin-top:2px">Saves $1,247 in interest • 3 months sooner</div>
+          </div>
+          <div class="sc-toggle" style="margin-top:8px">
+            <div class="sc-toggle-option">❄️ Snowball</div>
+            <div class="sc-toggle-option active">🏔️ Avalanche</div>
+          </div>
+          <div style="background:#dbeafe;border-radius:10px;margin:8px;padding:8px">
+            <div style="font-size:10px;font-weight:600;color:#1e40af">💰 What if you paid more?</div>
+            <div style="height:4px;background:#e0e7ff;border-radius:2px;margin:6px 0;position:relative">
+              <div style="position:absolute;width:14px;height:14px;background:#2563eb;border-radius:50%;left:65%;top:-5px;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.2)"></div>
+            </div>
+            <div style="font-size:13px;font-weight:700;text-align:center;color:#2563eb">$950/mo</div>
+            <div style="font-size:9px;color:#059669;background:#d1fae5;border-radius:6px;padding:6px;margin-top:4px;text-align:center"><strong>+$200/mo → 5 months sooner</strong>, saves $680</div>
+          </div>
+          <div style="font-size:10px;font-weight:700;margin:8px 8px 4px;color:#78716c">📅 Milestones</div>
+          <div class="sc-milestone">
+            <div class="sc-milestone-badge">3mo</div>
+            <div class="sc-milestone-text"><strong>✅ 1 debt paid off</strong><div class="sc-milestone-label">Medical bill</div></div>
+          </div>
+          <div class="sc-milestone">
+            <div class="sc-milestone-badge">6mo</div>
+            <div class="sc-milestone-text"><strong>✅ 2 debts paid off</strong><div class="sc-milestone-label">Credit card cleared</div></div>
+          </div>
+          <div class="sc-milestone">
+            <div class="sc-milestone-badge">16mo</div>
+            <div class="sc-milestone-text"><strong>🎉 Debt free!</strong><div class="sc-milestone-label">Car loan paid off</div></div>
+          </div>
+          <div class="ring" style="top:130px;left:10px;right:10px;height:50px"></div>
+          <div class="callout down" style="top:182px;left:16px">Drag to see "what if" scenarios</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <h3>Interactive payoff plan</h3>
+        <p>Drag the slider to see how paying $100 more (or less) changes your debt-free date and total interest. Most apps show one static number. This one lets you play with scenarios.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body" style="padding-top:16px">
+        <h3>Understanding your options</h3>
+        <div style="margin-top:8px">
+          <div class="annot-row">
+            <div class="annot-num" style="background:#2563eb">1</div>
+            <div><strong>❄️ Snowball strategy</strong><p>Pay off smallest debts first for quick wins and motivation. Takes longer but feels like progress.</p></div>
+          </div>
+          <div class="annot-row">
+            <div class="annot-num" style="background:#059669">2</div>
+            <div><strong>🏔️ Avalanche strategy</strong><p>Pay highest interest first to save the most money overall. Mathematically optimal.</p></div>
+          </div>
+          <div class="annot-row">
+            <div class="annot-num" style="background:#2563eb">3</div>
+            <div><strong>💰 Adjust your payment</strong><p>Drag the slider to model different monthly payment amounts. See the impact instantly.</p></div>
+          </div>
+          <div class="annot-row">
+            <div class="annot-num" style="background:#059669">4</div>
+            <div><strong>📅 Track milestones</strong><p>Know exactly which debts get paid at 3, 6, 12, 16 months — feel the progress.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">💡 <strong>Pro move:</strong> Combine the slider with cutting one variable expense. See how a $100 cut + $50 extra payment = debt-free 6 months faster. Small changes compound.</div>
+</section>
+
+<!-- ═══ WHAT YOU CAN DO ═══ -->
+<section class="section">
+  <div class="eyebrow">Features</div>
+  <h2>✨ What makes DailyCashPlan different</h2>
+  <p class="intro">Not a spreadsheet. Not a form. A tool that gets out of your way.</p>
+
+  <div class="grid" style="grid-template-columns:1fr 1fr">
+    <div class="card">
+      <div class="card-body">
+        <div class="annot-row">
+          <div class="annot-num">1</div>
+          <div><strong>Voice entry</strong><p>Say "Credit card twenty-three hundred at eighteen percent" instead of typing. Fast and natural.</p></div>
+        </div>
+        <div class="annot-row">
+          <div class="annot-num">2</div>
+          <div><strong>See what you can cut</strong><p>Fixed vs variable expense split shows exactly where the budget room is.</p></div>
+        </div>
+        <div class="annot-row">
+          <div class="annot-num">3</div>
+          <div><strong>Interactive what-if slider</strong><p>Drag to instantly see how cutting $100 or adding $50 changes your debt-free date and interest paid.</p></div>
+        </div>
+        <div class="annot-row">
+          <div class="annot-num">4</div>
+          <div><strong>Milestone timeline</strong><p>Not just "16 months"— see which debts pay off at 3mo, 6mo, 12mo. Progress bars make it feel real.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="annot-row">
+          <div class="annot-num">5</div>
+          <div><strong>100% private</strong><p>No account. No cloud. No bank login. Your data never leaves your phone. Ever.</p></div>
+        </div>
+        <div class="annot-row">
+          <div class="annot-num">6</div>
+          <div><strong>Snowball + Avalanche</strong><p>See both strategies side by side. Get a recommendation, but you choose.</p></div>
+        </div>
+        <div class="annot-row">
+          <div class="annot-num">7</div>
+          <div><strong>Works offline</strong><p>After first load, no internet needed. Use it anywhere, anytime.</p></div>
+        </div>
+        <div class="annot-row">
+          <div class="annot-num">8</div>
+          <div><strong>Pay once, forever</strong><p>$4.99 one-time purchase. No subscription. No tracking. No upsells.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+DailyCashPlan · See where you stand. Get a plan.<br>
+All your data stays on your device · Works offline after first load<br>
+Best in Chrome (Android) or Safari (iPhone) · Works in Firefox on desktop
+</footer>
+
+</body>
+</html>
