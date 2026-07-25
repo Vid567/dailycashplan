@@ -1,0 +1,51 @@
+name: Connect beta signup to Google Sheets
+
+on:
+  push:
+    branches:
+      - friendly-copy-beta-signup
+    paths:
+      - .github/workflows/connect-beta-sheet.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-beta-form:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: friendly-copy-beta-signup
+
+      - name: Connect signup form
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('dailycashplan-app-v4.html')
+          text = path.read_text(encoding='utf-8')
+          endpoint = 'https://script.google.com/macros/s/AKfycbz_ThEuGBN20RWo_RFHPBmhkTlPnINtISxXTwWM9P-XWZifF8ntVwLGWtar33xFFwxA/exec'
+
+          replacement = r'''async function submitBetaSignup(){let email=$('betaEmail').value.trim(),firstName=$('betaName').value.trim(),phone=$('betaPhone').value.trim(),struggle=$('betaStruggle').value;if(!/^\S+@\S+\.\S+$/.test(email))return toastMsg('Please enter a valid email address.');if(!struggle)return toastMsg('Please choose your biggest money struggle.');let button=$('betaModal').querySelector('.btn-primary'),original=button.textContent;button.disabled=true;button.textContent='Joining…';let signup={email,firstName,phone,struggle,source:'DailyCashPlan web app',joinedAt:new Date().toISOString()};try{await fetch(''' + repr(endpoint) + r''',{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(signup)});localStorage.setItem('dailyCashPlanBetaSignup',JSON.stringify(signup));data.betaDismissed=true;save();closeBetaModal();renderPlan();toastMsg('You’re in! Welcome to the beta 🎉')}catch(error){toastMsg('We could not save your signup. Please try again.')}finally{button.disabled=false;button.textContent=original}}function dismissBeta'''
+
+          updated, count = re.subn(
+              r'function submitBetaSignup\(\)\{.*?\}function dismissBeta',
+              replacement,
+              text,
+              count=1,
+              flags=re.S,
+          )
+          if count != 1:
+              raise SystemExit('Could not locate submitBetaSignup function')
+          path.write_text(updated, encoding='utf-8')
+          PY
+
+      - name: Commit update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dailycashplan-app-v4.html
+          git diff --cached --quiet || git commit -m "Send beta signups to Google Sheets"
+          git push origin friendly-copy-beta-signup
