@@ -1,760 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-28DSN28MXG"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-28DSN28MXG'); </script> 
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-28DSN28MXG"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-28DSN28MXG');
+</script>
 <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "xrj14sg162");
-</script><meta charset="UTF-8">
+(function(c,l,a,r,i,t,y){
+  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "xrj14sg162");
+</script>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DailyCashPlan — See where you stand. Get a plan.</title>
+<meta name="description" content="DailyCashPlan helps you understand your income, expenses and debts in minutes, so you can feel calmer and more in control of your money.">
+<title>DailyCashPlan — Take control of your money, one step at a time</title>
 <style>
-:root {
-  --green: #059669;
-  --green-light: #d1fae5;
-  --green-dark: #047857;
-  --blue: #2563eb;
-  --blue-light: #dbeafe;
-  --amber: #d97706;
-  --amber-light: #fef3c7;
-  --red: #dc2626;
-  --text: #1c1917;
-  --text2: #78716c;
-  --text3: #9ca3af;
-  --border: #e7e0d4;
-  --bg: #faf7f2;
-  --surface: #fff;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-}
-
-a { color: var(--green); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-.container { max-width: 860px; margin: 0 auto; padding: 20px; }
-
-/* HEADER */
-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  padding: 16px 0;
-  margin-bottom: 32px;
-  sticky: top 0;
-}
-
-.header-nav {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.header-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--green);
-}
-
-.header-links {
-  display: flex;
-  gap: 12px;
-}
-
-.header-links a {
-  padding: 8px 14px;
-  background: var(--green-light);
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--green);
-}
-
-.header-links a:hover {
-  background: var(--green);
-  color: white;
-  text-decoration: none;
-}
-
-/* HERO */
-.hero {
-  text-align: center;
-  padding: 40px 0 48px;
-}
-
-.hero h1 {
-  font-size: 42px;
-  font-weight: 800;
-  letter-spacing: -1px;
-  line-height: 1.2;
-  margin-bottom: 16px;
-  color: var(--text);
-}
-
-.hero p {
-  font-size: 18px;
-  color: var(--text2);
-  max-width: 540px;
-  margin: 0 auto 32px;
-  line-height: 1.5;
-}
-
-.hero-cta {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 14px 24px;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.15s;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary {
-  background: var(--green);
-  color: white;
-}
-
-.btn-primary:hover {
-  background: var(--green-dark);
-}
-
-.btn-secondary {
-  background: var(--green-light);
-  color: var(--green);
-}
-
-.btn-secondary:hover {
-  background: var(--green);
-  color: white;
-}
-
-/* SECTION */
-section {
-  margin-bottom: 56px;
-  border-top: 2px solid var(--border);
-  padding-top: 40px;
-}
-
-section h2 {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 16px;
-}
-
-section > p {
-  font-size: 16px;
-  color: var(--text2);
-  max-width: 600px;
-  margin-bottom: 24px;
-  line-height: 1.6;
-}
-
-/* FEATURES GRID */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.feature {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-}
-
-.feature-icon {
-  font-size: 32px;
-  margin-bottom: 12px;
-}
-
-.feature h3 {
-  font-size: 17px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.feature p {
-  font-size: 14px;
-  color: var(--text2);
-  line-height: 1.5;
-}
-
-/* MOCKUP */
-.mockup-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin: 32px 0;
-}
-
-.mockup {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  text-align: center;
-}
-
-.mockup-frame {
-  background: #1a1a1a;
-  border-radius: 20px;
-  padding: 8px;
-  max-width: 240px;
-  margin: 0 auto;
-}
-
-.mockup-screen {
-  background: var(--bg);
-  border-radius: 16px;
-  padding: 16px;
-  font-size: 12px;
-  min-height: 300px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.mockup-title {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 12px;
-  text-align: left;
-}
-
-.mockup-stat {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 8px;
-  text-align: left;
-}
-
-.mockup-stat-label {
-  font-size: 9px;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-bottom: 2px;
-}
-
-.mockup-stat-value {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-}
-
-.mockup-card {
-  background: var(--green-light);
-  border: 1.5px solid var(--green);
-  border-radius: 8px;
-  padding: 8px;
-  margin-top: 12px;
-  text-align: left;
-}
-
-.mockup-card-title {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--green-dark);
-  margin-bottom: 4px;
-}
-
-.mockup-card-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-
-.mockup-card-row:last-child { margin-bottom: 0; }
-
-.mockup-caption {
-  font-size: 13px;
-  color: var(--text2);
-  margin-top: 12px;
-}
-
-@media (max-width: 640px) {
-  .mockup-container {
-    grid-template-columns: 1fr;
-  }
-  .hero h1 {
-    font-size: 32px;
-  }
-}
-
-/* STEPS */
-.steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.step {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.step-num {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: var(--green);
-  color: white;
-  border-radius: 8px;
-  font-weight: 800;
-  font-size: 16px;
-  margin-bottom: 12px;
-}
-
-.step h3 {
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.step p {
-  font-size: 13px;
-  color: var(--text2);
-  line-height: 1.5;
-}
-
-/* COMPARISON */
-.comparison {
-  overflow-x: auto;
-  margin: 24px 0;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-th {
-  text-align: left;
-  padding: 12px;
-  background: var(--green-light);
-  font-weight: 600;
-  color: var(--green-dark);
-}
-
-td {
-  padding: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-td:first-child { font-weight: 500; }
-
-.check { color: var(--green); font-weight: 700; }
-.cross { color: var(--text3); }
-
-/* PRICE */
-.price-box {
-  background: var(--amber-light);
-  border: 2px solid var(--amber);
-  border-radius: 16px;
-  padding: 28px;
-  text-align: center;
-  max-width: 400px;
-  margin: 32px auto;
-}
-
-.price-box h3 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--amber);
-  margin-bottom: 8px;
-}
-
-.price-box .price {
-  font-size: 42px;
-  font-weight: 800;
-  color: var(--text);
-  margin: 0;
-}
-
-.price-box p {
-  font-size: 13px;
-  color: var(--text2);
-  margin-top: 8px;
-}
-
-/* FOOTER */
-footer {
-  text-align: center;
-  padding: 32px 0;
-  color: var(--text3);
-  font-size: 13px;
-  border-top: 2px solid var(--border);
-  margin-top: 56px;
-}
-
-.tag { display: inline-block; background: var(--green-light); color: var(--green); padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-bottom: 12px; }
+:root{--green:#059669;--green-light:#d1fae5;--green-dark:#047857;--blue:#2563eb;--blue-light:#dbeafe;--amber:#d97706;--amber-light:#fef3c7;--red:#dc2626;--red-light:#fee2e2;--text:#1c1917;--text2:#78716c;--text3:#9ca3af;--border:#e7e0d4;--bg:#faf7f2;--surface:#fff}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:var(--green);text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:900px;margin:0 auto;padding:20px}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;position:sticky;top:0;z-index:20}
+.header-nav{display:flex;gap:16px;align-items:center;justify-content:space-between;max-width:900px;margin:0 auto;padding:0 20px}
+.header-title{font-size:18px;font-weight:800;color:var(--green)}
+.header-links{display:flex;gap:10px;align-items:center}.header-links a{padding:8px 14px;background:var(--green-light);border-radius:20px;font-size:14px;font-weight:600;color:var(--green)}.header-links a:hover{background:var(--green);color:#fff;text-decoration:none}
+.trust{background:var(--green-light);border-bottom:2px solid var(--green);padding:12px 20px;text-align:center;font-size:14px;color:var(--green-dark);font-weight:600}
+.hero{text-align:center;padding:64px 20px 56px;border-top:0}.hero .eyebrow{display:inline-block;background:var(--green-light);color:var(--green-dark);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:18px}.hero h1{font-size:46px;font-weight:800;letter-spacing:-1.3px;line-height:1.12;margin-bottom:18px}.hero p{font-size:19px;color:var(--text2);max-width:640px;margin:0 auto 30px;line-height:1.55}.hero-note{font-size:13px!important;color:var(--text3)!important;margin-top:16px!important;margin-bottom:0!important}.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:14px 24px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:.15s;border:none;cursor:pointer}.btn:hover{text-decoration:none;transform:translateY(-1px)}.btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-dark)}.btn-secondary{background:var(--green-light);color:var(--green-dark)}.btn-secondary:hover{background:var(--green);color:#fff}
+section{margin-bottom:60px;border-top:2px solid var(--border);padding-top:44px}section h2{font-size:30px;font-weight:800;letter-spacing:-.5px;margin-bottom:12px}section>p{font-size:16px;color:var(--text2);max-width:650px;margin-bottom:26px}.center{text-align:center}.center>p{margin-left:auto;margin-right:auto}
+.steps,.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}.step,.feature{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px}.step-num{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--green);color:#fff;border-radius:9px;font-weight:800;margin-bottom:13px}.step h3,.feature h3{font-size:17px;margin-bottom:7px}.step p,.feature p{font-size:14px;color:var(--text2);line-height:1.55}.feature-icon{font-size:30px;margin-bottom:10px}
+.mockups{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:28px}.mockup{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px}.mockup h3{font-size:17px;margin-bottom:6px}.mockup>p{font-size:13px;color:var(--text2);margin-bottom:15px}.screen{background:#f8faf9;border:1px solid var(--border);border-radius:14px;padding:14px}.stat{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px}.label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px}.value{font-size:18px;font-weight:800}.result{background:var(--green-light);border:1.5px solid var(--green);border-radius:10px;padding:12px;margin-top:10px;color:var(--green-dark);font-size:13px}.result strong{font-size:16px}
+.comparison{overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:16px}table{width:100%;border-collapse:collapse;font-size:13px;min-width:700px}th{text-align:left;padding:13px;background:var(--green-light);color:var(--green-dark)}td{padding:13px;border-bottom:1px solid var(--border)}td:first-child{font-weight:600}.check{color:var(--green);font-weight:800}.cross{color:var(--text3)}
+.price-box{background:var(--amber-light);border:2px solid var(--amber);border-radius:18px;padding:30px;text-align:center;max-width:430px;margin:28px auto}.price-box h3{font-size:17px;color:#92400e}.price{font-size:44px;font-weight:800;line-height:1.2;margin:6px 0}.price-box p{font-size:14px;color:var(--text2)}
+.reassurance{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:26px;margin-top:28px}.reassurance h3{margin-bottom:8px}.reassurance p{color:var(--text2);font-size:14px}
+.final-cta{background:var(--green-dark);color:#fff;border-radius:20px;padding:38px 24px;text-align:center}.final-cta h2{color:#fff;margin-bottom:10px}.final-cta p{color:#d1fae5;margin:0 auto 22px}.final-cta .btn-primary{background:#fff;color:var(--green-dark)}
+footer{text-align:center;padding:34px 0;color:var(--text3);font-size:13px;border-top:2px solid var(--border);margin-top:60px}
+@media(max-width:680px){.header-links a:first-child{display:none}.hero{padding-top:48px}.hero h1{font-size:34px}.hero p{font-size:17px}.mockups{grid-template-columns:1fr}section h2{font-size:26px}}
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
 <header>
   <div class="header-nav">
     <div class="header-title">💰 DailyCashPlan</div>
     <div class="header-links">
-      <a href="#guide">Guide</a>
-      <a href="dailycashplan-app.html">Open app →</a>
+      <a href="DailyCashPlan-Guide-v2.html">Guide</a>
+      <a href="dailycashplan-app.html">Start free →</a>
     </div>
   </div>
 </header>
 
-<!-- TRUST BANNER -->
-<div style="background:#d1fae5;border-bottom:2px solid var(--green);padding:12px 20px;text-align:center;font-size:14px;color:var(--green-dark);font-weight:500">
-  🔒 All your data lives on your device. No servers. No tracking. No cloud.
-</div>
+<div class="trust">🔒 No account or bank connection needed. Your financial data stays on your device.</div>
 
-<!-- HERO -->
 <section class="hero container">
-  <h1>See where you stand.<br>Get a plan.</h1>
-  <p>You're drowning in debt. You've tried apps that cost $15/month, spreadsheets that confused you, and strategies that didn't work. This tool gives you one clear answer: when you're debt-free, and how to get there.</p>
+  <div class="eyebrow">A calmer way to understand your money</div>
+  <h1>Take control of your money,<br>one step at a time.</h1>
+  <p>DailyCashPlan helps you understand your income, expenses and debts in minutes, so you can stop guessing and start feeling in control.</p>
   <div class="hero-cta">
-    <a href="dailycashplan-app.html" class="btn btn-primary">💰 Open DailyCashPlan</a>
-    <a href="DailyCashPlan-Guide-v2.html" class="btn btn-secondary">📖 Read the guide</a>
+    <a href="dailycashplan-app.html" class="btn btn-primary">💰 Start free</a>
+    <a href="DailyCashPlan-Guide-v2.html" class="btn btn-secondary">📖 See how it works</a>
+  </div>
+  <p class="hero-note">No signup. No monthly subscription. Start with the sample numbers and replace them with your own when you are ready.</p>
+</section>
+
+<main class="container">
+<section id="how">
+  <h2>See your whole money picture in one place</h2>
+  <p>You do not need another complicated budget. Add a few simple numbers and DailyCashPlan turns them into a clear overview and a realistic path forward.</p>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><h3>Add what comes in</h3><p>Enter your monthly income from work, benefits, side jobs or any other source.</p></div>
+    <div class="step"><div class="step-num">2</div><h3>Add what goes out</h3><p>Separate fixed bills from flexible spending so you can see where changes may be possible.</p></div>
+    <div class="step"><div class="step-num">3</div><h3>Add what you owe</h3><p>List your debts, balances, interest rates and minimum payments without connecting a bank account.</p></div>
+    <div class="step"><div class="step-num">4</div><h3>See your next steps</h3><p>Compare payoff methods, explore different payments and see when each debt could be cleared.</p></div>
   </div>
 </section>
 
-<div class="container">
-
-<!-- WHAT IT DOES -->
-<section id="what">
-  <h2>What you do</h2>
-  <p>Three simple inputs. One clear answer.</p>
-
-  <div class="mockup-container">
+<section id="overview">
+  <h2>From scattered numbers to a clear plan</h2>
+  <p>DailyCashPlan brings the information together, then shows what it means in plain English.</p>
+  <div class="mockups">
     <div class="mockup">
-      <div class="mockup-frame">
-        <div class="mockup-screen">
-          <div class="mockup-title">💰 Add income</div>
-          <div class="mockup-stat">
-            <div class="mockup-stat-label">Primary job</div>
-            <div class="mockup-stat-value">$3,500</div>
-          </div>
-          <div class="mockup-stat">
-            <div class="mockup-stat-label">Side gig</div>
-            <div class="mockup-stat-value">$600</div>
-          </div>
-          <div class="mockup-stat">
-            <div class="mockup-stat-label">Total monthly</div>
-            <div class="mockup-stat-value" style="color:var(--green)">$4,100</div>
-          </div>
-        </div>
+      <h3>💰 Your money at a glance</h3>
+      <p>See what comes in, what goes out and what may be available.</p>
+      <div class="screen">
+        <div class="stat"><div class="label">Monthly income</div><div class="value">$4,100</div></div>
+        <div class="stat"><div class="label">Monthly expenses</div><div class="value">$2,415</div></div>
+        <div class="stat"><div class="label">Available after expenses</div><div class="value" style="color:var(--green)">$1,685</div></div>
       </div>
-      <div class="mockup-caption">Step 1: Your income (all sources)</div>
     </div>
-
     <div class="mockup">
-      <div class="mockup-frame">
-        <div class="mockup-screen">
-          <div class="mockup-title">🛒 Your expenses</div>
-          <div class="mockup-stat">
-            <div class="mockup-stat-label">Fixed ($1,630/mo)</div>
-            <div style="font-size:10px;color:var(--text2);margin-top:4px">Rent, insurance, utilities</div>
-          </div>
-          <div class="mockup-stat" style="margin-top:12px">
-            <div class="mockup-stat-label">Variable ($785/mo)</div>
-            <div style="font-size:10px;color:var(--text2);margin-top:4px">Groceries, gas, subscriptions</div>
-          </div>
-          <div class="mockup-stat" style="margin-top:12px;background:var(--green-light)">
-            <div class="mockup-stat-label">Available to pay debt</div>
-            <div class="mockup-stat-value" style="color:var(--green)">$685/mo</div>
-          </div>
-        </div>
+      <h3>🎯 Your path to debt-free</h3>
+      <p>Understand the tradeoffs without doing the calculations yourself.</p>
+      <div class="screen">
+        <div class="stat"><div class="label">Total debt</div><div class="value">$17,700</div></div>
+        <div class="result"><strong>Best fit: Avalanche</strong><br>Lower interest cost · estimated debt-free in 16 months</div>
+        <div class="stat" style="margin-top:8px"><div class="label">Milestones</div><div style="font-size:13px;margin-top:5px">3 months — first debt cleared<br>8 months — credit card cleared<br>16 months — debt-free</div></div>
       </div>
-      <div class="mockup-caption">Step 2: Fixed vs variable expenses</div>
-    </div>
-  </div>
-
-  <div class="mockup-container">
-    <div class="mockup">
-      <div class="mockup-frame">
-        <div class="mockup-screen">
-          <div class="mockup-title">💳 Your debts</div>
-          <div class="mockup-stat">
-            <div class="mockup-stat-label">Credit card</div>
-            <div style="font-size:11px;margin-top:4px"><strong>$3,200</strong> @ 18%</div>
-          </div>
-          <div class="mockup-stat" style="margin-top:8px">
-            <div class="mockup-stat-label">Car loan</div>
-            <div style="font-size:11px;margin-top:4px"><strong>$12,400</strong> @ 5.9%</div>
-          </div>
-          <div class="mockup-stat" style="margin-top:8px">
-            <div class="mockup-stat-label">Medical bill</div>
-            <div style="font-size:11px;margin-top:4px"><strong>$2,100</strong> @ 0%</div>
-          </div>
-          <div class="mockup-stat" style="margin-top:8px;background:var(--red-light)">
-            <div class="mockup-stat-label">Total debt</div>
-            <div style="font-size:16px;font-weight:700;color:var(--red);margin-top:2px">$17,700</div>
-          </div>
-        </div>
-      </div>
-      <div class="mockup-caption">Step 3: Everything you owe</div>
-    </div>
-
-    <div class="mockup">
-      <div class="mockup-frame">
-        <div class="mockup-screen">
-          <div class="mockup-title">🎯 Your plan</div>
-          <div class="mockup-card">
-            <div class="mockup-card-title">🏔️ Best strategy: Avalanche</div>
-            <div class="mockup-card-row"><span>Saves in interest:</span><strong>$1,247</strong></div>
-            <div class="mockup-card-row"><span>Debt-free:</span><strong>16 months</strong></div>
-          </div>
-          <div style="margin-top:12px;font-size:10px;font-weight:700;color:var(--text2)">📅 Milestones:</div>
-          <div style="margin-top:6px;font-size:10px;color:var(--text);line-height:1.6">
-            <div>✅ <strong>3mo</strong> — Medical bill paid</div>
-            <div>✅ <strong>8mo</strong> — Credit card cleared</div>
-            <div>🎉 <strong>16mo</strong> — Debt free</div>
-          </div>
-        </div>
-      </div>
-      <div class="mockup-caption">Step 4: Your exact debt-free date</div>
     </div>
   </div>
 </section>
 
-<!-- WHY IT'S DIFFERENT -->
 <section id="why">
-  <h2>Why it's different</h2>
-  <p>Not another subscription trap. Not a complex calculator. Just clarity.</p>
-
-  <div class="features-grid">
-    <div class="feature">
-      <div class="feature-icon">🎤</div>
-      <h3>Voice entry</h3>
-      <p>Say "Credit card twenty-three hundred at eighteen percent." No typing. No friction. Just speak.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">✂️</div>
-      <h3>Fixed vs variable split</h3>
-      <p>See exactly what you can cut. Variable expenses are where real cuts happen. Most apps hide this.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">💰</div>
-      <h3>Interactive "what if" slider</h3>
-      <p>Drag to see: pay $50 more/month? Debt-free 5 months sooner, save $680. See impact instantly.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">🏔️</div>
-      <h3>Both strategies compared</h3>
-      <p>Snowball (small wins) vs Avalanche (save money). See both side by side. We recommend the best one.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">📅</div>
-      <h3>Milestone timeline</h3>
-      <p>Not just "16 months." See which debts die at 3mo, 8mo, 16mo. Milestones matter psychologically.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">🔒</div>
-      <h3>100% private</h3>
-      <p>No account. No cloud. No bank login. Your data never leaves your phone. Ever.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">⚡</div>
-      <h3>Works offline</h3>
-      <p>After first load, no internet needed. Use it on a plane, in the woods, anywhere.</p>
-    </div>
-
-    <div class="feature">
-      <div class="feature-icon">💵</div>
-      <h3>Pay once, forever</h3>
-      <p>$14.99. One time. You own it. Not another $15/month subscription.</p>
-    </div>
+  <h2>Designed to give you clarity, not more stress</h2>
+  <p>No judgement. No financial jargon. Just a practical tool that helps you understand where you are and what you can do next.</p>
+  <div class="features">
+    <div class="feature"><div class="feature-icon">🎤</div><h3>Speak or type</h3><p>Use voice entry when it is easier, or enter each amount manually. You stay in control.</p></div>
+    <div class="feature"><div class="feature-icon">👀</div><h3>See where your money goes</h3><p>Fixed and flexible expenses are shown separately, making your options easier to understand.</p></div>
+    <div class="feature"><div class="feature-icon">↔️</div><h3>Try different possibilities</h3><p>Move the sliders to see how a higher or lower monthly payment changes your timeline.</p></div>
+    <div class="feature"><div class="feature-icon">❄️</div><h3>Choose a method that fits you</h3><p>Compare Snowball for quicker wins with Avalanche for lower interest costs.</p></div>
+    <div class="feature"><div class="feature-icon">📅</div><h3>Follow meaningful milestones</h3><p>See which debts may be cleared first instead of staring at one distant final date.</p></div>
+    <div class="feature"><div class="feature-icon">🔒</div><h3>Your numbers stay private</h3><p>No account, cloud storage or bank login. Your financial entries remain in your browser on your device.</p></div>
+    <div class="feature"><div class="feature-icon">⚡</div><h3>Works without constant internet</h3><p>After the first load, the app can continue working offline in supported browsers.</p></div>
+    <div class="feature"><div class="feature-icon">🌱</div><h3>Start small</h3><p>You do not have to fix everything today. Begin with the numbers you know and improve your overview step by step.</p></div>
   </div>
 </section>
 
-<!-- COMPARISON -->
 <section id="compare">
-  <h2>How it compares</h2>
-
+  <h2>A simpler alternative to complex finance tools</h2>
+  <p>DailyCashPlan focuses on one job: helping you understand your cash flow and build a practical debt payoff view without a difficult setup.</p>
   <div class="comparison">
     <table>
-      <tr>
-        <th>Feature</th>
-        <th>DailyCashPlan</th>
-        <th>Debt Payoff Planner</th>
-        <th>Undebt.it</th>
-        <th>YNAB</th>
-      </tr>
-      <tr>
-        <td>Voice input</td>
-        <td class="check">✓</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-      </tr>
-      <tr>
-        <td>Fixed vs variable split</td>
-        <td class="check">✓</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-      </tr>
-      <tr>
-        <td>"What if" sliders</td>
-        <td class="check">✓</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-      </tr>
-      <tr>
-        <td>Snowball + Avalanche</td>
-        <td class="check">✓</td>
-        <td class="check">✓</td>
-        <td class="check">✓</td>
-        <td class="check">✓</td>
-      </tr>
-      <tr>
-        <td>Milestone timeline</td>
-        <td class="check">✓</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-      </tr>
-      <tr>
-        <td>100% private / offline</td>
-        <td class="check">✓</td>
-        <td class="check">✓</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-      </tr>
-      <tr>
-        <td>No account needed</td>
-        <td class="check">✓</td>
-        <td class="check">✓</td>
-        <td class="cross">✗</td>
-        <td class="cross">✗</td>
-      </tr>
-      <tr>
-        <td>Price</td>
-        <td><strong>$14.99 once</strong></td>
-        <td>$9/mo</td>
-        <td>Free + $12/yr</td>
-        <td>$14.99/mo</td>
-      </tr>
+      <tr><th>Feature</th><th>DailyCashPlan</th><th>Typical debt app</th><th>Full budgeting app</th></tr>
+      <tr><td>No account required</td><td class="check">✓</td><td class="cross">Often not</td><td class="cross">Often not</td></tr>
+      <tr><td>No bank connection required</td><td class="check">✓</td><td>Varies</td><td class="cross">Often connected</td></tr>
+      <tr><td>Voice-assisted entry</td><td class="check">✓</td><td class="cross">Usually not</td><td class="cross">Usually not</td></tr>
+      <tr><td>Fixed and flexible spending split</td><td class="check">✓</td><td>Varies</td><td class="check">✓</td></tr>
+      <tr><td>Snowball and Avalanche comparison</td><td class="check">✓</td><td class="check">Often</td><td>Varies</td></tr>
+      <tr><td>Interactive payment scenarios</td><td class="check">✓</td><td>Varies</td><td>Varies</td></tr>
+      <tr><td>Works offline after first load</td><td class="check">✓</td><td class="cross">Usually not</td><td class="cross">Usually not</td></tr>
     </table>
   </div>
 </section>
 
-<!-- PRICING -->
-<section id="price">
-  <h2>One price. Forever.</h2>
-
+<section id="price" class="center">
+  <h2>Try the beta free</h2>
+  <p>DailyCashPlan is currently available as a free beta while it is being improved with feedback from early users.</p>
   <div class="price-box">
-    <h3>Own it, don't rent it</h3>
-    <p class="price">$14.99</p>
-    <p>One-time purchase. No subscription. No upgrade nag. No "pro" tier.</p>
+    <h3>Beta access</h3>
+    <div class="price">$0</div>
+    <p>Explore the current app without creating an account. Future pricing and premium features may change after the beta.</p>
   </div>
-
-  <p style="text-align:center;font-size:14px;color:var(--text2);max-width:500px;margin:24px auto">
-    <strong>Why $14.99?</strong> Because you deserve a tool you own forever, not a monthly trap. Your cheapest competitor costs $108/year. You'll own this for $14.99. Once.
-  </p>
-</section>
-
-<!-- QUICK START -->
-<section id="start">
-  <h2>How to get started</h2>
-  <p>Takes 2 minutes. You'll know your debt-free date by the end.</p>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <h3>Open the app</h3>
-      <p>On Chrome (Android) or Safari (iPhone). It's pre-filled with sample data so you see what it looks like first.</p>
-    </div>
-
-    <div class="step">
-      <div class="step-num">2</div>
-      <h3>Replace with your numbers</h3>
-      <p>Your income, fixed expenses, variable expenses, and all your debts. Be honest about the numbers.</p>
-    </div>
-
-    <div class="step">
-      <div class="step-num">3</div>
-      <h3>See your plan</h3>
-      <p>Exact debt-free date. Which debts die when. Which strategy saves the most money.</p>
-    </div>
-
-    <div class="step">
-      <div class="step-num">4</div>
-      <h3>Play with scenarios</h3>
-      <p>Drag the slider. What if you cut $50/month? What if you pay $100 more? See the impact instantly.</p>
-    </div>
-  </div>
-
-  <div style="text-align:center;margin-top:32px">
-    <a href="dailycashplan-app.html" class="btn btn-primary">💰 Start now</a>
+  <div class="reassurance">
+    <h3>No pressure. Just start with one honest overview.</h3>
+    <p>Your first goal is not to create a perfect budget. It is simply to see your current situation more clearly. That alone can make the next decision feel easier.</p>
   </div>
 </section>
 
-<!-- BROWSER SUPPORT -->
+<section id="start" class="center">
+  <h2>You can begin in a few minutes</h2>
+  <p>The app opens with example data, so you can first explore how everything works. Replace it with your own figures when you feel ready.</p>
+  <div class="steps" style="text-align:left">
+    <div class="step"><div class="step-num">1</div><h3>Open DailyCashPlan</h3><p>Use Chrome on Android, Safari on iPhone, or a modern desktop browser.</p></div>
+    <div class="step"><div class="step-num">2</div><h3>Review the example</h3><p>Look around first. Nothing needs to be perfect and you can change every number.</p></div>
+    <div class="step"><div class="step-num">3</div><h3>Add your own figures</h3><p>Start with income and essential bills, then add flexible spending and debts.</p></div>
+    <div class="step"><div class="step-num">4</div><h3>Use the overview</h3><p>Choose one small next step based on what the numbers show you.</p></div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <h2>Ready for a clearer view of your money?</h2>
+  <p>Take the first step without an account, bank connection or complicated setup.</p>
+  <a href="dailycashplan-app.html" class="btn btn-primary">💰 Open DailyCashPlan</a>
+</section>
+
 <section id="tech">
-  <h2>How it works</h2>
-  <p>All your data lives on your device. No servers. No tracking. No cloud.</p>
-  <p style="font-size:14px;color:var(--text2)">
-    <strong>Best in:</strong> Chrome (Android) or Safari (iPhone)<br>
-    <strong>Also works in:</strong> Firefox, Edge (no voice input)<br>
-    <strong>Desktop:</strong> Yes, but phone is better
-  </p>
+  <h2>Privacy and browser support</h2>
+  <p>Your financial entries are stored in your browser's local storage on the device you use. Clearing browser data or switching devices can remove or hide that information.</p>
+  <p style="font-size:14px;color:var(--text2)"><strong>Best experience:</strong> Chrome on Android or Safari on iPhone<br><strong>Also supported:</strong> Current versions of Firefox and Edge; voice entry may not be available in every browser<br><strong>Desktop:</strong> Supported, although the interface is designed for phones first</p>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <div style="margin-bottom:12px">
-    <a href="dailycashplan-app.html">💰 Open app</a>
-    ·
-    <a href="DailyCashPlan-Guide-v2.html">📖 Read guide</a>
-    ·
-    <a href="https://github.com/Vid567/dailycashplan">GitHub</a>
-  </div>
-  <p>DailyCashPlan · See where you stand. Get a plan.<br>All your data stays on your device · Works offline after first load</p>
+  <div style="margin-bottom:12px"><a href="dailycashplan-app.html">💰 Open app</a> · <a href="DailyCashPlan-Guide-v2.html">📖 Read guide</a> · <a href="https://github.com/Vid567/dailycashplan">GitHub</a></div>
+  <p>DailyCashPlan · Take control of your money, one step at a time.<br>Your financial data stays on your device.</p>
 </footer>
-
-</div>
+</main>
 </body>
 </html>
