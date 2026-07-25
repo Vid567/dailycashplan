@@ -1,6 +1,7 @@
 name: Connect beta signup to Google Sheets
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - friendly-copy-beta-signup
@@ -28,11 +29,11 @@ jobs:
           text = path.read_text(encoding='utf-8')
           endpoint = 'https://script.google.com/macros/s/AKfycbz_ThEuGBN20RWo_RFHPBmhkTlPnINtISxXTwWM9P-XWZifF8ntVwLGWtar33xFFwxA/exec'
 
-          replacement = r'''async function submitBetaSignup(){let email=$('betaEmail').value.trim(),firstName=$('betaName').value.trim(),phone=$('betaPhone').value.trim(),struggle=$('betaStruggle').value;if(!/^\S+@\S+\.\S+$/.test(email))return toastMsg('Please enter a valid email address.');if(!struggle)return toastMsg('Please choose your biggest money struggle.');let button=$('betaModal').querySelector('.btn-primary'),original=button.textContent;button.disabled=true;button.textContent='Joining…';let signup={email,firstName,phone,struggle,source:'DailyCashPlan web app',joinedAt:new Date().toISOString()};try{await fetch(''' + repr(endpoint) + r''',{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(signup)});localStorage.setItem('dailyCashPlanBetaSignup',JSON.stringify(signup));data.betaDismissed=true;save();closeBetaModal();renderPlan();toastMsg('You’re in! Welcome to the beta 🎉')}catch(error){toastMsg('We could not save your signup. Please try again.')}finally{button.disabled=false;button.textContent=original}}function dismissBeta'''
+          replacement = """async function submitBetaSignup(){let email=$('betaEmail').value.trim(),firstName=$('betaName').value.trim(),phone=$('betaPhone').value.trim(),struggle=$('betaStruggle').value;if(!/^\\S+@\\S+\\.\\S+$/.test(email))return toastMsg('Please enter a valid email address.');if(!struggle)return toastMsg('Please choose your biggest money struggle.');let button=$('betaModal').querySelector('.btn-primary'),original=button.textContent;button.disabled=true;button.textContent='Joining…';let signup={email,firstName,phone,struggle,source:'DailyCashPlan web app',joinedAt:new Date().toISOString()};fetch('ENDPOINT',{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(signup)}).then(()=>{localStorage.setItem('dailyCashPlanBetaSignup',JSON.stringify(signup));data.betaDismissed=true;save();closeBetaModal();renderPlan();toastMsg('You’re in! Welcome to the beta 🎉')}).catch(()=>toastMsg('We could not save your signup. Please try again.')).finally(()=>{button.disabled=false;button.textContent=original})}function dismissBeta""".replace('ENDPOINT', endpoint)
 
           updated, count = re.subn(
               r'function submitBetaSignup\(\)\{.*?\}function dismissBeta',
-              replacement,
+              lambda _: replacement,
               text,
               count=1,
               flags=re.S,
