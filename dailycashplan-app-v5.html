@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#064e3b">
+<title>DailyCashPlan</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#edf5f1}iframe{display:block;width:100%;height:100%;border:0}</style>
+</head>
+<body>
+<iframe id="app" src="dailycashplan-app-v4.html?v=voice-parser-v2" title="DailyCashPlan" allow="microphone"></iframe>
+<script>
+const frame=document.getElementById('app');
+frame.addEventListener('load',()=>{
+  const w=frame.contentWindow;
+  const DIGITS={zero:0,oh:0,o:0,one:1,two:2,to:2,too:2,three:3,four:4,for:4,five:5,six:6,seven:7,eight:8,ate:8,nine:9};
+  const SMALL={ten:10,eleven:11,twelve:12,thirteen:13,fourteen:14,fifteen:15,sixteen:16,seventeen:17,eighteen:18,nineteen:19,twenty:20,thirty:30,forty:40,fifty:50,sixty:60,seventy:70,eighty:80,ninety:90};
+  const NUMBER_WORDS=new Set([...Object.keys(DIGITS),...Object.keys(SMALL),'hundred','thousand','million','and','point','dot']);
+  const clean=s=>String(s||'').toLowerCase().replace(/-/g,' ').replace(/[^a-z0-9., ]/g,' ').replace(/\s+/g,' ').trim();
+  const tokenValue=t=>Object.prototype.hasOwnProperty.call(DIGITS,t)?DIGITS[t]:(Object.prototype.hasOwnProperty.call(SMALL,t)?SMALL[t]:null);
+
+  function parseIntegerTokens(tokens){
+    const filtered=tokens.filter(t=>t!=='and');
+    if(!filtered.length)return NaN;
+    if(filtered.length>1&&filtered.every(t=>Object.prototype.hasOwnProperty.call(DIGITS,t)||/^\d$/.test(t))){
+      return Number(filtered.map(t=>Object.prototype.hasOwnProperty.call(DIGITS,t)?DIGITS[t]:t).join(''));
+    }
+    let total=0,current=0,used=false;
+    for(const t of filtered){
+      if(/^\d+$/.test(t)){current+=Number(t);used=true;continue}
+      const v=tokenValue(t);
+      if(v!==null){current+=v;used=true;continue}
+      if(t==='hundred'){current=(current||1)*100;used=true;continue}
+      if(t==='thousand'){total+=(current||1)*1000;current=0;used=true;continue}
+      if(t==='million'){total+=(current||1)*1000000;current=0;used=true;continue}
+      return NaN;
+    }
+    return used?total+current:NaN;
+  }
+
+  function wordsNumber(input){
+    const s=clean(input);
+    if(!s)return NaN;
+    if(/^\d+(?:[.,]\d+)?$/.test(s))return Number(s.replace(',','.'));
+    const tokens=s.split(' ').filter(Boolean);
+    const point=tokens.findIndex(t=>t==='point'||t==='dot');
+    if(point>=0){
+      const whole=parseIntegerTokens(tokens.slice(0,point));
+      const decimals=tokens.slice(point+1).filter(t=>t!=='and').map(t=>Object.prototype.hasOwnProperty.call(DIGITS,t)?DIGITS[t]:(/^\d$/.test(t)?t:null));
+      if(decimals.some(v=>v===null)||!decimals.length)return NaN;
+      return (Number.isNaN(whole)?0:whole)+Number('0.'+decimals.join(''));
+    }
+    return parseIntegerTokens(tokens);
+  }
+
+  function amountFromSpeech(input){
+    const s=clean(input);
+    const numeric=s.match(/\d+(?:[.,]\d+)?/);
+    if(numeric)return{value:Number(numeric[0].replace(',','.')),start:numeric.index};
+
+    const currency=s.match(/\b(dollars?|euros?|pounds?)\b/);
+    if(currency){
+      const before=s.slice(0,currency.index).trim();
+      const after=s.slice(currency.index+currency[0].length).trim();
+      const centsMatch=after.match(/^(.*?)(?:\s+cent(?:s)?)?$/);
+      const major=wordsNumber(before);
+      const cents=wordsNumber((centsMatch&&centsMatch[1])||'');
+      return{value:(Number.isNaN(major)?0:major)+(Number.isNaN(cents)?0:Math.min(99,cents)/100),start:Math.max(0,s.indexOf(before))};
+    }
+
+    const tokens=s.split(' ');
+    let first=-1,last=-1;
+    for(let i=0;i<tokens.length;i++){
+      if(NUMBER_WORDS.has(tokens[i])){if(first<0)first=i;last=i}
+      else if(first>=0)break;
+    }
+    if(first<0)return{value:0,start:s.length};
+    const phrase=tokens.slice(first,last+1);
+    let value=wordsNumber(phrase.join(' '));
+
+    if(!phrase.includes('point')&&!phrase.includes('dot')&&phrase.length>=2){
+      const splitCandidates=[];
+      for(let i=1;i<phrase.length;i++){
+        const left=wordsNumber(phrase.slice(0,i).join(' '));
+        const right=wordsNumber(phrase.slice(i).join(' '));
+        if(!Number.isNaN(left)&&!Number.isNaN(right)&&right>=0&&right<=99)splitCandidates.push({left,right,i});
+      }
+      const shorthand=splitCandidates.find(x=>x.left>=10&&x.left<=999&&x.right>=10&&x.right<=99&&phrase.length===2);
+      if(shorthand)value=shorthand.left+shorthand.right/100;
+    }
+    const start=tokens.slice(0,first).join(' ').length+(first?1:0);
+    return{value:Number.isNaN(value)?0:value,start};
+  }
+
+  function parseVoice(text,type){
+    const s=clean(text);
+    if(type==='debt'){
+      const balanceLabel=s.search(/\bbalance\b/);
+      const interestLabel=s.search(/\b(?:interest|rate)\b/);
+      const minimumLabel=s.search(/\b(?:minimum|min payment)\b/);
+      const nameEnd=[balanceLabel,interestLabel,minimumLabel].filter(i=>i>=0).sort((a,b)=>a-b)[0]??s.length;
+      const name=s.slice(0,nameEnd).trim()||'Voice entry';
+      const segment=(start,end)=>start<0?'':s.slice(start,end<0?s.length:end).replace(/^\s*(?:balance|interest|rate|minimum|min payment)\s*/,'');
+      const balance=amountFromSpeech(segment(balanceLabel,interestLabel>=0?interestLabel:minimumLabel)).value;
+      const rate=amountFromSpeech(segment(interestLabel,minimumLabel)).value;
+      const min=amountFromSpeech(segment(minimumLabel,-1)).value;
+      return{name,balance:Math.round(balance*100)/100,rate:Math.round(rate*100)/100,min:Math.round(min*100)/100};
+    }
+    const amount=amountFromSpeech(s);
+    const name=s.slice(0,amount.start).replace(/\b(dollars?|euros?|pounds?|monthly|per month)\b/gi,'').trim().replace(/[,:-]+$/,'').trim()||'Voice entry';
+    return{name,amount:Math.round(amount.value*100)/100};
+  }
+
+  w.wordsNumber=wordsNumber;
+  w.amountFromSpeech=amountFromSpeech;
+  w.parseVoice=parseVoice;
+});
+</script>
+</body>
+</html>
