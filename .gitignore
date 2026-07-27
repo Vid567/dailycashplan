@@ -1,0 +1,4 @@
+node_modules/
+automation/.threads-profile/
+playwright-report/
+test-results/
