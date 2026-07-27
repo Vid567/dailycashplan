@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DailyCashPlan Content Creator</title>
+<style>
+:root{--green:#059669;--green-dark:#047857;--green-light:#d1fae5;--bg:#faf7f2;--surface:#fff;--text:#1c1917;--muted:#78716c;--border:#e7e0d4;--danger:#b91c1c}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}.wrap{max-width:1100px;margin:auto;padding:20px}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:22px}.brand{font-size:22px;font-weight:800;color:var(--green)}.sub{color:var(--muted);font-size:14px}.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:18px}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:end}label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}select,input,textarea,button{font:inherit}select,input{width:100%;padding:11px;border:1px solid var(--border);border-radius:10px;background:#fff}.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer}.primary{background:var(--green);color:#fff}.primary:hover{background:var(--green-dark)}.secondary{background:var(--green-light);color:var(--green-dark)}.ghost{background:#fff;border:1px solid var(--border)}.danger{color:var(--danger)}.stats{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px}.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}.card-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.number{font-weight:800;color:var(--green)}.theme{font-size:12px;background:var(--green-light);color:var(--green-dark);padding:4px 8px;border-radius:999px}.post{white-space:pre-wrap;background:#fcfbf8;border:1px solid var(--border);border-radius:10px;padding:13px;min-height:255px;font-size:15px}.actions{display:flex;gap:8px;flex-wrap:wrap}.actions button{flex:1;min-width:86px}.scheduled{border-color:var(--green);box-shadow:0 0 0 2px var(--green-light)}.planner{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;border-bottom:1px solid var(--border);padding:10px}th{color:var(--muted)}.empty{color:var(--muted);text-align:center;padding:25px}.notice{font-size:13px;color:var(--muted);margin-top:10px}.toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:11px 15px;border-radius:10px;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}@media(max-width:650px){.top{align-items:flex-start;flex-direction:column}.wrap{padding:14px}.post{min-height:auto}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><div class="brand">💰 DailyCashPlan Content Creator</div><div class="sub">Generate, copy and plan your first Threads content series.</div></div>
+    <button class="btn secondary" onclick="downloadCSV()">Download CSV</button>
+  </div>
+
+  <div class="panel">
+    <div class="controls">
+      <div><label for="themeFilter">Theme</label><select id="themeFilter" onchange="renderPosts()"><option value="all">All themes</option><option>Where did my money go?</option><option>Bills & debt</option><option>Budget myths</option><option>Small wins</option><option>Peace of mind</option></select></div>
+      <div><label for="count">Show posts</label><select id="count" onchange="renderPosts()"><option value="5">5</option><option value="10">10</option><option value="25" selected>25</option></select></div>
+      <div><label for="startDate">Planning start date</label><input id="startDate" type="date"></div>
+      <div><label for="postsPerDay">Posts per day</label><select id="postsPerDay"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select></div>
+      <button class="btn primary" onclick="autoPlan()">Auto-plan visible posts</button>
+    </div>
+    <div class="stats"><span id="postCount"></span><span id="plannedCount"></span><span>Default times: 08:00 · 12:30 · 18:00</span></div>
+    <div class="notice">Threads publication still requires you to schedule the copied post in Threads. This tool removes the writing, organizing and timing work.</div>
+  </div>
+
+  <div id="posts" class="grid"></div>
+
+  <div class="panel planner">
+    <div class="card-head"><h2 style="margin:0;font-size:20px">Planner</h2><button class="btn ghost danger" onclick="clearPlan()">Clear plan</button></div>
+    <div id="planner"></div>
+  </div>
+</div>
+<div id="toast" class="toast">Copied</div>
+<script>
+const link='http://bit.ly/dailycashplan';
+const posts=[
+{theme:'Where did my money go?',hook:"Most people don't overspend.\nThey just don't know where their money went.",body:"A coffee here.\nA bill over there.\n\nOne clear overview\nchanges everything."},
+{theme:'Where did my money go?',hook:'Money comes.\nMoney goes.\nWhere it disappears...\nnobody knows.',body:"Your money is not always gone.\nSometimes it is simply hidden\nin dozens of small payments."},
+{theme:'Where did my money go?',hook:"Count what's spent.\nKnow where it went.",body:'Start with three numbers:\n\n→ income\n→ expenses\n→ debt\n\nClarity begins there.'},
+{theme:'Where did my money go?',hook:'See your flow.\nThen you will know.',body:"You cannot change\nwhat you cannot see.\n\nPut the whole month\non one simple page."},
+{theme:'Where did my money go?',hook:'Cash can hide.\nNumbers guide.',body:'Small purchases feel harmless.\nTogether, they tell a story.\n\nLook before you judge yourself.'},
+{theme:'Bills & debt',hook:'Bills arrive.\nStress survives.',body:'Until you put every bill\nin one clear overview.\n\nKnowing the total\nis the first calm step.'},
+{theme:'Bills & debt',hook:'Less debt.\nLess dread.',body:'Do not solve everything today.\n\nChoose one debt.\nChoose one next payment.\nChoose one small step.'},
+{theme:'Bills & debt',hook:'Debt feels deep.\nTake one step, not one leap.',body:'You do not need a perfect plan.\nYou need a realistic next move\nyou can repeat.'},
+{theme:'Bills & debt',hook:'Bills in sight.\nSleep better tonight.',body:'Write down what is due,\nhow much it costs\nand when it must be paid.\n\nUncertainty creates extra stress.'},
+{theme:'Bills & debt',hook:'Know what you owe.\nThen choose where to go.',body:'List every debt without shame.\n\nThe list is not a verdict.\nIt is your starting point.'},
+{theme:'Budget myths',hook:'A budget can bend.\nConfusion should end.',body:'A useful plan is not a prison.\n\nIt helps you decide\nbefore your money decides for you.'},
+{theme:'Budget myths',hook:'Perfect is slow.\nStart with what you know.',body:'You do not need every receipt.\n\nBegin with your income,\nregular bills and total debt.'},
+{theme:'Budget myths',hook:'More rules, more strain.\nKeep your money plan plain.',body:'Complicated systems are easy to quit.\n\nA simple overview\nyou actually use wins.'},
+{theme:'Budget myths',hook:'No shame.\nJust name the game.',body:'A money overview is not about blame.\n\nIt is about seeing reality\nand choosing your next step.'},
+{theme:'Budget myths',hook:'More earning is nice.\nKnowing is the real prize.',body:'A higher income can help.\n\nBut clarity helps at every income level.'},
+{theme:'Small wins',hook:'Small today.\nBetter payday.',body:'Take two minutes:\n\n→ add your income\n→ add fixed bills\n→ add total debt\n\nThat is a real start.'},
+{theme:'Small wins',hook:'One page.\nOne plan.\nYes, you can.',body:'Do not build a perfect budget.\n\nBuild one clear snapshot\nof where you stand today.'},
+{theme:'Small wins',hook:'Track the facts.\nThen relax.',body:'Numbers feel less frightening\nwhen they are visible.\n\nOpen the overview.\nTake one action.'},
+{theme:'Small wins',hook:'Save a little.\nStrengthen the middle.',body:'A tiny buffer is still a buffer.\n\nStart with an amount\nyou can repeat without stress.'},
+{theme:'Small wins',hook:'Choose one move.\nFind your groove.',body:'Cancel one unused subscription.\nPlan one cheaper meal.\nPay one small extra amount.\n\nOne move counts.'},
+{theme:'Peace of mind',hook:'Less guessing.\nLess stressing.',body:"Stop asking:\nCan I afford this?\n\nStart with a clear view\nof what remains after your bills."},
+{theme:'Peace of mind',hook:'See it clear.\nControl is near.',body:'Financial calm does not begin\nwith having lots of money.\n\nIt begins with knowing\nwhere you stand.'},
+{theme:'Peace of mind',hook:'Clear today.\nCalmer tomorrow.',body:'You cannot remove every worry.\n\nBut you can replace uncertainty\nwith one honest overview.'},
+{theme:'Peace of mind',hook:'Know your flow.\nLet confidence grow.',body:'Every time you review your numbers,\nyou make the unknown smaller.\n\nThat is progress.'},
+{theme:'Peace of mind',hook:'Money feels tight.\nClarity brings light.',body:'You are not your bank balance.\n\nSee the numbers.\nChoose the next step.\nKeep moving.'}
+].map((p,i)=>({...p,id:i+1,text:`${p.hook}\n\n${p.body}\n\nTry it free 👇\n${link}`}));
+let plan=JSON.parse(localStorage.getItem('dcpContentPlan')||'{}');
+function visiblePosts(){const theme=document.getElementById('themeFilter').value;const count=Number(document.getElementById('count').value);return posts.filter(p=>theme==='all'||p.theme===theme).slice(0,count)}
+function renderPosts(){const list=visiblePosts();document.getElementById('posts').innerHTML=list.map(p=>`<article class="card ${plan[p.id]?'scheduled':''}"><div class="card-head"><span class="number">Post ${p.id}</span><span class="theme">${p.theme}</span></div><div class="post">${escapeHtml(p.text)}</div><div class="actions"><button class="btn primary" onclick="copyPost(${p.id})">Copy</button><button class="btn secondary" onclick="planOne(${p.id})">${plan[p.id]?'Change time':'Plan'}</button></div></article>`).join('');document.getElementById('postCount').textContent=`${list.length} posts shown`;renderPlanner()}
+function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+async function copyPost(id){await navigator.clipboard.writeText(posts.find(p=>p.id===id).text);toast('Post copied — paste it into Threads')}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function planOne(id){const existing=plan[id]||'';const value=prompt('Enter date and time (YYYY-MM-DD HH:MM)',existing);if(!value)return;plan[id]=value;savePlan();renderPosts()}
+function autoPlan(){const start=document.getElementById('startDate').value;if(!start){alert('Choose a planning start date first.');return}const perDay=Number(document.getElementById('postsPerDay').value);const times=['08:00','12:30','18:00'];visiblePosts().forEach((p,index)=>{const day=new Date(start+'T12:00:00');day.setDate(day.getDate()+Math.floor(index/perDay));const y=day.getFullYear(),m=String(day.getMonth()+1).padStart(2,'0'),d=String(day.getDate()).padStart(2,'0');plan[p.id]=`${y}-${m}-${d} ${times[index%perDay]}`});savePlan();renderPosts();toast('Planning created')}
+function savePlan(){localStorage.setItem('dcpContentPlan',JSON.stringify(plan))}
+function clearPlan(){if(confirm('Clear the complete content plan?')){plan={};savePlan();renderPosts()}}
+function renderPlanner(){const rows=posts.filter(p=>plan[p.id]).sort((a,b)=>plan[a.id].localeCompare(plan[b.id]));document.getElementById('plannedCount').textContent=`${rows.length} planned`;document.getElementById('planner').innerHTML=rows.length?`<table><thead><tr><th>Date & time</th><th>Post</th><th>Hook</th><th></th></tr></thead><tbody>${rows.map(p=>`<tr><td>${plan[p.id]}</td><td>${p.id}</td><td>${escapeHtml(p.hook.replaceAll('\n',' / '))}</td><td><button class="btn ghost" onclick="copyPost(${p.id})">Copy</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No posts planned yet.</div>'}
+function downloadCSV(){const rows=[['Post','Theme','Hook','Full post','Planned date/time'],...posts.map(p=>[p.id,p.theme,p.hook,p.text,plan[p.id]||''])];const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='DailyCashPlan-Threads-25-posts.csv';a.click();URL.revokeObjectURL(a.href)}
+document.getElementById('startDate').value=new Date(Date.now()+86400000).toISOString().slice(0,10);renderPosts();
+</script>
+</body>
+</html>
