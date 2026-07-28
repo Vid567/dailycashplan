@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#059669">
+  <title>My MVP Hub</title>
+  <style>
+    :root{--green:#059669;--dark:#064e3b;--light:#d1fae5;--bg:#f7f5ef;--card:#fff;--text:#1c1917;--muted:#78716c;--border:#e7e0d4}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+    main{width:min(720px,100%);margin:auto;padding:24px 16px 60px}
+    header{background:linear-gradient(135deg,var(--dark),var(--green));color:#fff;border-radius:22px;padding:24px;margin-bottom:16px}
+    h1{margin:0 0 6px;font-size:28px} header p{margin:0;opacity:.9;line-height:1.4}
+    .search{width:100%;border:2px solid var(--border);border-radius:14px;padding:14px 16px;font:inherit;font-size:16px;background:#fff;margin-bottom:18px}
+    .search:focus{outline:none;border-color:var(--green)}
+    section{margin:22px 0} h2{font-size:17px;margin:0 0 10px;color:var(--dark)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    a.link{display:flex;align-items:center;gap:11px;min-height:60px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:14px;color:var(--text);text-decoration:none;font-weight:750;box-shadow:0 2px 8px rgba(28,25,23,.04)}
+    a.link:active{transform:scale(.98);background:var(--light)}
+    .icon{width:36px;height:36px;display:grid;place-items:center;flex:none;border-radius:10px;background:var(--light);color:var(--dark);font-weight:900}
+    .note{font-size:13px;color:var(--muted);line-height:1.45;background:#fff;border-radius:14px;padding:13px;border:1px solid var(--border)}
+    .hidden{display:none!important}
+    @media(max-width:430px){.grid{grid-template-columns:1fr}main{padding-top:14px}header{padding:20px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>My MVP Hub</h1>
+    <p>All your projects and tools in one place. Tap a button to open it.</p>
+  </header>
+
+  <input class="search" id="search" type="search" placeholder="Search a link…" aria-label="Search links">
+
+  <section>
+    <h2>My projects</h2>
+    <div class="grid">
+      <a class="link" href="index.html"><span class="icon">D</span>DailyCashPlan</a>
+      <a class="link" href="content-creator.html"><span class="icon">C</span>DCP Content Creator</a>
+      <a class="link" href="https://vid567.github.io/pantryplan/pantryplan-app.html" target="_blank" rel="noopener"><span class="icon">P</span>PantryPlan</a>
+      <a class="link" href="https://vid567.github.io/pantryplan/PantryPlan-GUIDE.html" target="_blank" rel="noopener"><span class="icon">G</span>PantryPlan guide</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Project files</h2>
+    <div class="grid">
+      <a class="link" href="https://github.com/Vid567/dailycashplan" target="_blank" rel="noopener"><span class="icon">G</span>DCP on GitHub</a>
+      <a class="link" href="https://github.com/Vid567/pantryplan" target="_blank" rel="noopener"><span class="icon">G</span>PantryPlan on GitHub</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Posts &amp; statistics</h2>
+    <div class="grid">
+      <a class="link" href="https://www.threads.net/" target="_blank" rel="noopener"><span class="icon">@</span>Threads</a>
+      <a class="link" href="https://www.instagram.com/" target="_blank" rel="noopener"><span class="icon">I</span>Instagram</a>
+      <a class="link" href="https://www.reddit.com/" target="_blank" rel="noopener"><span class="icon">R</span>Reddit</a>
+      <a class="link" href="https://clarity.microsoft.com/" target="_blank" rel="noopener"><span class="icon">C</span>Microsoft Clarity</a>
+      <a class="link" href="https://analytics.google.com/" target="_blank" rel="noopener"><span class="icon">A</span>Google Analytics</a>
+      <a class="link" href="https://app.bitly.com/" target="_blank" rel="noopener"><span class="icon">B</span>Bitly</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sales &amp; payments</h2>
+    <div class="grid">
+      <a class="link" href="https://app.gumroad.com/" target="_blank" rel="noopener"><span class="icon">G</span>Gumroad</a>
+      <a class="link" href="https://payhip.com/dashboard" target="_blank" rel="noopener"><span class="icon">P</span>Payhip</a>
+      <a class="link" href="https://www.etsy.com/your/shops/me/dashboard" target="_blank" rel="noopener"><span class="icon">E</span>Etsy</a>
+      <a class="link" href="https://www.paypal.com/myaccount/summary" target="_blank" rel="noopener"><span class="icon">P</span>PayPal</a>
+      <a class="link" href="https://dashboard.stripe.com/" target="_blank" rel="noopener"><span class="icon">S</span>Stripe</a>
+      <a class="link" href="https://profittree.io/" target="_blank" rel="noopener"><span class="icon">P</span>ProfitTree.io</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Websites &amp; creation</h2>
+    <div class="grid">
+      <a class="link" href="https://lovable.dev/" target="_blank" rel="noopener"><span class="icon">L</span>Lovable</a>
+      <a class="link" href="https://app.netlify.com/" target="_blank" rel="noopener"><span class="icon">N</span>Netlify</a>
+      <a class="link" href="https://vercel.com/dashboard" target="_blank" rel="noopener"><span class="icon">V</span>Vercel</a>
+      <a class="link" href="https://www.canva.com/" target="_blank" rel="noopener"><span class="icon">C</span>Canva</a>
+      <a class="link" href="https://printify.com/app/" target="_blank" rel="noopener"><span class="icon">P</span>Printify</a>
+      <a class="link" href="https://docs.google.com/" target="_blank" rel="noopener"><span class="icon">D</span>Google Docs</a>
+    </div>
+  </section>
+
+  <p class="note"><strong>Tip:</strong> save this page as a favorite or add it to your phone’s home screen. You only need to remember this one page.</p>
+</main>
+<script>
+const search=document.getElementById('search');
+search.addEventListener('input',()=>{
+  const query=search.value.trim().toLowerCase();
+  document.querySelectorAll('a.link').forEach(link=>link.classList.toggle('hidden',!link.textContent.toLowerCase().includes(query)));
+  document.querySelectorAll('section').forEach(section=>section.classList.toggle('hidden',![...section.querySelectorAll('a.link')].some(link=>!link.classList.contains('hidden'))));
+});
+</script>
+</body>
+</html>
