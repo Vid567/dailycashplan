@@ -5,6 +5,8 @@ const landing = fs.readFileSync("index.html", "utf8");
 const app = fs.readFileSync("dailycashplan-app-v4.html", "utf8");
 
 assert.match(landing, /Try it first\. Then join the free beta\./);
+assert.doesNotMatch(landing, /removeItem\(['"]dailyCashPlanDataV3['"]\)/, "Opening DCP must never erase the saved plan");
+assert.match(app, /const KEY=['"]dailyCashPlanDataV3['"]/);
 
 for (const [button, list] of [
   ["＋ Add income", 'id="incomeList"'],
