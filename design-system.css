@@ -1,0 +1,185 @@
+/* DailyCashPlan commercial design system — derived from marketing artwork */
+:root {
+  --primary: #078b83;
+  --primary-hover: #06756f;
+  --primary-pressed: #055f5a;
+  --primary-soft: #dff5f2;
+  --secondary: #064e4a;
+  --accent: #f59e0b;
+  --danger: #dc3f4f;
+  --success: #12966f;
+  --warning: #d97706;
+  --error: #dc3f4f;
+  --background: #f2faf9;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --border: #d9e9e7;
+  --text-primary: #102b2a;
+  --text-secondary: #526c69;
+  --muted: #809391;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 8px rgba(10, 76, 72, .07);
+  --shadow-md: 0 12px 30px rgba(10, 76, 72, .11);
+  --shadow-lg: 0 26px 70px rgba(10, 76, 72, .16);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --duration-fast: 140ms;
+  --duration-normal: 220ms;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --green: var(--primary);
+  --g: var(--primary);
+  --d: var(--secondary);
+  --m: var(--primary-soft);
+  --ink: var(--text-primary);
+  --muted: #809391;
+  --line: var(--border);
+  --bg: var(--background);
+}
+
+html { color-scheme: light; scroll-behavior: smooth; }
+body {
+  background:
+    radial-gradient(circle at 10% 0, rgba(7,139,131,.10), transparent 34rem),
+    var(--background) !important;
+  color: var(--text-primary) !important;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif !important;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a, button, input, select, textarea { font: inherit; }
+a, button, .card, .step, .feature, .stat, .panel, .link {
+  transition: transform var(--duration-fast) var(--ease), box-shadow var(--duration-normal) var(--ease),
+    border-color var(--duration-fast) var(--ease), background var(--duration-fast) var(--ease),
+    color var(--duration-fast) var(--ease);
+}
+
+:focus-visible {
+  outline: 3px solid rgba(7, 139, 131, .30) !important;
+  outline-offset: 3px;
+}
+
+h1, h2, h3, .logo, .brand, .header-title {
+  color: var(--text-primary);
+  letter-spacing: -.025em;
+  line-height: 1.15;
+}
+h1 { font-weight: 850 !important; }
+h2, h3 { font-weight: 800 !important; }
+
+.app {
+  background: rgba(255,255,255,.72) !important;
+  border-inline: 1px solid rgba(217,233,231,.8);
+  box-shadow: var(--shadow-lg);
+}
+.top, header {
+  background: rgba(255,255,255,.88) !important;
+  border-color: var(--border) !important;
+  backdrop-filter: blur(18px);
+}
+.logo, .brand, .header-title { color: var(--secondary) !important; }
+
+.card, .step, .feature, .panel, .stat, .beta-box, .link {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+.card:hover, .step:hover, .feature:hover, .link:hover {
+  border-color: rgba(7,139,131,.35) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.btn, button.primary, button.add, .primary, .app-cta {
+  min-height: 48px;
+  border-radius: 14px !important;
+  font-weight: 800 !important;
+}
+.btn-primary, .btn.primary, button.primary, button.add, .primary, .app-cta {
+  background: linear-gradient(135deg, #0ba39a, var(--primary-hover)) !important;
+  border: 0 !important;
+  color: #fff !important;
+  box-shadow: 0 8px 18px rgba(7,139,131,.22) !important;
+}
+.btn-primary:hover, .btn.primary:hover, button.primary:hover, button.add:hover, .primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(7,139,131,.27) !important;
+}
+.btn-primary:active, .btn.primary:active, button.primary:active, button.add:active, .primary:active {
+  background: var(--primary-pressed) !important;
+  transform: translateY(1px) scale(.99);
+}
+.secondary, .btn-secondary {
+  background: var(--primary-soft) !important;
+  color: var(--secondary) !important;
+  border-color: transparent !important;
+}
+
+input, select, textarea, .field input, .field select {
+  min-height: 48px;
+  padding: 12px 14px !important;
+  color: var(--text-primary);
+  background: #fff !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 4px rgba(7,139,131,.10);
+  outline: 0;
+}
+
+.progressTrack, progress { background: #dfecea !important; border-radius: var(--radius-pill); }
+.progressFill, progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #19b5a9, var(--primary)) !important;
+  border-radius: var(--radius-pill);
+}
+.stat strong { color: var(--primary-hover); }
+.stat:nth-child(2) strong { color: var(--danger); }
+.eyebrow, .mini, .number, .tag { color: var(--primary) !important; }
+.tag, .theme, .chip { background: var(--primary-soft) !important; border-radius: var(--radius-pill) !important; }
+
+.tabs {
+  background: rgba(255,255,255,.94) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 -10px 35px rgba(10,76,72,.09);
+  backdrop-filter: blur(18px);
+}
+.tab { min-height: 52px; border-radius: 12px; }
+.tab.active { color: var(--primary) !important; background: var(--primary-soft); }
+.modal { background: rgba(4,40,38,.48) !important; backdrop-filter: blur(5px); }
+.sheet { background: var(--background) !important; box-shadow: var(--shadow-lg); }
+.toast {
+  background: var(--secondary) !important;
+  box-shadow: var(--shadow-md);
+  animation: toast-in var(--duration-normal) var(--ease);
+}
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 10px); } }
+
+.soft, .betaBox, .beta-box { background: linear-gradient(145deg,#fff,var(--primary-soft)) !important; }
+.betaBox, .beta-box { border-color: rgba(7,139,131,.32) !important; }
+.row { border-color: var(--border) !important; }
+.note, .lead, .sub, .microcopy, .empty { color: var(--text-secondary) !important; }
+.empty { padding: var(--space-8) !important; background: linear-gradient(145deg,#fff,var(--primary-soft)); border: 1px dashed rgba(7,139,131,.35); border-radius: var(--radius-md); }
+
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+  h1 { font-size: clamp(28px, 9vw, 36px) !important; }
+  .screen { padding: 22px 16px !important; }
+  .card, .panel, .feature, .step { padding: 16px !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
