@@ -21,7 +21,7 @@
   <div class="panel">
     <div class="controls">
       <div><label for="themeFilter">Theme</label><select id="themeFilter" onchange="renderPosts()"><option value="all">All themes</option><option>Where did my money go?</option><option>Bills & debt</option><option>Budget myths</option><option>Small wins</option><option>Peace of mind</option></select></div>
-      <div><label for="count">Show posts</label><select id="count" onchange="renderPosts()"><option value="5">5</option><option value="10">10</option><option value="25" selected>25</option></select></div>
+      <div><label for="count">Show posts</label><select id="count" onchange="renderPosts()"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50" selected>50</option></select></div>
       <div><label for="startDate">Planning start date</label><input id="startDate" type="date"></div>
       <div><label for="postsPerDay">Posts per day</label><select id="postsPerDay"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option></select></div>
       <button class="btn primary" onclick="autoPlan()">Auto-plan visible posts</button>
@@ -65,8 +65,33 @@ const posts=[
 {theme:'Peace of mind',hook:'See it clear.\nControl is near.',body:'Financial calm does not begin\nwith having lots of money.\n\nIt begins with knowing\nwhere you stand.'},
 {theme:'Peace of mind',hook:'Clear today.\nCalmer tomorrow.',body:'You cannot remove every worry.\n\nBut you can replace uncertainty\nwith one honest overview.'},
 {theme:'Peace of mind',hook:'Know your flow.\nLet confidence grow.',body:'Every time you review your numbers,\nyou make the unknown smaller.\n\nThat is progress.'},
-{theme:'Peace of mind',hook:'Money feels tight.\nClarity brings light.',body:'You are not your bank balance.\n\nSee the numbers.\nChoose the next step.\nKeep moving.'}
-].map((p,i)=>({...p,id:i+1,text:`${p.hook}\n\n${p.body}\n\nTry it free 👇\n${link}`}));
+{theme:'Peace of mind',hook:'Money feels tight.\nClarity brings light.',body:'You are not your bank balance.\n\nSee the numbers.\nChoose the next step.\nKeep moving.'},
+{theme:'Budget myths',hook:'Your budget may be failing before payday.',body:'→ Planning with best-case numbers\n→ Forgetting irregular costs\n→ Leaving no room for real life\n\nUse honest numbers, not hopeful ones.'},
+{theme:'Bills & debt',hook:'Debt is a number, not a character test.',body:'→ List the balance\n→ Note the interest\n→ Pick the next payment\n\nFacts create options. Shame creates delay.'},
+{theme:'Where did my money go?',hook:'A paycheck can disappear without one big purchase.',body:'Ten small decisions can do it.\n\nCheck what is already committed\nbefore deciding what is available.'},
+{theme:'Small wins',hook:'Try this two-minute money reset today.',body:'→ Check your balance\n→ Review tomorrow’s bills\n→ Choose today’s spending limit\n\nSmall routines prevent big surprises.'},
+{theme:'Peace of mind',hook:'Money anxiety loves unopened apps and envelopes.',body:'Avoiding the numbers brings short relief.\nSeeing them creates lasting calm.\n\nOpen one account today.\nWrite down only what is true.'},
+{theme:'Small wins',hook:'An emergency fund does not need a dramatic start.',body:'Save the first amount you can repeat.\n\n→ €5 is a beginning\n→ Consistency builds the buffer\n→ The buffer buys breathing room'},
+{theme:'Where did my money go?',hook:'One forgotten subscription is small. Five are a leak.',body:'Open your last bank statement.\nCircle every recurring payment.\n\nKeep what earns its place.\nCancel what you no longer notice.'},
+{theme:'Small wins',hook:'Impulse buying starts before the checkout.',body:'Add a 24-hour pause for non-essentials.\n\n→ Save the item\n→ Leave the page\n→ Decide tomorrow\n\nDistance makes the decision clearer.'},
+{theme:'Where did my money go?',hook:'Your grocery budget needs a plan for tired days.',body:'Perfect meal plans often fail at 6 p.m.\n\nKeep two cheap, easy meals ready.\nConvenience planned at home\ncosts less than emergency takeout.'},
+{theme:'Small wins',hook:'A no-spend day is useful data, not punishment.',body:'Notice what made spending easier to avoid.\n\n→ Fewer shopping apps\n→ Food prepared ahead\n→ A clear daily limit\n\nRepeat what worked.'},
+{theme:'Bills & debt',hook:'Paying only the card minimum has a hidden cost.',body:'The balance stays longer.\nInterest gets more time.\n\nKnow the minimum, interest rate\nand one realistic extra amount.'},
+{theme:'Budget myths',hook:'Myth: a realistic budget cuts out every treat.',body:'A plan with zero breathing room\nis easy to abandon.\n\nGive enjoyable spending a limit.\nThen enjoy it without guessing.'},
+{theme:'Where did my money go?',hook:'Monthly planning should begin before the month does.',body:'Look ahead for costs that do not repeat weekly.\n\n→ Birthdays\n→ Annual renewals\n→ School or travel costs\n\nExpected expenses are easier to handle.'},
+{theme:'Peace of mind',hook:'Financial overwhelm often means too many open loops.',body:'Bills, debts and due dates\nare competing for attention.\n\nPut them in one place.\nYour brain should not be the filing system.'},
+{theme:'Budget myths',hook:'You do not need 20 spending categories.',body:'Start with what helps you decide:\n\n→ Money coming in\n→ Bills and essentials\n→ Flexible spending\n→ Debt and savings'},
+{theme:'Peace of mind',hook:'Confidence comes after small money actions.',body:'Not before them.\n\nReview one number.\nMake one choice.\nRepeat tomorrow.\nThat is how trust in yourself grows.'},
+{theme:'Where did my money go?',hook:'Tracking every expense is useless if you never review it.',body:'Once a week, ask:\n\n→ What surprised me?\n→ What can change next week?\n→ What went well?\n\nTracking should guide decisions.'},
+{theme:'Bills & debt',hook:'Overdrafts are often timing problems.',body:'Income may arrive after bills leave.\n\nPut payday and due dates together.\nThen move a due date or reserve cash\nbefore the expensive gap appears.'},
+{theme:'Small wins',hook:'Before payday, give the next paycheck three jobs.',body:'→ Cover essentials\n→ Handle priority debt\n→ Protect a small buffer\n\nDecide before the money arrives.\nPayday becomes calmer.'},
+{theme:'Peace of mind',hook:'A bad spending day does not ruin the month.',body:'Do not wait for Monday or next month.\n\nCheck what remains.\nAdjust one category.\nContinue with the next decision.'},
+{theme:'Budget myths',hook:'Saving what is left rarely works.',body:'There is often nothing left by accident.\n\nChoose a small amount first.\nTreat it like a bill.\nIncrease it only when the habit feels stable.'},
+{theme:'Where did my money go?',hook:'Before: Can I afford this today?',body:'After: Can I afford this\nafter bills, debt and tomorrow’s needs?\n\nOne better question\ncan prevent a week of stress.'},
+{theme:'Small wins',hook:'Try a Sunday 10-minute money check-in.',body:'→ Review the week\n→ Check upcoming bills\n→ Set one spending target\n→ Plan one small win\n\nStop when the timer ends.'},
+{theme:'Bills & debt',hook:'Extra debt payments should not create new debt.',body:'Keep enough for essentials\nand a small surprise.\n\nA slower payment you can sustain\nbeats a heroic payment you must undo.'},
+{theme:'Peace of mind',hook:'One page can be enough for a money plan.',body:'If it shows what comes in,\nwhat must go out\nand what remains,\nyou can make the next decision\nwithout rebuilding your whole life.'}
+].map((p,i)=>({...p,id:i+1,text:i<25?`${p.hook}\n\n${p.body}\n\nTry it free 👇\n${link}`:`${p.hook}\n\n${p.body}\n\nTry DailyCashPlan free:\nhttps://bit.ly/dailycashplan`}));
 let plan=JSON.parse(localStorage.getItem('dcpContentPlan')||'{}');
 function visiblePosts(){const theme=document.getElementById('themeFilter').value;const count=Number(document.getElementById('count').value);return posts.filter(p=>theme==='all'||p.theme===theme).slice(0,count)}
 function renderPosts(){const list=visiblePosts();document.getElementById('posts').innerHTML=list.map(p=>`<article class="card ${plan[p.id]?'scheduled':''}"><div class="card-head"><span class="number">Post ${p.id}</span><span class="theme">${p.theme}</span></div><div class="post">${escapeHtml(p.text)}</div><div class="actions"><button class="btn primary" onclick="copyPost(${p.id})">Copy</button><button class="btn secondary" onclick="planOne(${p.id})">${plan[p.id]?'Change time':'Plan'}</button></div></article>`).join('');document.getElementById('postCount').textContent=`${list.length} posts shown`;renderPlanner()}
@@ -78,7 +103,7 @@ function autoPlan(){const start=document.getElementById('startDate').value;if(!s
 function savePlan(){localStorage.setItem('dcpContentPlan',JSON.stringify(plan))}
 function clearPlan(){if(confirm('Clear the complete content plan?')){plan={};savePlan();renderPosts()}}
 function renderPlanner(){const rows=posts.filter(p=>plan[p.id]).sort((a,b)=>plan[a.id].localeCompare(plan[b.id]));document.getElementById('plannedCount').textContent=`${rows.length} planned`;document.getElementById('planner').innerHTML=rows.length?`<table><thead><tr><th>Date & time</th><th>Post</th><th>Hook</th><th></th></tr></thead><tbody>${rows.map(p=>`<tr><td>${plan[p.id]}</td><td>${p.id}</td><td>${escapeHtml(p.hook.replaceAll('\n',' / '))}</td><td><button class="btn ghost" onclick="copyPost(${p.id})">Copy</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No posts planned yet.</div>'}
-function downloadCSV(){const rows=[['Post','Theme','Hook','Full post','Planned date/time'],...posts.map(p=>[p.id,p.theme,p.hook,p.text,plan[p.id]||''])];const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='DailyCashPlan-Threads-25-posts.csv';a.click();URL.revokeObjectURL(a.href)}
+function downloadCSV(){const rows=[['Post','Theme','Hook','Full post','Planned date/time'],...posts.map(p=>[p.id,p.theme,p.hook,p.text,plan[p.id]||''])];const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='DailyCashPlan-Threads-50-posts.csv';a.click();URL.revokeObjectURL(a.href)}
 document.getElementById('startDate').value=new Date(Date.now()+86400000).toISOString().slice(0,10);renderPosts();
 </script>
 </body>
