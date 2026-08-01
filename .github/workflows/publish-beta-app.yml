@@ -21,7 +21,7 @@ jobs:
 
       - name: Reject temporary release links
         run: |
-          if grep -RIE --exclude-dir=.git --exclude=package-lock.json \
+          if grep -RIE --exclude-dir=.git --exclude-dir=.github --exclude=package-lock.json \
             'raw\.githack|rawgit|agent/artwork-design-system|friendly-copy-beta-signup' .; then
             echo "Temporary release reference found."
             exit 1
