@@ -1,22 +1,26 @@
 /* DailyCashPlan commercial design system — derived from marketing artwork */
 :root {
-  --primary: #078b83;
-  --primary-hover: #06756f;
-  --primary-pressed: #055f5a;
-  --primary-soft: #dff5f2;
-  --secondary: #064e4a;
-  --accent: #f59e0b;
+  --brand-primary: #14365e;
+  --brand-secondary: #41b6e6;
+  --brand-primary-dark: #0e2948;
+  --brand-primary-light: #eef5fb;
+  --primary: var(--brand-primary);
+  --primary-hover: var(--brand-primary-dark);
+  --primary-pressed: #091f38;
+  --primary-soft: var(--brand-primary-light);
+  --secondary: var(--brand-secondary);
+  --accent: var(--brand-secondary);
   --danger: #dc3f4f;
   --success: #12966f;
   --warning: #d97706;
   --error: #dc3f4f;
-  --background: #f2faf9;
+  --background: #f6f8fb;
   --surface: #ffffff;
   --surface-raised: #ffffff;
-  --border: #d9e9e7;
-  --text-primary: #102b2a;
-  --text-secondary: #526c69;
-  --muted: #809391;
+  --border: #dce5ed;
+  --text-primary: #172033;
+  --text-secondary: #566472;
+  --muted: #607080;
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
@@ -35,12 +39,12 @@
   --duration-fast: 140ms;
   --duration-normal: 220ms;
   --ease: cubic-bezier(.2, .8, .2, 1);
-  --green: var(--primary);
+  --green: var(--success);
   --g: var(--primary);
   --d: var(--secondary);
   --m: var(--primary-soft);
   --ink: var(--text-primary);
-  --muted: #809391;
+  --muted: #607080;
   --line: var(--border);
   --bg: var(--background);
 }
@@ -48,7 +52,7 @@
 html { color-scheme: light; scroll-behavior: smooth; }
 body {
   background:
-    radial-gradient(circle at 10% 0, rgba(7,139,131,.10), transparent 34rem),
+    radial-gradient(circle at 10% 0, rgba(65,182,230,.10), transparent 34rem),
     var(--background) !important;
   color: var(--text-primary) !important;
   font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif !important;
@@ -65,7 +69,7 @@ a, button, .card, .step, .feature, .stat, .panel, .link {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(7, 139, 131, .30) !important;
+  outline: 3px solid rgba(65, 182, 230, .30) !important;
   outline-offset: 3px;
 }
 
@@ -96,7 +100,7 @@ h2, h3 { font-weight: 800 !important; }
   box-shadow: var(--shadow-sm) !important;
 }
 .card:hover, .step:hover, .feature:hover, .link:hover {
-  border-color: rgba(7,139,131,.35) !important;
+  border-color: rgba(65,182,230,.35) !important;
   box-shadow: var(--shadow-md) !important;
 }
 
@@ -106,14 +110,14 @@ h2, h3 { font-weight: 800 !important; }
   font-weight: 800 !important;
 }
 .btn-primary, .btn.primary, button.primary, button.add, .primary, .app-cta {
-  background: linear-gradient(135deg, #0ba39a, var(--primary-hover)) !important;
+  background: linear-gradient(135deg, var(--primary), var(--primary)) !important;
   border: 0 !important;
   color: #fff !important;
-  box-shadow: 0 8px 18px rgba(7,139,131,.22) !important;
+  box-shadow: 0 8px 18px rgba(65,182,230,.22) !important;
 }
 .btn-primary:hover, .btn.primary:hover, button.primary:hover, button.add:hover, .primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(7,139,131,.27) !important;
+  box-shadow: 0 12px 24px rgba(65,182,230,.27) !important;
 }
 .btn-primary:active, .btn.primary:active, button.primary:active, button.add:active, .primary:active {
   background: var(--primary-pressed) !important;
@@ -136,13 +140,13 @@ input, select, textarea, .field input, .field select {
 input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
 input:focus, select:focus, textarea:focus {
   border-color: var(--primary) !important;
-  box-shadow: 0 0 0 4px rgba(7,139,131,.10);
+  box-shadow: 0 0 0 4px rgba(65,182,230,.10);
   outline: 0;
 }
 
 .progressTrack, progress { background: #dfecea !important; border-radius: var(--radius-pill); }
 .progressFill, progress::-webkit-progress-value {
-  background: linear-gradient(90deg, #19b5a9, var(--primary)) !important;
+  background: linear-gradient(90deg, var(--brand-secondary), var(--primary)) !important;
   border-radius: var(--radius-pill);
 }
 .stat strong { color: var(--primary-hover); }
@@ -153,7 +157,7 @@ input:focus, select:focus, textarea:focus {
 .tabs {
   background: rgba(255,255,255,.94) !important;
   border-color: var(--border) !important;
-  box-shadow: 0 -10px 35px rgba(10,76,72,.09);
+  box-shadow: 0 -10px 35px rgba(20,54,94,.09);
   backdrop-filter: blur(18px);
 }
 .tab { min-height: 52px; border-radius: 12px; }
@@ -168,10 +172,10 @@ input:focus, select:focus, textarea:focus {
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 10px); } }
 
 .soft, .betaBox, .beta-box { background: linear-gradient(145deg,#fff,var(--primary-soft)) !important; }
-.betaBox, .beta-box { border-color: rgba(7,139,131,.32) !important; }
+.betaBox, .beta-box { border-color: rgba(65,182,230,.32) !important; }
 .row { border-color: var(--border) !important; }
 .note, .lead, .sub, .microcopy, .empty { color: var(--text-secondary) !important; }
-.empty { padding: var(--space-8) !important; background: linear-gradient(145deg,#fff,var(--primary-soft)); border: 1px dashed rgba(7,139,131,.35); border-radius: var(--radius-md); }
+.empty { padding: var(--space-8) !important; background: linear-gradient(145deg,#fff,var(--primary-soft)); border: 1px dashed rgba(65,182,230,.35); border-radius: var(--radius-md); }
 
 @media (max-width: 640px) {
   body { font-size: 15px; }
