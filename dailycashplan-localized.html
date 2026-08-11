@@ -11,7 +11,7 @@ const currency=q.get('currency')||(euroRegions.has(region)?'EUR':region==='GB'?'
 localStorage.setItem('dailyCashPlanLocale',locale);
 localStorage.setItem('dailyCashPlanCurrency',currency);
 document.documentElement.lang=isNL?'nl':'en';
-const frame=document.getElementById('app'); frame.src='dailycashplan-app-v4.html?v=20260728-extra-types';
+const frame=document.getElementById('app');
 
 const NL_EXACT=new Map([
 ['Home','Home'],['On-device','Op dit apparaat'],['Add your income','Vul je inkomsten in'],['Income added','Inkomsten toegevoegd'],['Expenses added','Uitgaven toegevoegd'],['Debts added','Schulden toegevoegd'],['Your full picture is ready','Je volledige overzicht is klaar'],
@@ -45,12 +45,20 @@ function translateNode(root){
  for(const n of nodes){if(n.parentElement&&['SCRIPT','STYLE'].includes(n.parentElement.tagName))continue;const t=nlText(n.nodeValue);if(t!==n.nodeValue)n.nodeValue=t;}
  for(const el of root.querySelectorAll?.('[placeholder],[title],[aria-label]')||[])for(const a of ['placeholder','title','aria-label'])if(el.hasAttribute(a))el.setAttribute(a,nlText(el.getAttribute(a)));
 }
+async function loadLocalizedApp(){
+ const response=await fetch('dailycashplan-app-v4.html?v=20260728-extra-types',{cache:'no-cache'});
+ let html=await response.text();
+ const fixed="new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2})";
+ const localized=`new Intl.NumberFormat(${JSON.stringify(locale)},{style:'currency',currency:${JSON.stringify(currency)},maximumFractionDigits:2})`;
+ if(!html.includes(fixed)) console.warn('DailyCashPlan currency formatter signature not found');
+ html=html.replace(fixed,localized);
+ const base='<base href="'+new URL('.',location.href).href+'">';
+ html=html.replace('<head>','<head>'+base);
+ frame.srcdoc=html;
+}
 frame.addEventListener('load',()=>{
  const w=frame.contentWindow,d=frame.contentDocument;
- try{
-   const formatter=new Intl.NumberFormat(locale,{style:'currency',currency,maximumFractionDigits:2});
-   w.money=n=>formatter.format(Number(n)||0);
- }catch(e){console.warn('DailyCashPlan currency locale could not be applied',e)}
+ if(!d||!d.body)return;
  if(isNL){
    d.documentElement.lang='nl'; translateNode(d.body);
    try{const originalConfirm=w.confirm.bind(w);w.confirm=msg=>originalConfirm(nlText(msg));const originalAlert=w.alert?.bind(w);if(originalAlert)w.alert=msg=>originalAlert(nlText(msg));}catch(e){}
@@ -58,6 +66,6 @@ frame.addEventListener('load',()=>{
    obs.observe(d.body,{subtree:true,childList:true});
    setInterval(()=>translateNode(d.body),1000);
  }
- try{if(typeof w.render==='function'&&w.data)w.render();}catch(e){}
 });
+loadLocalizedApp().catch(err=>{console.error(err);frame.src='dailycashplan-app-v4.html?v=20260728-extra-types';});
 </script></body></html>
