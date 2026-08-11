@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>DailyCashPlan</title><style>html,body,iframe{width:100%;height:100%;margin:0;border:0}body{overflow:hidden;background:#f2faf9}iframe{display:block}</style></head><body><iframe id="app" title="DailyCashPlan"></iframe><script>
+const q=new URLSearchParams(location.search);
+const ui=q.get('lang')||'en';
+const explicitLocale=q.get('locale');
+const browserLocale=navigator.language||'en-US';
+const locale=explicitLocale||browserLocale;
+const region=(locale.split('-')[1]||'').toUpperCase();
+const euroRegions=new Set(['AT','BE','HR','CY','EE','FI','FR','DE','GR','IE','IT','LV','LT','LU','MT','NL','PT','SK','SI','ES']);
+const currency=q.get('currency')||(euroRegions.has(region)?'EUR':region==='GB'?'GBP':region==='CH'?'CHF':region==='CA'?'CAD':region==='AU'?'AUD':region==='NZ'?'NZD':region==='JP'?'JPY':'USD');
+localStorage.setItem('dailyCashPlanLocale',locale);
+localStorage.setItem('dailyCashPlanCurrency',currency);
+document.documentElement.lang=ui;
+const frame=document.getElementById('app'); frame.src='dailycashplan-app-v4.html?v=20260728-extra-types';
+frame.addEventListener('load',()=>{
+ const w=frame.contentWindow;
+ try{
+   const formatter=new Intl.NumberFormat(locale,{style:'currency',currency,maximumFractionDigits:2});
+   w.money=n=>formatter.format(Number(n)||0);
+   if(typeof w.render==='function' && w.data) w.render();
+ }catch(e){console.warn('DailyCashPlan currency locale could not be applied',e)}
+});
+</script></body></html>
