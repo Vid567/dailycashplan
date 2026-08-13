@@ -29,5 +29,29 @@ jobs:
 
       - name: Verify production routes
         run: |
-          grep -q 'dailycashplan-app-v4.html' index.html
-          grep -q 'https://vid567.github.io/dailycashplan/dailycashplan-app-v4.html' dailycashplan-test.html
+          test -f index.html
+          test -f index-en.html
+          test -f index-nl.html
+          test -f index-es.html
+          test -f index-es-us.html
+          test -f index-fr.html
+          test -f index-de.html
+          test -f index-pt-br.html
+          test -f index-zh-cn.html
+          test -f dailycashplan-localized.html
+
+          grep -q 'index-en.html' index.html
+          grep -q 'index-nl.html' index.html
+          grep -q 'index-es.html' index.html
+          grep -q 'index-es-us.html' index.html
+          grep -q 'index-fr.html' index.html
+          grep -q 'index-de.html' index.html
+          grep -q 'index-pt-br.html' index.html
+          grep -q 'index-zh-cn.html' index.html
+
+          grep -q 'dailycashplan-localized.html' index-en.html
+          grep -q 'dailycashplan-localized.html' index-nl.html
+          grep -q 'dailycashplan-localized.html' index-es.html
+
+          grep -q 'G-28DSN28MXG' index.html
+          grep -q 'G-28DSN28MXG' dailycashplan-localized.html
