@@ -1,70 +1,12 @@
 /* DailyCashPlan commercial design system — derived from marketing artwork */
-:root {
-  --brand-primary: #14365e;
-  --brand-secondary: #41b6e6;
-  --brand-primary-dark: #0e2948;
-  --brand-primary-light: #eef5fb;
-  --primary: var(--brand-primary);
-  --primary-hover: var(--brand-primary-dark);
-  --primary-pressed: #091f38;
-  --primary-soft: var(--brand-primary-light);
-  --secondary: var(--brand-secondary);
-  --accent: var(--brand-secondary);
-  --danger: #dc3f4f;
-  --success: #12966f;
-  --warning: #d97706;
-  --error: #dc3f4f;
-  --background: #f6f8fb;
-  --surface: #ffffff;
-  --surface-raised: #ffffff;
-  --border: #dce5ed;
-  --text-primary: #172033;
-  --text-secondary: #566472;
-  --muted: #607080;
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-pill: 999px;
-  --shadow-sm: 0 2px 8px rgba(10, 76, 72, .07);
-  --shadow-md: 0 12px 30px rgba(10, 76, 72, .11);
-  --shadow-lg: 0 26px 70px rgba(10, 76, 72, .16);
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --duration-fast: 140ms;
-  --duration-normal: 220ms;
-  --ease: cubic-bezier(.2, .8, .2, 1);
-  --green: var(--success);
-  --g: var(--primary);
-  --d: var(--secondary);
-  --m: var(--primary-soft);
-  --ink: var(--text-primary);
-  --muted: #607080;
-  --line: var(--border);
-  --bg: var(--background);
-}
-html { color-scheme: light; scroll-behavior: smooth; }
-body { background:radial-gradient(circle at 10% 0,rgba(65,182,230,.10),transparent 34rem),var(--background)!important;color:var(--text-primary)!important;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif!important;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased; }
-a,button,input,select,textarea{font:inherit}a,button,.card,.step,.feature,.stat,.panel,.link{transition:transform var(--duration-fast) var(--ease),box-shadow var(--duration-normal) var(--ease),border-color var(--duration-fast) var(--ease),background var(--duration-fast) var(--ease),color var(--duration-fast) var(--ease)}
-:focus-visible{outline:3px solid rgba(65,182,230,.30)!important;outline-offset:3px}h1,h2,h3,.logo,.brand,.header-title{color:var(--text-primary);letter-spacing:-.025em;line-height:1.15}h1{font-weight:850!important}h2,h3{font-weight:800!important}
-.app{background:rgba(255,255,255,.72)!important;border-inline:1px solid rgba(217,233,231,.8);box-shadow:var(--shadow-lg)}.top,header{background:rgba(255,255,255,.88)!important;border-color:var(--border)!important;backdrop-filter:blur(18px)}.logo,.brand,.header-title{color:var(--secondary)!important}
-.card,.step,.feature,.panel,.stat,.beta-box,.link{background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:var(--radius-md)!important;box-shadow:var(--shadow-sm)!important}.card:hover,.step:hover,.feature:hover,.link:hover{border-color:rgba(65,182,230,.35)!important;box-shadow:var(--shadow-md)!important}
-.btn,button.primary,button.add,.primary,.app-cta{min-height:48px;border-radius:14px!important;font-weight:800!important}.btn-primary,.btn.primary,button.primary,button.add,.primary,.app-cta{background:linear-gradient(135deg,var(--primary),var(--primary))!important;border:0!important;color:#fff!important;box-shadow:0 8px 18px rgba(65,182,230,.22)!important}.btn-primary:hover,.btn.primary:hover,button.primary:hover,button.add:hover,.primary:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(65,182,230,.27)!important}.btn-primary:active,.btn.primary:active,button.primary:active,button.add:active,.primary:active{background:var(--primary-pressed)!important;transform:translateY(1px) scale(.99)}.secondary,.btn-secondary{background:var(--primary-soft)!important;color:var(--secondary)!important;border-color:transparent!important}
-input,select,textarea,.field input,.field select{min-height:48px;padding:12px 14px!important;color:var(--text-primary);background:#fff!important;border:1.5px solid var(--border)!important;border-radius:var(--radius-sm)!important}input::placeholder,textarea::placeholder{color:var(--muted);opacity:1}input:focus,select:focus,textarea:focus{border-color:var(--primary)!important;box-shadow:0 0 0 4px rgba(65,182,230,.10);outline:0}
-.progressTrack,progress{background:#dfecea!important;border-radius:var(--radius-pill)}.progressFill,progress::-webkit-progress-value{background:linear-gradient(90deg,var(--brand-secondary),var(--primary))!important;border-radius:var(--radius-pill)}
-/* Financial meaning belongs to the figures, not the navigation. */
-.stat strong{color:var(--primary)!important}.stat:nth-child(2) strong{color:var(--brand-secondary)!important}.stat:nth-child(3) strong{color:var(--success)!important}.stat:nth-child(4) strong{color:var(--danger)!important}
-.eyebrow,.mini,.number,.tag{color:var(--primary)!important}.tag,.theme,.chip{background:var(--primary-soft)!important;border-radius:var(--radius-pill)!important}
-.tabs{background:rgba(255,255,255,.94)!important;border-color:var(--border)!important;box-shadow:0 -10px 35px rgba(20,54,94,.09);backdrop-filter:blur(18px)}
-/* All bottom-nav labels/icons are neutral. Active state is shown by background only. */
-.tab,.tab:nth-child(1),.tab:nth-child(2),.tab:nth-child(3),.tab:nth-child(4),.tab:nth-child(5){min-height:52px;border-radius:12px;color:var(--text-secondary)!important}
-.tab.active,.tab:nth-child(1).active,.tab:nth-child(2).active,.tab:nth-child(3).active,.tab:nth-child(4).active,.tab:nth-child(5).active{color:var(--text-primary)!important;background:var(--primary-soft)!important}
-.modal{background:rgba(4,40,38,.48)!important;backdrop-filter:blur(5px)}.sheet{background:var(--background)!important;box-shadow:var(--shadow-lg)}.toast{background:var(--secondary)!important;box-shadow:var(--shadow-md);animation:toast-in var(--duration-normal) var(--ease)}@keyframes toast-in{from{opacity:0;transform:translate(-50%,10px)}}
-.soft,.betaBox,.beta-box{background:linear-gradient(145deg,#fff,var(--primary-soft))!important}.betaBox,.beta-box{border-color:rgba(65,182,230,.32)!important}.row{border-color:var(--border)!important}.note,.lead,.sub,.microcopy,.empty{color:var(--text-secondary)!important}.empty{padding:var(--space-8)!important;background:linear-gradient(145deg,#fff,var(--primary-soft));border:1px dashed rgba(65,182,230,.35);border-radius:var(--radius-md)}
-@media(max-width:640px){body{font-size:15px}h1{font-size:clamp(28px,9vw,36px)!important}.screen{padding:22px 16px!important}.card,.panel,.feature,.step{padding:16px!important}}
+:root{--brand-primary:#14365e;--brand-secondary:#41b6e6;--brand-primary-dark:#0e2948;--brand-primary-light:#eef5fb;--primary:var(--brand-primary);--primary-hover:var(--brand-primary-dark);--primary-pressed:#091f38;--primary-soft:var(--brand-primary-light);--secondary:var(--brand-secondary);--accent:var(--brand-secondary);--danger:#dc3f4f;--success:#12966f;--warning:#d97706;--error:#dc3f4f;--background:#f6f8fb;--surface:#fff;--surface-raised:#fff;--border:#dce5ed;--text-primary:#172033;--text-secondary:#566472;--muted:#607080;--radius-sm:10px;--radius-md:16px;--radius-lg:24px;--radius-pill:999px;--shadow-sm:0 2px 8px rgba(10,76,72,.07);--shadow-md:0 12px 30px rgba(10,76,72,.11);--shadow-lg:0 26px 70px rgba(10,76,72,.16);--duration-fast:140ms;--duration-normal:220ms;--ease:cubic-bezier(.2,.8,.2,1);--green:var(--success);--g:var(--primary);--d:var(--secondary);--m:var(--primary-soft);--ink:var(--text-primary);--line:var(--border);--bg:var(--background)}
+html{color-scheme:light;scroll-behavior:smooth}body{background:radial-gradient(circle at 10% 0,rgba(65,182,230,.10),transparent 34rem),var(--background)!important;color:var(--text-primary)!important;font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif!important;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}a,button,input,select,textarea{font:inherit}a,button,.card,.step,.feature,.stat,.panel,.link{transition:transform var(--duration-fast) var(--ease),box-shadow var(--duration-normal) var(--ease),border-color var(--duration-fast) var(--ease),background var(--duration-fast) var(--ease),color var(--duration-fast) var(--ease)}:focus-visible{outline:3px solid rgba(65,182,230,.30)!important;outline-offset:3px}h1,h2,h3,.logo,.brand,.header-title{color:var(--text-primary);letter-spacing:-.025em;line-height:1.15}h1{font-weight:850!important}h2,h3{font-weight:800!important}.app{background:rgba(255,255,255,.72)!important;border-inline:1px solid rgba(217,233,231,.8);box-shadow:var(--shadow-lg)}.top,header{background:rgba(255,255,255,.88)!important;border-color:var(--border)!important;backdrop-filter:blur(18px)}.logo,.brand,.header-title{color:var(--secondary)!important}.card,.step,.feature,.panel,.stat,.beta-box,.link{background:var(--surface)!important;border:1px solid var(--border)!important;border-radius:var(--radius-md)!important;box-shadow:var(--shadow-sm)!important}.card:hover,.step:hover,.feature:hover,.link:hover{border-color:rgba(65,182,230,.35)!important;box-shadow:var(--shadow-md)!important}.btn,button.primary,button.add,.primary,.app-cta{min-height:48px;border-radius:14px!important;font-weight:800!important}.btn-primary,.btn.primary,button.primary,button.add,.primary,.app-cta{background:linear-gradient(135deg,var(--primary),var(--primary))!important;border:0!important;color:#fff!important;box-shadow:0 8px 18px rgba(65,182,230,.22)!important}.secondary,.btn-secondary{background:var(--primary-soft)!important;color:var(--secondary)!important;border-color:transparent!important}input,select,textarea,.field input,.field select{min-height:48px;padding:12px 14px!important;color:var(--text-primary);background:#fff!important;border:1.5px solid var(--border)!important;border-radius:var(--radius-sm)!important}.progressTrack,progress{background:#dfecea!important;border-radius:var(--radius-pill)}.progressFill,progress::-webkit-progress-value{background:linear-gradient(90deg,var(--brand-secondary),var(--primary))!important;border-radius:var(--radius-pill)}
+/* Financial colours apply to values only. */.stat strong{color:var(--primary)!important}.stat:nth-child(2) strong{color:var(--brand-secondary)!important}.stat:nth-child(3) strong{color:var(--success)!important}.stat:nth-child(4) strong{color:var(--danger)!important}
+/* Compact total at the top-right of each workflow screen. Injected by CSS labels + existing live totals where possible. */
+#income,#expenses,#debts,#plan{position:relative;padding-top:22px!important}
+#income::before,#expenses::before,#debts::before,#plan::before{position:absolute;right:18px;top:25px;font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+#income::before{content:"Total income";color:var(--primary)}#expenses::before{content:"Total expenses";color:var(--brand-secondary)}#debts::before{content:"Total debt";color:var(--danger)}#plan::before{content:"Available";color:var(--success)}
+#expenses>.section:first-of-type{margin-top:28px}
+.eyebrow,.mini,.number,.tag{color:var(--primary)!important}.tabs{background:rgba(255,255,255,.94)!important;border-color:var(--border)!important;box-shadow:0 -10px 35px rgba(20,54,94,.09);backdrop-filter:blur(18px)}.tab,.tab:nth-child(1),.tab:nth-child(2),.tab:nth-child(3),.tab:nth-child(4),.tab:nth-child(5){min-height:52px;border-radius:12px;color:var(--text-secondary)!important}.tab.active,.tab:nth-child(1).active,.tab:nth-child(2).active,.tab:nth-child(3).active,.tab:nth-child(4).active,.tab:nth-child(5).active{color:var(--text-primary)!important;background:var(--primary-soft)!important}.modal{background:rgba(4,40,38,.48)!important;backdrop-filter:blur(5px)}.sheet{background:var(--background)!important;box-shadow:var(--shadow-lg)}.toast{background:var(--secondary)!important;box-shadow:var(--shadow-md)}.soft,.betaBox,.beta-box{background:linear-gradient(145deg,#fff,var(--primary-soft))!important}.betaBox,.beta-box{border-color:rgba(65,182,230,.32)!important}.row{border-color:var(--border)!important}.note,.lead,.sub,.microcopy,.empty{color:var(--text-secondary)!important}
+@media(max-width:640px){body{font-size:15px}h1{font-size:clamp(28px,9vw,36px)!important}.screen{padding:22px 16px!important}.card,.panel,.feature,.step{padding:16px!important}#income::before,#expenses::before,#debts::before,#plan::before{right:16px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
