@@ -40,7 +40,7 @@
 </div>
 <div id="toast" class="toast">Copied</div>
 <script>
-const link='http://bit.ly/dailycashplan';
+const link='https://vid567.github.io/apps/?product=dcp';
 const posts=[
 {theme:'Where did my money go?',hook:"Most people don't overspend.\nThey just don't know where their money went.",body:"A coffee here.\nA bill over there.\n\nOne clear overview\nchanges everything."},
 {theme:'Where did my money go?',hook:'Money comes.\nMoney goes.\nWhere it disappears...\nnobody knows.',body:"Your money is not always gone.\nSometimes it is simply hidden\nin dozens of small payments."},
@@ -92,7 +92,7 @@ const posts=[
 {theme:'Small wins',hook:'Try a Sunday 10-minute money check-in.',body:'→ Review the week\n→ Check upcoming bills\n→ Set one spending target\n→ Plan one small win\n\nStop when the timer ends.'},
 {theme:'Bills & debt',hook:'Extra debt payments should not create new debt.',body:'Keep enough for essentials\nand a small surprise.\n\nA slower payment you can sustain\nbeats a heroic payment you must undo.'},
 {theme:'Peace of mind',hook:'One page can be enough for a money plan.',body:'If it shows what comes in,\nwhat must go out\nand what remains,\nyou can make the next decision\nwithout rebuilding your whole life.'}
-].map((p,i)=>({...p,id:i+1,text:i<25?`${p.hook}\n\n${p.body}\n\nTry it free 👇\n${link}\n\nDM me with your feedback.`:`${p.hook}\n\n${p.body}\n\nTry DailyCashPlan free:\nhttps://bit.ly/dailycashplan\n\nDM me with your feedback.`}));
+].map((p,i)=>({...p,id:i+1,text:i<25?`${p.hook}\n\n${p.body}\n\nTry it free 👇\n${link}\n\nDM me with your feedback.`:`${p.hook}\n\n${p.body}\n\nTry DailyCashPlan free:\nhttps://vid567.github.io/apps/?product=dcp\n\nDM me with your feedback.`}));
 let plan=JSON.parse(localStorage.getItem('dcpContentPlan')||'{}');
 let processed=JSON.parse(localStorage.getItem('dcpContentProcessedV1')||'{}');
 function visiblePosts(){const theme=document.getElementById('themeFilter').value;const count=Number(document.getElementById('count').value);return posts.filter(p=>theme==='all'||p.theme===theme).slice(0,count)}
