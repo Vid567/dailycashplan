@@ -92,7 +92,32 @@ const posts=[
 {theme:'Where did my money go?',hook:'Before: Can I afford this today?',body:'After: Can I afford this\nafter bills, debt and tomorrow’s needs?\n\nOne better question\ncan prevent a week of stress.'},
 {theme:'Small wins',hook:'Try a Sunday 10-minute money check-in.',body:'→ Review the week\n→ Check upcoming bills\n→ Set one spending target\n→ Plan one small win\n\nStop when the timer ends.'},
 {theme:'Bills & debt',hook:'Extra debt payments should not create new debt.',body:'Keep enough for essentials\nand a small surprise.\n\nA slower payment you can sustain\nbeats a heroic payment you must undo.'},
-{theme:'Peace of mind',hook:'One page can be enough for a money plan.',body:'If it shows what comes in,\nwhat must go out\nand what remains,\nyou can make the next decision\nwithout rebuilding your whole life.'}
+{theme:'Peace of mind',hook:'One page can be enough for a money plan.',body:'If it shows what comes in,\nwhat must go out\nand what remains,\nyou can make the next decision\nwithout rebuilding your whole life.'},
+{theme:'Where did my money go?',hook:"A $4 coffee doesn't feel like money until it's $120 a month.",body:'Small spends are invisible one at a time.\n\nAdd them up once\nand they stop hiding.'},
+{theme:'Where did my money go?',hook:"Your bank app shows transactions. It doesn't show patterns.",body:'A list of charges is not the same\nas knowing where your month went.'},
+{theme:'Where did my money go?',hook:"The money didn't vanish. It just left in small pieces.",body:'Fifteen charges under $10\ncan quietly outspend one big purchase.'},
+{theme:'Where did my money go?',hook:"You don't need to remember every purchase.",body:'You need one place that adds them up for you.'},
+{theme:'Where did my money go?',hook:'Check the account before the mystery, not after.',body:"By the time you're wondering where it went,\nit's already gone.\n\nLook weekly, not monthly."},
+{theme:'Bills & debt',hook:'A bill you forgot is still a bill you owe.',body:'Forgetting does not lower the balance.\nIt just adds a late fee.'},
+{theme:'Bills & debt',hook:'Debt feels bigger in your head than on paper.',body:"Write down the actual number.\n\nIt's usually more manageable\nthan the version you were avoiding."},
+{theme:'Bills & debt',hook:'List every bill once. Stop re-remembering them every month.',body:"→ Amount\n→ Due date\n→ Minimum\n\nThat's the whole list."},
+{theme:'Bills & debt',hook:'Two bills, same due date, is how overdrafts happen.',body:'Spread them out on paper first.\nYour bank account finds out second.'},
+{theme:'Bills & debt',hook:"Paying the smallest debt first isn't about math.",body:'It is about proof that progress is possible.\n\nMomentum matters more than optimal.'},
+{theme:'Budget myths',hook:'A budget that survives one bad week is the only kind worth having.',body:'If one coffee breaks the whole plan,\nthe plan was too tight to begin with.'},
+{theme:'Budget myths',hook:"You don't need an app with 40 categories.",body:'You need four:\nincome, bills, spending, savings.'},
+{theme:'Budget myths',hook:"A budget isn't a diet for your money.",body:'It is a decision about where it goes\nbefore it is already spent.'},
+{theme:'Budget myths',hook:"Overspending once doesn't mean the budget failed.",body:'It means this week needs a number,\nnot a verdict.'},
+{theme:'Budget myths',hook:'The best budget is the one you actually open.',body:'A perfect spreadsheet\nnobody looks at\nis not a system.'},
+{theme:'Small wins',hook:'$5 saved on autopilot beats $50 saved by willpower.',body:'Small and automatic\noutlasts big and motivated.'},
+{theme:'Small wins',hook:'Pick one bill to pay early this month.',body:'Just one.\nSee how it feels before you change anything else.'},
+{theme:'Small wins',hook:'A ten-minute Sunday check-in changes the whole week.',body:'Know what is coming in.\nKnow what is going out.\nMove on with your day.'},
+{theme:'Small wins',hook:'The first $100 saved matters more than the next $1,000.',body:'It is not about the amount.\nIt is proof the habit works.'},
+{theme:'Small wins',hook:'Cancel one subscription you forgot you had.',body:'Then check for the next one.\nThere is usually a second.'},
+{theme:'Peace of mind',hook:'Calm does not come from having more money.',body:'It comes from knowing\nwhat you have right now.'},
+{theme:'Peace of mind',hook:"You can't fix what you haven't looked at.",body:'Looking is the uncomfortable part.\nIt is also the only part that actually helps.'},
+{theme:'Peace of mind',hook:'Financial stress shrinks the moment you see the real number.',body:'The guess in your head\nis almost always worse\nthan the actual total.'},
+{theme:'Peace of mind',hook:'One clear page beats ten worried thoughts.',body:'Write it down once.\nStop carrying it in your head.'},
+{theme:'Peace of mind',hook:'You do not need to have it all figured out.',body:'You need to know\nwhat is true today.'}
 ].map((p,i)=>({...p,id:i+1,text:i<25?`${p.hook}\n\n${p.body}\n\nTry it free 👇\n${link}\n\nDM me with your feedback.`:`${p.hook}\n\n${p.body}\n\nTry DailyCashPlan free:\nhttps://vid567.github.io/apps/?product=dcp\n\nDM me with your feedback.`}));
 let plan=JSON.parse(localStorage.getItem('dcpContentPlan')||'{}');
 let processed=JSON.parse(localStorage.getItem('dcpContentProcessedV1')||'{}');
